@@ -1,0 +1,31 @@
+---
+layout: default
+menu_template: menu_projects.html
+---
+
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12">
+      <h1>Follow Our Progress</h1>
+      <p>
+      These projects represent the core of the radanalytics.io community's efforts.
+      There are several different types of projects represented here, but all are
+      focused on improving your experiences creating insightful data driven
+      applications.
+      </p>
+      <p>
+      We invite you to take a look, test drive everything, and hopefully join us
+      by contributing a comment, issue, or code!
+      </p>
+    </div>
+  </div>
+
+  {% for project in site.projects %}
+  <div class="row">
+    <div class="col-sm-12">
+      <h2>{{ project.title }}</h2>
+      {{ project.content }}
+    </div>
+  </div>
+  {% endfor %}
+</div>
