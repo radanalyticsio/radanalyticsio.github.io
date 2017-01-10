@@ -449,6 +449,10 @@ application can evolve.
 
 <h1 id="videos">Videos</h1>
 
-## Ophicleide basic operation demonstration
+<div class="text-center">
 
-<iframe src="https://player.vimeo.com/video/189710503?title=0&byline=0&portrait=0" width="640" height="360" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+<h2>Ophicleide basic operation demonstration</h2>
+
+<iframe src="https://player.vimeo.com/video/189710503?title=0&byline=0&portrait=0" width="800" height="425" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+
+</div>
