@@ -29,7 +29,9 @@ markdown: kramdown
 # theme: minima
 
 collections:
-- projects
+  projects: {}
+  applications:
+    output: true
 
 defaults:
 - scope:

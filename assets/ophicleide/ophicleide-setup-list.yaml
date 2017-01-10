@@ -1,0 +1,149 @@
+kind: List
+apiVersion: v1
+metadata: {}
+
+items:
+- kind: ImageStream
+  apiVersion: v1
+  metadata:
+    name: ophicleide-training
+  spec: {}
+
+- kind: ImageStream
+  apiVersion: v1
+  metadata:
+    name: ophicleide-web
+  spec: {}
+
+- kind: BuildConfig
+  apiVersion: v1
+  metadata:
+    name: ophicleide-training
+  spec:
+    source:
+      type: Git
+      git:
+        uri: https://github.com/ophicleide/ophicleide-training
+        ref: develop
+    strategy:
+      type: Docker
+    output:
+      to:
+        kind: ImageStreamTag
+        name: ophicleide-training:latest
+
+- kind: BuildConfig
+  apiVersion: v1
+  metadata:
+    name: ophicleide-web
+  spec:
+    source:
+      type: Git
+      git:
+        uri: https://github.com/ophicleide/ophicleide-web
+    strategy:
+      type: Source
+      sourceStrategy:
+        from:
+          kind: DockerImage
+          name: centos/nodejs-4-centos7:latest
+    output:
+      to:
+        kind: ImageStreamTag
+        name: ophicleide-web:latest
+
+- kind: Template
+  apiVersion: v1
+  template: ophicleide
+  metadata:
+    name: ophicleide
+  objects:
+
+  - kind: Service
+    apiVersion: v1
+    metadata:
+      name: ophicleide-web
+    spec:
+      ports:
+        - protocol: TCP
+          port: 8080
+          targetPort: 8081
+      selector:
+        name: ophicleide
+
+  - kind: Route
+    apiVersion: v1
+    metadata:
+      name: ophicleide-web
+    spec:
+      host: ${WEB_ROUTE_HOSTNAME}
+      to:
+        kind: Service
+        name: ophicleide-web
+
+  - kind: DeploymentConfig
+    apiVersion: v1
+    metadata:
+      name: ophicleide
+    spec:
+      strategy:
+        type: Rolling
+      triggers:
+        - type: ConfigChange
+        - type: ImageChange
+          imageChangeParams:
+            automatic: true
+            containerNames:
+              - ophicleide-web
+            from:
+              kind: ImageStreamTag
+              name: ophicleide-web:latest
+        - type: ImageChange
+          imageChangeParams:
+            automatic: true
+            containerNames:
+              - ophicleide-training
+            from:
+              kind: ImageStreamTag
+              name: ophicleide-training:latest
+      replicas: 1
+      selector:
+        name: ophicleide
+      template:
+        metadata:
+          labels:
+            name: ophicleide
+        spec:
+          containers:
+            - name: ophicleide-web
+              image: ophicleide-web:latest
+              env:
+                - name: OPHICLEIDE_TRAINING_ADDR
+                  value: "127.0.0.1"
+                - name: OPHICLEIDE_TRAINING_PORT
+                  value: "8080"
+                - name: OPHICLEIDE_WEB_PORT
+                  value: "8081"
+              ports:
+                - containerPort: 8081
+                  protocol: TCP
+            - name: ophicleide-training
+              image: ophicleide-training:latest
+              env:
+                - name: OPH_MONGO_URL
+                  value: ${MONGO}
+                - name: OPH_SPARK_MASTER_URL
+                  value: ${SPARK}
+              ports:
+                - containerPort: 8080
+                  protocol: TCP
+
+  parameters:
+    - name: SPARK
+      description: connection string for the spark master
+      required: true
+    - name: MONGO
+      description: connection string for mongo
+      required: true
+    - name: WEB_ROUTE_HOSTNAME
+      description: The hostname used to create the external route for the ophicleide-web component
