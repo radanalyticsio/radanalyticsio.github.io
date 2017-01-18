@@ -28,6 +28,10 @@
 markdown: kramdown
 # theme: minima
 
+exclude:
+  - README.md
+  - CONTRIBUTING.md
+
 collections:
   projects: {}
   applications:
