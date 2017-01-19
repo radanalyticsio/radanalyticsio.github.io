@@ -26,6 +26,10 @@ The driver application shows the max temperature value in the last 5 seconds.
 
 <h1 id="architecture">Architecture</h1>
 
+The scanario for using the AMQP - Spark Streaming connector can be described with following picture.
+
+<img src="/assets/amqpstreaming/connector_scenario.png" class="img-connector scenario">
+
 The main components which defines the architecture of the application are :
 
 * An Apache Spark cluster running on OpenShift
@@ -34,6 +38,8 @@ The main components which defines the architecture of the application are :
 providing them to the Spark engine for stream processing
 * A simple client application which simulates a sensor and sends temperature values
 to the queue using the AMQP protocol
+
+<img src="/assets/amqpstreaming/application_scenario.png" class="img-connector scenario">
 
 <h1 id="installation">Installation</h1>
 
