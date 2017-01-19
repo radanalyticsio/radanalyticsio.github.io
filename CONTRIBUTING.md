@@ -1,4 +1,4 @@
-# Contributing to the radanalytics.io
+# Contributing to radanalytics.io
 
 In general, all contributions should be made by forking this repository,
 making your changes on a feature branch, and proposing that feature branch
@@ -25,6 +25,14 @@ $ bundle exec jekyll serve
 At this point the site will be running and served locally at
 `http://localhost:4000`, with the server running any file changes will be
 automatically picked up and the site re-generated.
+
+**A note on Mac OSX development**
+A common source of problems for Mac users when installing Jekyll's
+dependencies is the [Nokogiri library](http://www.nokogiri.org). Should your
+`bundle install` run into trouble installing Nokogiri, please see the
+[suggestions offered in the Nokogiri docs](http://www.nokogiri.org/tutorials/installing_nokogiri.html#mac_os_x)
+or consult [Stack Overflow](https://stackoverflow.com) for other possible
+fixes.
 
 ## Adding a new application
 
