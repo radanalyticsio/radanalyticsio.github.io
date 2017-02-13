@@ -1,6 +1,6 @@
 ---
 layout: markdown
-menu_template: menu_faq.html
+menu_entry: faq
 ---
 
 # Frequently Asked Questions

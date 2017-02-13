@@ -1,0 +1,44 @@
+{% if page.menu_entry == "welcome" %}
+<li class="active">
+  <a href="#">Welcome</a>
+{% else %}
+<li>
+  <a href="/">Welcome</a>
+{% endif %}
+</li>
+
+{% if page.menu_entry == "community" %}
+<li class="active">
+  <a href="#">Community</a>
+{% else %}
+<li>
+  <a href="/community">Community</a>
+{% endif %}
+</li>
+
+{% if page.menu_entry == "projects" %}
+<li class="active">
+  <a href="#">Projects</a>
+{% else %}
+<li>
+  <a href="/projects">Projects</a>
+{% endif %}
+</li>
+
+{% if page.menu_entry == "tutorials" %}
+<li class="active">
+  <a href="#">Tutorials</a>
+{% else %}
+<li>
+  <a href="/tutorials">Tutorials</a>
+{% endif %}
+</li>
+
+{% if page.menu_entry == "faq" %}
+<li class="active">
+  <a href="#">FAQ</a>
+{% else %}
+<li>
+  <a href="/faq">FAQ</a>
+{% endif %}
+</li>

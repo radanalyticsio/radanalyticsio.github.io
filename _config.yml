@@ -41,4 +41,5 @@ defaults:
 - scope:
     path: ""
   values:
-    menu_template: menu_welcome.html
+    menu_template: menu_radanalytics.html
+    menu_entry: welcome
