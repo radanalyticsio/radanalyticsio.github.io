@@ -1,6 +1,6 @@
 ---
 layout: markdown
-menu_entry: tutorials
+menu_entry: Tutorials
 ---
 
 # Applications

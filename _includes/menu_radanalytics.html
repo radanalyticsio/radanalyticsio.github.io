@@ -1,44 +1,10 @@
-{% if page.menu_entry == "welcome" %}
+{% for item in site.data.menu.radanalyticsio %}
+{% if page.menu_entry == item.title %}
 <li class="active">
-  <a href="#">Welcome</a>
+  <a href="#">{{ item.title }}</a>
 {% else %}
 <li>
-  <a href="/">Welcome</a>
+  <a href="{{ item.url }}">{{ item.title }}</a>
 {% endif %}
 </li>
-
-{% if page.menu_entry == "community" %}
-<li class="active">
-  <a href="#">Community</a>
-{% else %}
-<li>
-  <a href="/community">Community</a>
-{% endif %}
-</li>
-
-{% if page.menu_entry == "projects" %}
-<li class="active">
-  <a href="#">Projects</a>
-{% else %}
-<li>
-  <a href="/projects">Projects</a>
-{% endif %}
-</li>
-
-{% if page.menu_entry == "tutorials" %}
-<li class="active">
-  <a href="#">Tutorials</a>
-{% else %}
-<li>
-  <a href="/tutorials">Tutorials</a>
-{% endif %}
-</li>
-
-{% if page.menu_entry == "faq" %}
-<li class="active">
-  <a href="#">FAQ</a>
-{% else %}
-<li>
-  <a href="/faq">FAQ</a>
-{% endif %}
-</li>
+{% endfor %}

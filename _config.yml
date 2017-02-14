@@ -42,4 +42,4 @@ defaults:
     path: ""
   values:
     menu_template: menu_radanalytics.html
-    menu_entry: welcome
+    menu_entry: Welcome

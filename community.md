@@ -1,6 +1,6 @@
 ---
 layout: markdown
-menu_entry: community
+menu_entry: Community
 ---
 
 # Development
