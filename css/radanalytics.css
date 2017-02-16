@@ -53,3 +53,8 @@ div#documents img {
     margin-right: auto;
 }
 
+img.screenshot {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
