@@ -1,6 +1,8 @@
 radanalyticsio:
   - title: Welcome
     url: /
+  - title: Get Started
+    url: /start
   - title: Tutorials
     url: /tutorials
   - title: Community
