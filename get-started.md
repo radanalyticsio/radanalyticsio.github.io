@@ -40,7 +40,7 @@ An OpenShift user can deploy the oshinko-webui container into their project
 and then access the server with a web browser. Through the browser interface
 you will be able to manage Apache Spark clusters within your project.
 
-Another import part of Oshinko to highlight is the
+Another important part of Oshinko to highlight is the
 [oshinko-s2i](https://github.com/radanalyticsio/oshinko-s2i) repository and
 associated images which implement the
 [source-to-image](https://docs.openshift.org/latest/architecture/core_concepts/builds_and_image_streams.html#source-build) workflow for Apache Spark based applications. These images enable
@@ -49,7 +49,7 @@ directly from a source repository.
 
 # Quickstart with Oshinko
 
-## 1. [Setup OpenShift](https://www.openshift.org/#try)
+## 1. [Setup OpenShift Origin](https://www.openshift.org/#try)
 
 For instance, download the [oc command](https://github.com/openshift/origin/releases) and run
 
