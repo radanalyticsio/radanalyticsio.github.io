@@ -62,7 +62,7 @@ oc cluster up
 
 ## 2. Install and setup Oshinko
 
-This quickstart will use the
+This quickstart uses the
 [oshinko-s2i (source-to-image)](https://github.com/radanalyticsio/oshinko-s2i)
 and
 [oshinko-webui (a web UI that runs in a pod on OpenShift)](https://github.com/radanalyticsio/oshinko-webui)
