@@ -10,6 +10,16 @@ items:
       name: oshinko
 
   - apiVersion: v1
+    kind: RoleBinding
+    metadata:
+      name: oshinko-edit
+    roleRef:
+      name: edit
+    subjects:
+      - kind: ServiceAccount
+        name: oshinko
+
+  - apiVersion: v1
     kind: Template
     labels:
       application: oshinko-pyspark

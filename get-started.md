@@ -78,9 +78,6 @@ process.
 : Load all the Oshinko resources into your OpenShift project
 oc create -f http://radanalytics.io/resources.yaml
 
-: Authorize the Oshinko ServiceAccount so it can create clusters
-oc policy add-role-to-user edit -z oshinko
-
 : Launch the Oshinko Web UI
 oc new-app oshinko-webui
 ```
