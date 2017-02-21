@@ -9,13 +9,7 @@ menu_entry: FAQ
 ## How do I connect to a cluster to debug / develop?
 
 ```bash
-oc run -it --rm dev-shell --image=radanalyticsio/openshift-spark -- bash
-
-: Go to a directory that you can write to (useful when using Spark SQL to avoid 'Directory /metastore_db cannot be created.')
-cd /tmp
-
-: Run a shell...
-spark-shell
+oc run -it --rm dev-shell --image=radanalyticsio/openshift-spark -- spark-shell
 ```
 
 
