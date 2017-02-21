@@ -45,7 +45,7 @@
   slides-url: http://www.slideshare.net/SparkSummit/optimizing-spark-deployments-for-containers-isolation-safety-and-performance-spark-summit-east-talk-by-william-benton
 
 - title: Building My Own Little World with Open Data
-  presentor: Steven Poutsy
+  presentor: Steven Pousty
   abstract: |-
     Everybody cares about the place (they live, they grew up in, they had a great vacation, in the news….). With the rise of open data, big data tooling, and new visualisation technology, we can actually now build applications that give people new ways to explore beyond “where is the closest Starbucks”. I have collected Open Data from my home town (Santa Cruz, CA) and compiled it into the beginnings of a visualization and analysis platform. The goal of this talk is to show the process of collecting open data from disparate sources, some of the caveats on being able to put them together, general lessons learned, and some fun visualizations. I want to move past thinking about sources for open data and moving on to tools and lessons so you can get cracking! I want to show how we can enable people to gather open data and turn it to open knowledge. Data sources will be from Government (e.g. United States Geologic Survey) and Non-Government sources (e.g Audubon Society eBird Data) while some of the tools covered will be Apache Spark, PostGIS, Leaflet, and various others.
   media-url: https://www.youtube.com/watch?v=Wm6JS3ATa1E
@@ -87,7 +87,7 @@
   media-url: https://www.youtube.com/watch?v=dnhrsKdV4C0&feature=youtu.be&t=395
 
 - title: Converging Big Data and Application Infrastructure
-  presentor: Steve Poutsy
+  presentor: Steve Pousty
   abstract: |-
     For most of my lifetime in the computing world, data crunching and web serving were two very separate worlds. If a web app wanted access to the analysis there was a long process of ETL, DB works, imports and exports, and bribing various network and storage people for the resources you needed. With the rise of containers, orchestration, cheap computing and networking, and over 10 years of people tackling large problems at new scales we have finally come to a convergence. It is now possible for us to actually use the same hardware, and more importantly, clustering software to converge both types of workloads. I am going to lay out how this can look with Containers, Kubernetes, web servers, and Apache Spark. This can be considered a germ of what we can look to build in the future. I will demo this in action and show this is actually now achievable for mere mortals such as myself. Finally I will close with some thought experiments on what this can enable for the future. I know this is a keynote but I am hoping we can make it interactive with discussion and experience sharing!
   media-url: https://www.youtube.com/watch?v=zwmbI47gLEg
