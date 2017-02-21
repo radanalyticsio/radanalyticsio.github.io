@@ -9,16 +9,9 @@ menu_entry: FAQ
 ## How do I connect to a cluster to debug / develop?
 
 ```bash
-oc run -it --rm dev-shell --image=radanalyticsio/openshift-spark --command -- bash
+oc run -it --rm dev-shell --image=radanalyticsio/openshift-spark -- bash
 
-: Setup nss_wrapper rapper to avoid exceptions from Hadoop about failure to login.
-cat /etc/passwd > /tmp/passwd
-echo "$(id -u):x:$(id -u):$(id -g):dynamic uid:$SPARK_HOME:/bin/false" >> /tmp/passwd
-export NSS_WRAPPER_PASSWD=/tmp/passwd
-export NSS_WRAPPER_GROUP=/etc/group
-export LD_PRELOAD=libnss_wrapper.so
-
-: Go to a directory where you can write to ./ (useful when using Spark SQL to avoid 'Directory /metastore_db cannot be created.')
+: Go to a directory that you can write to (useful when using Spark SQL to avoid 'Directory /metastore_db cannot be created.')
 cd /tmp
 
 : Run a shell...
