@@ -1,5 +1,6 @@
 ---
 layout: markdown
+title: Community
 menu_entry: Community
 ---
 

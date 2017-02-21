@@ -1,5 +1,6 @@
 ---
 layout: markdown
+title: Tutorials
 menu_entry: Tutorials
 ---
 

@@ -1,5 +1,6 @@
 ---
 layout: markdown
+title: Frequently Asked Questions
 menu_entry: FAQ
 ---
 

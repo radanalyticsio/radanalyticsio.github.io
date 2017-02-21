@@ -1,5 +1,6 @@
 ---
 layout: markdown
+title: Get Started
 menu_entry: Get Started
 ---
 
