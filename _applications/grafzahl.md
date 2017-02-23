@@ -70,7 +70,6 @@ project and start them.
 
 ```
 oc create -f https://raw.githubusercontent.com/mattf/openshift-kafka/master/resources.yaml
-
 oc new-app apache-kafka
 ```
 
@@ -118,4 +117,4 @@ processing application with Kafka.
 
 <h1 id="videos">Videos</h1>
 
-TODO
+[![asciicast](https://asciinema.org/a/4y3uc1fmtt341gw44b4vmbrcl.png){: width="671px"}](https://asciinema.org/a/4y3uc1fmtt341gw44b4vmbrcl)
