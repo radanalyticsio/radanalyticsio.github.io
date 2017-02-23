@@ -85,6 +85,7 @@
 
     This workshop is largely self-contained: the only prerequisite is some familiarity with Python. Learn from the experience of Red Hat emerging technology engineers who are focused on bringing data-driven application development to OpenShift!
   media-url: https://www.youtube.com/watch?v=dnhrsKdV4C0&feature=youtu.be&t=395
+  slides-url: http://radanalytics.io/assets/insightful_apps_workshop/insightful_apps_with_apache_spark_and_openshift_workshop.pdf
 
 - title: Converging Big Data and Application Infrastructure
   presentor: Steve Pousty
