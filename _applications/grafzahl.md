@@ -94,8 +94,9 @@ environment variables.
 ```
 oc new-app --template=oshinko-pyspark-build-dc \
            -p GIT_URI=https://github.com/mattf/grafzahl \
-	   -p SPARK_OPTIONS='--packages org.apache.spark:spark-sql-kafka-0-10_2.11:2.1.0' -lapp=grafzahl \
-	   -e SERVERS=apache-kafka:9092
+	   -p SPARK_OPTIONS='--packages org.apache.spark:spark-sql-kafka-0-10_2.11:2.1.0' \
+	   -e SERVERS=apache-kafka:9092 \
+	   -lapp=grafzahl
 ```
 
 Finally, expose Graf Zahl's web UI so you can connect to it with a
