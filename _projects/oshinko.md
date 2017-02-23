@@ -25,11 +25,6 @@ managing clusters
 </a>
 a Go language library encompassing the business logic of managing clusters
 
-<a href="https://github.com/radanalyticsio/oshinko-rest" target="blank">
-<i class="fa fa-github fa-lg" aria-hidden="true"></i> oshinko-rest
-</a>
-a rest server for managing clusters which is deployed as a pod within OpenShift
-
 <a href="https://github.com/radanalyticsio/oshinko-s2i" target="blank">
 <i class="fa fa-github fa-lg" aria-hidden="true"></i> oshinko-s2i
 </a>
