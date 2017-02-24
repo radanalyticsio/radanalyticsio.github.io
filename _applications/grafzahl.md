@@ -19,7 +19,7 @@ This is intended to be an example of how an application can process
 data from Apache Kafka with Apache Spark on OpenShift.
 
 Graf Zahl will count, as he does, the words on an Apache Kafka topic
-and display the top-k on in a web page for the user. There isn't much
+and display the top-k in a web page for the user. There isn't much
 more to him, as you might expect.
 
 <h1 id="architecture">Architecture</h1>
@@ -77,7 +77,10 @@ Third, launch the word fountain, so Graf Zahl will have something to
 count. The word fountain uses the `SERVERS` environment variable to
 find the Apache Kafka deployment to use. In the second step, when you
 created `apache-kafka` you created a service with the same name on
-port 9092.
+port 9092. Note: The first time this step and the next run you'll have
+to wait for the builder images to be pulled down from the internet, so
+if you're on a thin pipe you may want to start both at the same time
+and grab a drink.
 
 ```
 oc new-app openshift/python-27-centos7~https://github.com/mattf/word-fountain -e SERVERS=apache-kafka:9092
