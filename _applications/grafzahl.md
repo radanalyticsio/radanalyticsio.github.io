@@ -13,6 +13,9 @@ project_links:
 - https://github.com/mattf/openshift-kafka
 ---
 
+***NOTE: This requires a version 1.5+ of OpenShift Origin, because we
+         new-app -e to pass env through the template.***
+
 <h1 id="introduction">Introduction</h1>
 
 This is intended to be an example of how an application can process
