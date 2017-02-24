@@ -13,8 +13,12 @@ project_links:
 - https://github.com/mattf/openshift-kafka
 ---
 
-***NOTE: This requires a version 1.5+ of OpenShift Origin, because we
-         new-app -e to pass env through the template.***
+<div class="alert alert-warning">
+  <span class="pficon pficon-warning-triangle-o"></span>
+  <strong>NOTE</strong> 
+  This requires version 1.5+ of OpenShift Origin, because we are using
+  <code>new-app -e</code> to pass environment variables through the template.
+</div>
 
 <h1 id="introduction">Introduction</h1>
 
