@@ -123,6 +123,18 @@ items:
                 from:
                   kind: ImageStreamTag
                   name: ${APPLICATION_NAME}:latest
+      - apiVersion: v1
+        kind: Service
+        metadata:
+          name: ${APPLICATION_NAME}
+        spec:
+          ports:
+            - name: 8080-tcp
+              port: 8080
+              protocol: TCP
+              targetPort: 8080
+          selector:
+            deploymentconfig: ${APPLICATION_NAME}
     parameters:
       - name: APPLICATION_NAME
         displayName: Application Name
