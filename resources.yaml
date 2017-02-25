@@ -26,6 +26,7 @@ items:
       createdBy: template-oshinko-pyspark-build-dc
     metadata:
       annotations:
+        openshift.io/display-name: PySpark
         description: Create a buildconfig, imagestream and deploymentconfig using S2I and pyspark source hosted in git
       name: oshinko-pyspark-build-dc
     objects:
@@ -123,11 +124,13 @@ items:
                   kind: ImageStreamTag
                   name: ${APPLICATION_NAME}:latest
     parameters:
-      - description: Git source URI for application
+      - description: The URL of the repository with your application source code
         name: GIT_URI
         required: true
-      - description: Git branch/tag reference
+        displayName: Git Repository URL
+      - description: Optional branch, tag or commit
         name: GIT_REF
+        displayName: Git Reference
       - description: The name to use for the buildconfig, imagestream and deployment components
         from: pyspark-[a-z0-9]{4}
         generate: expression
