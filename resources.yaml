@@ -132,7 +132,6 @@ items:
         from: pyspark-[a-z0-9]{4}
         generate: expression
         name: APPLICATION_NAME
-        required: true
       - description: The name of the spark cluster to run against. The cluster will be created if it does not exist, and a random cluster name will be chosen if this value is left blank.
         name: OSHINKO_CLUSTER_NAME
       - description: The name of a stored cluster configuration to use if a cluster is created, default is 'default'.
