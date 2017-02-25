@@ -127,7 +127,6 @@ items:
         name: GIT_URI
       - description: Git branch/tag reference
         name: GIT_REF
-        value: master
       - description: The name to use for the buildconfig, imagestream and deployment components
         from: pyspark-[a-z0-9]{4}
         generate: expression
