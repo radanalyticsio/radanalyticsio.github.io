@@ -125,6 +125,7 @@ items:
     parameters:
       - description: Git source URI for application
         name: GIT_URI
+        required: true
       - description: Git branch/tag reference
         name: GIT_REF
       - description: The name to use for the buildconfig, imagestream and deployment components
