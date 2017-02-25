@@ -123,6 +123,11 @@ items:
                   kind: ImageStreamTag
                   name: ${APPLICATION_NAME}:latest
     parameters:
+      - description: Git source URI for application
+        name: GIT_URI
+      - description: Git branch/tag reference
+        name: GIT_REF
+        value: master
       - description: The name to use for the buildconfig, imagestream and deployment components
         from: pyspark-[a-z0-9]{4}
         generate: expression
@@ -144,11 +149,6 @@ items:
         name: APP_ARGS
       - description: List of additional spark options to pass to spark-submit (for exmaple --conf property=value --conf property=value). Note, --master and --class are set by the launcher and should not be set here
         name: SPARK_OPTIONS
-      - description: Git source URI for application
-        name: GIT_URI
-      - description: Git branch/tag reference
-        name: GIT_REF
-        value: master
       - description: Setting this value to 'false' prevents the application from being re-deployed if/when it completes
         name: APP_EXIT
         required: true
