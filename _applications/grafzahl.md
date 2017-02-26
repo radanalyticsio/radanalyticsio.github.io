@@ -13,13 +13,6 @@ project_links:
 - https://github.com/mattf/openshift-kafka
 ---
 
-<div class="alert alert-warning">
-  <span class="pficon pficon-warning-triangle-o"></span>
-  <strong>NOTE</strong> 
-  This requires version 1.5+ of OpenShift Origin, because we are using
-  <code>new-app -e</code> to pass environment variables through the template.
-</div>
-
 <h1 id="introduction">Introduction</h1>
 
 This is intended to be an example of how an application can process
@@ -94,18 +87,14 @@ oc new-app openshift/python-27-centos7~https://github.com/mattf/word-fountain -e
 ```
 
 Forth, launch Graf Zahl himself, using the Oshinko pyspark S2I
-builder. This command uses `-p` parameters and `-e` environment
-variables. The `oshinko-pyspark-build-dc` template uses the
-parameters, while the [grafzahl
-app.py](https://github.com/mattf/grafzahl/blob/master/app.py) uses the
-environment variables.
+builder.
 
 ```
 oc new-app --template=oshinko-pyspark-build-dc \
            -p APPLICATION_NAME=grafzahl \
            -p GIT_URI=https://github.com/mattf/grafzahl \
-	   -p SPARK_OPTIONS='--packages org.apache.spark:spark-sql-kafka-0-10_2.11:2.1.0' \
-	   -e SERVERS=apache-kafka:9092
+	   -p APP_ARGS=--servers=apache-kafka:9092 \
+	   -p SPARK_OPTIONS='--packages org.apache.spark:spark-sql-kafka-0-10_2.11:2.1.0'
 ```
 
 Finally, expose Graf Zahl's web UI so you can connect to it with a
