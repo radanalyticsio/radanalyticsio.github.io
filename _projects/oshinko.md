@@ -12,18 +12,15 @@ The individual components of Oshinko are:
 <a href="https://github.com/radanalyticsio/oshinko-cli" target="blank">
 <i class="fa fa-github fa-lg" aria-hidden="true"></i> oshinko-cli
 </a>
-a command line tool for managing clusters
+the cli repository contains a command line tool for managing clusters, it
+also contains a Go language library encompassing the business logic of
+managing clusters, and a REST server which uses that library
 
 <a href="https://github.com/radanalyticsio/oshinko-console" target="blank">
 <i class="fa fa-github fa-lg" aria-hidden="true"></i> oshinko-console
 </a>
 an extension to the OpenShift console which enables integrated support for
 managing clusters
-
-<a href="https://github.com/radanalyticsio/oshinko-core" target="blank">
-<i class="fa fa-github fa-lg" aria-hidden="true"></i> oshinko-core
-</a>
-a Go language library encompassing the business logic of managing clusters
 
 <a href="https://github.com/radanalyticsio/oshinko-s2i" target="blank">
 <i class="fa fa-github fa-lg" aria-hidden="true"></i> oshinko-s2i
