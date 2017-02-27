@@ -93,8 +93,8 @@ builder.
 oc new-app --template=oshinko-pyspark-build-dc \
            -p APPLICATION_NAME=grafzahl \
            -p GIT_URI=https://github.com/mattf/grafzahl \
-	   -p APP_ARGS=--servers=apache-kafka:9092 \
-	   -p SPARK_OPTIONS='--packages org.apache.spark:spark-sql-kafka-0-10_2.11:2.1.0'
+           -p APP_ARGS=--servers=apache-kafka:9092 \
+           -p SPARK_OPTIONS='--packages org.apache.spark:spark-sql-kafka-0-10_2.11:2.1.0'
 ```
 
 Finally, expose Graf Zahl's web UI so you can connect to it with a
