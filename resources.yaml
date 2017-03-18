@@ -110,7 +110,7 @@ items:
                     - name: OSHINKO_DEL_CLUSTER
                       value: ${OSHINKO_DEL_CLUSTER}
                     - name: APP_EXIT
-                      value: "false"
+                      value: "true"
                     - name: OSHINKO_NAMED_CONFIG
                       value: ${OSHINKO_NAMED_CONFIG}
                     - name: OSHINKO_SPARK_DRIVER_CONFIG
