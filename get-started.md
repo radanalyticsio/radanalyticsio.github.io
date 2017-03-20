@@ -70,7 +70,9 @@ and
 projects.
 The Oshinko S2I images need to be authorized to build and manage the Apache
 Spark cluster on your behalf, so we will create a `ServiceAccount` with
-`edit` permissions. Please see the [upstream documentation](https://github.com/radanalyticsio/oshinko-webui#step-by-step-quickstart) for an expanded discussion of this proces (but do not follow those instructions).
+`edit` permissions. Please see the
+[upstream documentation](https://github.com/radanalyticsio/oshinko-webui#step-by-step-quickstart)
+for an expanded discussion of this process (but do not follow those instructions).
 
 ```bash
 : Load all the Oshinko resources into your OpenShift project
