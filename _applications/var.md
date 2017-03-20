@@ -1,6 +1,7 @@
 ---
 title: Value-at-risk notebook
 link: var
+weight: 1
 layout: application
 menu_template: menu_tutorial_application.html
 description: |-

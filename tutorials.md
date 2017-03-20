@@ -12,7 +12,8 @@ complete instructions on architecture, installation, and usage. You will also
 find videos and slide decks that you may use to present these applications in
 your own settings.
 
-{% for app in site.applications %}
+{% assign sorted_applications = site.applications | sort: 'weight' %}
+{% for app in sorted_applications %}
 <h2><a href="/applications/{{ app.link }}">{{ app.title }}</a></h2>
 
 <p>
