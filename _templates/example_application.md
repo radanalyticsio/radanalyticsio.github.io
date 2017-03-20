@@ -1,6 +1,7 @@
 ---
 title: Example Application
 link: example_application
+weight: 100
 layout: application
 menu_template: menu_tutorial_application.html
 description: |-
