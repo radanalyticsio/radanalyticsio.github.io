@@ -64,7 +64,7 @@ oc create -f http://radanalytics.io/resources.yaml
 
 This creates all the Oshinko S2I (source-to-image) templates, the Oshinko Web UI application, as well as a ServiceAccount and RoleBinding needed for creation and management of Apache Spark clusters.
 
-Second, setup the Oshinko Web UI application -
+Second, start the Oshinko Web UI application -
 
 ```bash
 oc new-app oshinko-webui
