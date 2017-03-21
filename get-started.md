@@ -50,37 +50,27 @@ directly from a source repository.
 
 # Quickstart with Oshinko
 
-## 1. [Setup OpenShift Origin](https://www.openshift.org/#try)
+## 1. Connect to an OpenShift cluster
 
-For instance, download the [oc command](https://github.com/openshift/origin/releases) and run
-
-```bash
-oc cluster up
-```
-[![asciicast](https://asciinema.org/a/5dktnu7lmo6qutaqt73m07nhv.png){: width="671px"}](https://asciinema.org/a/5dktnu7lmo6qutaqt73m07nhv)
-
-
+Download the [oc command](https://github.com/openshift/origin/releases) and login to an existing cluster with `oc login https://...`. Alternatively, [setup your own cluster](https://www.openshift.org/#try) with `oc cluster up`.
 
 ## 2. Install and setup Oshinko
 
-This quickstart uses the
-[oshinko-s2i (source-to-image)](https://github.com/radanalyticsio/oshinko-s2i)
-and
-[oshinko-webui (a web UI that runs in a pod on OpenShift)](https://github.com/radanalyticsio/oshinko-webui)
-projects.
-The Oshinko S2I images need to be authorized to build and manage the Apache
-Spark cluster on your behalf, so we will create a `ServiceAccount` with
-`edit` permissions. Please see the
-[upstream documentation](https://github.com/radanalyticsio/oshinko-webui#step-by-step-quickstart)
-for an expanded discussion of this process (but do not follow those instructions).
+First, install all the Oshinko resources into your project -
 
 ```bash
-: Load all the Oshinko resources into your OpenShift project
 oc create -f http://radanalytics.io/resources.yaml
+```
 
-: Launch the Oshinko Web UI
+This creates all the Oshinko S2I (source-to-image) templates, the Oshinko Web UI application, as well as a ServiceAccount and RoleBinding needed for creation and management of Apache Spark clusters.
+
+Second, setup the Oshinko Web UI application -
+
+```bash
 oc new-app oshinko-webui
 ```
+
+This creates the Oshinko Web UI, which can be used to manually create and manage Apache Spark clusters.
 
 At this point you can go to your
 [OpenShift Console](https://docs.openshift.com/container-platform/latest/architecture/infrastructure_components/web_console.html)
@@ -97,7 +87,7 @@ At this point you can go to your
 
 ## 3. Head over to the [tutorial applications](/tutorials)
 
-With Oshinko now running in your OpenShift project, we recommend checking out
+With Oshinko now installed and running in your OpenShift project, we recommend checking out
 the tutorial applications that the radanalytics.io community have created.
 These tutorials will you show how to deploy and utilize an insightful
 data-driven application with Oshinko and OpenShift.
