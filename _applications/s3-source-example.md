@@ -27,15 +27,30 @@ No architecture, this is a connectivity example.
 
 <h1 id="installation">Installation</h1>
 
-Download the notebook and import it into a running Jupyter deployment.
+Start a Jupyter notebook with,
+
+```
+oc new-app mattf/workshop:base
+oc logs rc/workshop-1 | grep token
+oc expose svc/workshop
+```
+
+Find the connection url,
+
+```
+oc logs rc/workshop-1 | grep localhost | sed "s/localhost/$(oc get routes/workshop --template='{% raw %}{{.spec.host}}{% endraw %}')/"
+   http://workshop-project.10.11.12.13.xip.io:8888/?token=bd4b955c45d5e9f573ee719f31e9ed12a7805b4334db93c9
+```
+
+Download [the notebook](https://github.com/radanalyticsio/radanalyticsio.github.io/assets/s3-source-example/s3-source-example.ipynb) and upload it.
 
 <h1 id="usage">Usage</h1>
 
-This notebook can be imported into a running Jupyter notebook system.
+No specific usage.
 
 <h1 id="expansion">Expansion</h1>
 
-No expansion, this is a connectivity example.
+No specific expansion.
 
 <h1 id="videos">Videos</h1>
 
