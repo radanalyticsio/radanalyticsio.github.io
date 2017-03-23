@@ -31,7 +31,6 @@ Start a Jupyter notebook with,
 
 ```
 oc new-app mattf/workshop:base
-oc logs rc/workshop-1 | grep token
 oc expose svc/workshop
 ```
 
