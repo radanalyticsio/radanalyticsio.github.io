@@ -19,7 +19,7 @@ This is an example of the key pieces needed to connect your
 application to data in S3. It is presented as steps in a Jupyter
 notebook.
 
-[S3 Source Example](https://github.com/radanalyticsio/radanalyticsio.github.io/assets/s3-source-example/s3-source-example.ipynb)
+[S3 Source Example](https://github.com/radanalyticsio/radanalyticsio.github.io/blob/master/assets/s3-source-example/s3-source-example.ipynb)
 
 <h1 id="architecture">Architecture</h1>
 
