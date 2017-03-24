@@ -37,7 +37,7 @@ oc expose svc/workshop
 Find the connection url,
 
 ```
-oc logs rc/workshop-1 | grep localhost | sed "s/localhost:8888/$(oc get routes/workshop --template='{% raw %}{{.spec.host}}{% endraw %}')/"
+oc logs dc/workshop | grep localhost | sed "s/localhost:8888/$(oc get routes/workshop --template='{% raw %}{{.spec.host}}{% endraw %}')/"
    http://workshop-project.10.11.12.13.xip.io:8888/?token=bd4b955c45d5e9f573ee719f31e9ed12a7805b4334db93c9
 ```
 
