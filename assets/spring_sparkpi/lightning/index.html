@@ -52,7 +52,7 @@
                   <pre class="fragment"><code data-trim class="bash">
 oc new-app --template oshinko-java-spark-build-dc \
     -p APPLICATION_NAME=spring-sparkpi \
-    -p GIT_URI=https://github.com/radanalyticsio/spark-springpi \
+    -p GIT_URI=https://github.com/radanalyticsio/spring-sparkpi \
     -p APP_FILE=SparkPiBoot-0.0.1-SNAPSHOT.jar
                   </code></pre>
                   <pre class="fragment"><code data-trim class="bash">
@@ -62,7 +62,7 @@ oc new-app --template oshinko-java-spark-build-dc \
                 <section>
                   <h2>Amaze your colleagues!</h2>
                   <pre class="fragment"><code data-trim class="bash">
-curl http://`oc get routes|grep spring-sparkpi|awk '{ print $2 }'`
+curl http://`oc get routes/spring-sparkpi --template='{{.spec.host}}'`
                   </code></pre>
                   <pre class="fragment"><code data-trim class="bash">
 Pi is rouuuughly 3.1335

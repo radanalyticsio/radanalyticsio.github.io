@@ -52,7 +52,7 @@ instructions:
    ```bash
    oc new-app --template oshinko-java-spark-build-dc \
        -p APPLICATION_NAME=spring-sparkpi \
-       -p GIT_URI=https://github.com/radanalyticsio/spark-springpi \
+       -p GIT_URI=https://github.com/radanalyticsio/spring-sparkpi \
        -p APP_FILE=SparkPiBoot-0.0.1-SNAPSHOT.jar
    ```
 
@@ -71,7 +71,7 @@ tool capable of reading HTTP, such as `curl`.
 **For example**
 
 ```bash
-$ curl http://`oc get routes | grep spring-sparkpi | awk '{ print $2 }'`
+curl http://`oc get routes/spring-sparkpi --template='{{.spec.host}}'`
 Pi is rouuuughly 3.1335
 ```
 
