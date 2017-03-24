@@ -31,6 +31,7 @@ markdown: kramdown
 exclude:
   - README.md
   - CONTRIBUTING.md
+  - Dockerfile
 
 collections:
   projects: {}

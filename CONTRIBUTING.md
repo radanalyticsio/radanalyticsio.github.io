@@ -34,6 +34,21 @@ dependencies is the [Nokogiri library](http://www.nokogiri.org). Should your
 or consult [Stack Overflow](https://stackoverflow.com) for other possible
 fixes.
 
+### Docker based testing
+
+If you would prefer to use a self-contained environment for testing your
+changes, a Dockerfile is provided in the root of the project which will
+allow you to leverage the convenience of docker. To test your changes using
+this methodology run the following:
+
+```
+$ cd radanalytics.github.io
+$ docker build -t radanalytics.io .
+$ docker run --rm -it -p 4000:4000 radanalytics.io
+```
+
+The site will now be served locally at `http://localhost:4000`
+
 ## Adding a new application
 
 If you would like to propose a new application for inclusion in the tutorials
