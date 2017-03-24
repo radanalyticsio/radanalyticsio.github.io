@@ -71,7 +71,7 @@ Once the notebook pod is running, you can find the connection URL like this:
 
 ```
 $ oc logs dc/pyspark-hdfs-notebook | grep localhost | sed "s/localhost:8888/$(oc get routes/pyspark-hdfs-notebook --template='{% raw %}{{.spec.host}}{% endraw %}')/"
-   http://workshop-hdfs.10.11.12.13.xip.io:8888/?token=bd4b955c45d5e9f573ee719f31e9ed12a7805b4334db93c9
+   http://pyspark-hdfs-notebook-myproject.10.11.12.13.xip.io:8888/?token=bd4b955c45d5e9f573ee719f31e9ed12a7805b4334db93c9
 ```
 
 Visiting the URL returned from the above command should log you into the notebook homepage.
