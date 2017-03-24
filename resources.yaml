@@ -318,7 +318,6 @@ items:
         required: true
       - name: APP_MAIN_CLASS
         description: Application main class for jar-based applications
-        required: false
       - name: APP_ARGS
         displayName: Application Arguments
         description: Command line arguments to pass to the application
