@@ -15,7 +15,7 @@ project_links:
 <h1 id="introduction">Introduction</h1>
 
 The spring-sparkpi application provides an example of how to combine the
-power of Apache Spark with the flexibility of the Java
+power of Apache Spark with the flexibility of the
 [Spring Boot framework](https://spring.io/) to create an HTTP microservice
 that will deliver an approximation of [Pi](https://en.wikipedia.org/wiki/Pi)
 on request. The core of the processing for this application is based directly
@@ -41,11 +41,8 @@ tool. Once you are logged in to your OpenShift project, follow these
 instructions:
 
 
-1. Create the necessary infrastructure objects
-
-   ```bash
-   oc create -f http://radanalytics.io/resources.yaml
-   ```
+1. Follow the [Get Started](/get-started) guide to ensure that you are
+   connected to an OpenShift project with Oshinko installed
 
 1. Launch spring-sparkpi
 
@@ -71,7 +68,7 @@ tool capable of reading HTTP, such as `curl`.
 **For example**
 
 ```bash
-curl http://`oc get routes/spring-sparkpi --template='{{.spec.host}}'`
+curl http://`oc get routes/spring-sparkpi --template='{% raw %}{{.spec.host}}{% endraw %}'`
 Pi is rouuuughly 3.1335
 ```
 
