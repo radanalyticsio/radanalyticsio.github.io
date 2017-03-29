@@ -91,7 +91,10 @@ to the instructions.
 
 <h1 id="expansion">Expansion</h1>
 
-The point of this example is to read from HDFS. One interesting expansion
-would be to write something back to HDFS at another file location.
+The point of this example is to read from an unsecured HDFS. Interesting
+expansions would be to write something back to HDFS at another file location
+and then add examples for reading and writing using a secured HDFS as well.
 
 <h1 id="videos">Videos</h1>
+
+There is no video for this application at this time
