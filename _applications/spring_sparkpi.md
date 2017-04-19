@@ -86,4 +86,6 @@ testing of how your cluster reacts to various workloads.
 
 <h1 id="videos">Videos</h1>
 
-There is no video of this example currently.
+<h2>Spring-SparkPi deployment and usage</h2>
+
+<iframe src="https://player.vimeo.com/video/213863636?title=0&byline=0&portrait=0" width="800" height="425" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
