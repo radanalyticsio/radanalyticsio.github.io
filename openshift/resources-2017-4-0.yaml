@@ -439,7 +439,7 @@ items:
       - name: OSHINKO_WEB_IMAGE
         description: Full name of the oshinko web image
         required: true
-        value: radanalyticsio/oshinko-webui:2017-4-0
+        value: radanalyticsio/oshinko-webui:2017-4-1
       - name: OSHINKO_WEB_ROUTE_HOSTNAME
         description: The hostname used to create the external route for the webui
       - name: OSHINKO_DEPLOYMENT_NAME
