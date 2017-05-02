@@ -9,8 +9,8 @@ description: |-
   Streaming feature to read data from an Apache Kafka topic. It
   presents a web UI to view the top-k words found on the topic.
 project_links:
-- https://github.com/mattf/grafzahl
-- https://github.com/mattf/word-fountain
+- https://github.com/radanalyticsio/grafzahl
+- https://github.com/radanalyticsio/word-fountain
 - https://github.com/mattf/openshift-kafka
 ---
 
@@ -53,7 +53,7 @@ is a technology for taking a source repository that has a specific
 layout and building it into a container image that is then deployed
 as a pod on OpenShift.
 
-The [word fountain](https://github.com/mattf/word-fountain) component
+The [word fountain](https://github.com/radanalyticsio/word-fountain) component
 will also use S2I, but the [default python
 builder](https://docs.openshift.com/enterprise/latest/using_images/s2i_images/python.html)
 provided by OpenShift, because there is no dependency on Apache Spark.
@@ -84,7 +84,7 @@ if you're on a thin pipe you may want to start both at the same time
 and grab a drink.
 
 ```
-oc new-app openshift/python-27-centos7~https://github.com/mattf/word-fountain -e SERVERS=apache-kafka:9092
+oc new-app openshift/python-27-centos7~https://github.com/radanalyticsio/word-fountain -e SERVERS=apache-kafka:9092
 ```
 
 Forth, launch Graf Zahl himself, using the Oshinko pyspark S2I
@@ -93,7 +93,7 @@ builder.
 ```
 oc new-app --template=oshinko-pyspark-build-dc \
            -p APPLICATION_NAME=grafzahl \
-           -p GIT_URI=https://github.com/mattf/grafzahl \
+           -p GIT_URI=https://github.com/radanalyticsio/grafzahl \
            -p APP_ARGS=--servers=apache-kafka:9092 \
            -p SPARK_OPTIONS='--packages org.apache.spark:spark-sql-kafka-0-10_2.11:2.1.0'
 ```
