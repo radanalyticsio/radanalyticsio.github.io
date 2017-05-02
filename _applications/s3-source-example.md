@@ -7,7 +7,7 @@ menu_template: menu_tutorial_application.html
 description: |-
   This is an example of how to connect your application to data in S3.
 project_links:
-- https://github.com/radanalyticsio/radanalyticsio.github.io/assets/s3-source-example
+- https://github.com/radanalyticsio/radanalyticsio.github.io/blob/master/assets/s3-source-example
 ---
 
 <h1 id="introduction">Introduction</h1>
@@ -41,7 +41,7 @@ oc logs dc/workshop | grep localhost | sed "s/localhost:8888/$(oc get routes/wor
    http://workshop-project.10.11.12.13.xip.io:8888/?token=bd4b955c45d5e9f573ee719f31e9ed12a7805b4334db93c9
 ```
 
-Download [the notebook](https://github.com/radanalyticsio/radanalyticsio.github.io/assets/s3-source-example/s3-source-example.ipynb) and upload it.
+Download [the notebook](https://github.com/radanalyticsio/radanalyticsio.github.io/blob/master/assets/s3-source-example/s3-source-example.ipynb) and upload it.
 
 <h1 id="usage">Usage</h1>
 
