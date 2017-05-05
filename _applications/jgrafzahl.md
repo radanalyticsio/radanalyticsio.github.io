@@ -10,7 +10,7 @@ description: |-
   Streaming feature to read data from an Apache Kafka topic. It
   presents a web UI to view the top-k words found on the topic.
 project_links:
-- https://github.com/elmiko/jgrafzahl
+- https://github.com/radanalyticsio/jgrafzahl
 - https://github.com/mattf/word-fountain
 - https://github.com/mattf/openshift-kafka
 ---
@@ -96,7 +96,7 @@ builder.
 ```
 oc new-app --template=oshinko-java-spark-build-dc \
            -p APPLICATION_NAME=jgrafzahl \
-           -p GIT_URI=https://github.com/elmiko/jgrafzahl \
+           -p GIT_URI=https://github.com/radanalyticsio/jgrafzahl \
            -p APP_MAIN_CLASS=io.radanalytics.jgrafzahl.App \
            -p APP_ARGS='apache-kafka:9092 word-fountain' \
            -p SPARK_OPTIONS='--packages org.apache.spark:spark-sql-kafka-0-10_2.11:2.1.0,com.sparkjava:spark-core:2.5.5,org.glassfish:javax.json:1.0.4  --conf spark.jars.ivy=/tmp/.ivy2'
