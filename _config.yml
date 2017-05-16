@@ -32,6 +32,7 @@ exclude:
   - README.md
   - CONTRIBUTING.md
   - Dockerfile
+  - bower_components/patternfly/tests
 
 collections:
   projects: {}
