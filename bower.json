@@ -1,0 +1,13 @@
+{
+  "name": "radanalyticsio.github.io",
+  "homepage": "http://radanalytics.io",
+  "authors": [],
+  "description": "",
+  "main": "",
+  "license": "",
+  "private": true,
+  "ignore": [],
+  "dependencies": {
+    "patternfly": "^3.24.0"
+  }
+}
