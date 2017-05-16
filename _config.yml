@@ -32,7 +32,12 @@ exclude:
   - README.md
   - CONTRIBUTING.md
   - Dockerfile
+  - Gemfile
+  - Gemfile.lock
+  - bower.json
   - bower_components/patternfly/tests
+  - bower_components/bootstrap-datepicker
+  - bower_components/eonasdan-bootstrap-datetimepicker
 
 collections:
   projects: {}
