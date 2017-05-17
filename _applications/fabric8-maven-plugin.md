@@ -34,7 +34,7 @@ The system is composed of:
 - A Spring-Boot front-end application: delivering static content and exposing rest services through which 
  the UI can send ratings and lookup recommendations. [Apache Camel](https://camel.apache.org) is used for all integration purposes.
 - A Kafka broker with two topics: "stars" containing all ratings from the users; "recommendations" containing recommendations sent by the Spark application.
-- A Oshinko Spark cluster: it computes the recommendations and pushes them back to Kafka.
+- An Oshinko Spark cluster: it computes the recommendations and pushes them back to Kafka.
 
 This is a demo application, so components are not intended for production usage. E.g. the Kafka broker (containing also Zookeeper) 
 cannot be scaled out. The Spark application computes recommendations in a window of 10 minutes for simplicity.
@@ -42,7 +42,7 @@ The web application is using a local cache to store recommendations received fro
 
 <h1 id="installation">Installation</h1>
 
-The demo requires a Openshift installation.
+The demo requires an Openshift installation.
 All three components are hosted in different git repositories and can be installed on Openshift using the [Fabric8 Maven Plugin](https://maven.fabric8.io/).
 
 The first step is to deploy the Kafka broker. You can clone the repository at the following [link](https://github.com/nicolaferraro/voxxed-bigdata-kafka), 
@@ -58,20 +58,16 @@ or you can use the command `oc login` to authenticate again.
 The second step is to deploy the web application. You can clone the repository at the following [link](https://github.com/nicolaferraro/voxxed-bigdata-web) and run 
 a `mvn clean fabric8:deploy`.
 
-Finally, you need to deploy the Spark cluster. First, you need to create the 
-Oshinko resources (service account and roles) in the current Openshift project, through the following command:
+Finally, you need to deploy the Spark cluster. Make sure you are connected to an OpenShift cluster and are in 
+a project with Oshinko installed. See [Get Started](/get-started) if you need help. 
 
-```
-oc create -f http://radanalytics.io/resources.yaml
-```
-
-One the resources are created, you can deploy the Spark application. 
+Once the Oshinko resources are installed, you can deploy the Spark application. 
 You can clone the repository at the following [link](https://github.com/nicolaferraro/voxxed-bigdata-spark) and run 
 a `mvn clean fabric8:deploy` command.
 
 <h1 id="usage">Usage</h1>
 
-The Fabric8 Maven Plugin creates automatically a route on Openshift, so you should be able to access the 
+The Fabric8 Maven Plugin automatically creates a route on Openshift, so you should be able to access the 
 web application by clicking on the link provided in the UI.
 
 <img src="/assets/fabric8-maven-plugin/screenshot.png" class="img-responsive">
