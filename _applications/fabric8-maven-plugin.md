@@ -56,7 +56,7 @@ The Fabric8 Maven Plugin will use the current Openshift session to access Opensh
 or you can use the command `oc login` to authenticate again.
 
 The second step is to deploy the web application. You can clone the repository at the following [link](https://github.com/nicolaferraro/voxxed-bigdata-web) and run 
-a `mvn clean fabric8:deploy`.
+a `mvn clean fabric8:deploy -Dfabric8.mode=openshift` (the Fabric8 mode should be set explicitly to `openshift` for this application).
 
 Finally, you need to deploy the Spark cluster. Make sure you are connected to an OpenShift cluster and are in 
 a project with Oshinko installed. See [Get Started](/get-started) if you need help. 
