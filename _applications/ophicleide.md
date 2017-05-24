@@ -4,6 +4,7 @@ link: ophicleide
 weight: 0
 layout: application
 menu_template: menu_tutorial_application.html
+menu_items: lightning
 description: |-
  Ophicleide is an application that can ingest text data from URL sources and
  process it with Word2vec to create data models. These resulting models can

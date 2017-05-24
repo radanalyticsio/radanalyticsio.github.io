@@ -4,6 +4,7 @@ link: pyspark_hdfs_notebook
 weight: 100
 layout: application
 menu_template: menu_tutorial_application.html
+menu_items: lightning
 description: |-
   This is a very simple Jupyter notebook application which runs on OpenShift. It shows how to read a file from a remote HDFS filesystem with PySpark.
 project_links:

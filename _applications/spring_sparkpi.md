@@ -4,6 +4,7 @@ link: spring_sparkpi
 weight: 100
 layout: application
 menu_template: menu_tutorial_application.html
+menu_items: lightning
 description: |-
   This source-to-image Java application combines the Apache Spark Pi
   estimation example with the popular Spring Boot framework. It provides an

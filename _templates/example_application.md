@@ -4,6 +4,7 @@ link: example_application
 weight: 100
 layout: application
 menu_template: menu_tutorial_application.html
+menu_items: lightning
 description: |-
   Put your description here, this text will be rendered on the "Tutorials"
   page under your application's title.
@@ -34,6 +35,8 @@ documentation are: `title`, `link`, `description` and `project_links`.
   describe your application
 * `project_links` is an array of links that will be displayed on the tutorials
   page with your application, add any links to your source material here
+* `menu_items` is an array that aids in the construction of the menu links
+  on the application page. The current options are: `lightning`.
 
 If you need to add graphics or other assets to your application page, please
 make a directory under the top level `assets` directory. This new directory

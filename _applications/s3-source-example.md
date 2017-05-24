@@ -4,6 +4,7 @@ link: s3-source-example
 weight: 100
 layout: application
 menu_template: menu_tutorial_application.html
+menu_items: lightning
 description: |-
   This is an example of how to connect your application to data in S3.
 project_links:

@@ -4,6 +4,7 @@ link: amqpstreaming
 weight: 100
 layout: application
 menu_template: menu_tutorial_application.html
+menu_items: lightning
 description: |-
   This demo shows how it's possible to integrate AMQP based products with Apache Spark Streaming. It uses the AMQP Spark Streaming connector, which is able to get messages from an AMQP source and pushing them to the Spark engine as micro batches for real time analytics
 project_links:

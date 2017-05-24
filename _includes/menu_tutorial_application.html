@@ -1,10 +1,14 @@
 <li class="active">
   <a href="#">{{ page.title }}</a>
 </li>
+
+{% if page.menu_items contains 'lightning' %}
 <li>
   <a href="/assets/{{ page.link }}/lightning" target="blank">Lightning Talk &nbsp;
     <span class="glyphicon glyphicon-new-window" aria-hidden="true"></span></a>
 </li>
+{% endif %}
+
 <li>
   <a href="/tutorials">Back to tutorials</a>
 </li>
