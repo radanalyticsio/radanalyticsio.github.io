@@ -4,6 +4,7 @@ link: var
 weight: 1
 layout: application
 menu_template: menu_tutorial_application.html
+menu_items: lightning
 description: |-
  The value-at-risk notebook is a simple example of how to run Jupyter notebooks on OpenShift, Monte Carlo simulations in Spark, and how to interactively explore data to find better ways to model it.
 project_links:

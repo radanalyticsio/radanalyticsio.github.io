@@ -4,6 +4,7 @@ link: fabric8-maven-plugin
 weight: 100
 layout: application
 menu_template: menu_tutorial_application.html
+menu_items: lightning
 description: |-
   This demo shows how to use the Fabric8 Maven Plugin to deploy a Spark cluster on Openshift.
   

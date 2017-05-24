@@ -65,9 +65,12 @@ section, there are a couple steps that need to be completed:
    document.
 4. Add any assets you will need (graphics, files, etc) to your assets
    directory.
-5. Copy the `_templates/lightning` directory into your assets directory. This
+5. If your application includes a lightning talk, copy the
+   `_templates/lightning` directory into your assets directory. This
    directory contains the [reveal.js](https://github.com/hakimel/reveal.js)
-   slide deck template.
+   slide deck template. Also ensure that the `menu_items` front matter
+   contains the `lightning` entry, this will create the proper menu link for
+   the slide deck.
 6. Edit the `index.html` file for the lightning slide deck. (there is
    information in the file on what to provide)
 7. Commit the files to your feature branch and propose a pull request when

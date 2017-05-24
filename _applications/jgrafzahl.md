@@ -4,6 +4,7 @@ link: jgrafzahl
 weight: 100
 layout: application
 menu_template: menu_tutorial_application.html
+menu_items: lightning
 description: |-
   jGraf Zahl is a Java implementation of the Graf Zahl application.
   It is a demonstration of using Spark's Structured

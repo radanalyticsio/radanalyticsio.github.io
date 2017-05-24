@@ -4,6 +4,7 @@ link: grafzahl
 weight: 100
 layout: application
 menu_template: menu_tutorial_application.html
+menu_items: lightning
 description: |-
   Graf Zahl is a demonstration application using Spark's Structured
   Streaming feature to read data from an Apache Kafka topic. It
