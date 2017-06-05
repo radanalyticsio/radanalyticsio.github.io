@@ -1,0 +1,8 @@
+---
+title: |-
+  How do I connect to a cluster to debug / develop?
+---
+
+```bash
+oc run -it --rm dev-shell --image=radanalyticsio/openshift-spark -- spark-shell
+```
