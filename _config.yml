@@ -40,6 +40,7 @@ exclude:
   - bower_components/eonasdan-bootstrap-datetimepicker
 
 collections:
+  faqs: {}
   projects: {}
   applications:
     output: true
