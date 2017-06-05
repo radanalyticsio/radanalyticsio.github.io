@@ -76,6 +76,19 @@ section, there are a couple steps that need to be completed:
 7. Commit the files to your feature branch and propose a pull request when
    you are ready.
 
+## Adding a new FAQ entry
+
+The Frequently Asked Questions (FAQ) page is generated from the collection of
+documents stored in the `_faqs` directory. To add a new question/answer pair,
+simply do the following:
+
+1. Copy the `_templates/example_faq.md` file to the `_faqs` directory, and
+   rename it to suite reflect your question.
+1. Edit the contents of the new file to contain your question in the `title`
+   front matter variable, and the answer in the content section.
+1. Commit the new file to your feature branch and propose a pull request when
+   you are ready.
+
 ### A note on front matter
 
 Files that will be processed by jekyll contain a bit at the beginning referred
