@@ -27,7 +27,7 @@ items:
     metadata:
       annotations:
         openshift.io/display-name: PySpark
-        description: Create a buildconfig, imagestream and deploymentconfig using S2I and pyspark source hosted in git
+        description: Create a buildconfig, imagestream and deploymentconfig using source-to-image and pyspark source hosted in git
       name: oshinko-pyspark-build-dc
     objects:
       - apiVersion: v1
@@ -182,7 +182,7 @@ items:
     metadata:
       annotations:
         openshift.io/display-name: JavaSpark
-        description: Create a buildconfig, imagestream and deploymentconfig using STI and java spark source hosted in git
+        description: Create a buildconfig, imagestream and deploymentconfig using source-to-image and java spark source hosted in git
       name: oshinko-java-spark-build-dc
     objects:
       - apiVersion: v1
