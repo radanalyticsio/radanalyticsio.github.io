@@ -34,7 +34,7 @@ install and run the notebook image.
 
 ## Prerequisites
 
-Follow the [getting started](http://radanalytics.io/get-started) instructions
+Follow the [getting started](/get-started) instructions
 to create an OpenShift project with the Oshinko web interface running.
 
 ## Setting up a cluster

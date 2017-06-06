@@ -59,7 +59,7 @@ Download the [oc command](https://github.com/openshift/origin/releases) and logi
 First, install all the Oshinko resources into your project -
 
 ```bash
-oc create -f http://radanalytics.io/resources.yaml
+oc create -f https://radanalytics.io/resources.yaml
 ```
 
 This creates all the Oshinko S2I (source-to-image) templates, the Oshinko Web UI application, as well as a ServiceAccount and RoleBinding needed for creation and management of Apache Spark clusters.
