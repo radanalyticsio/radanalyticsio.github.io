@@ -2,6 +2,9 @@
 title: AMQP - Spark Streaming
 link: amqpstreaming
 weight: 100
+labels:
+- Scala
+- ActiveMQ
 layout: application
 menu_template: menu_tutorial_application.html
 menu_items: lightning

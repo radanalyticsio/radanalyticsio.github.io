@@ -2,6 +2,9 @@
 title: Value-at-risk notebook
 link: var
 weight: 1
+labels:
+- Python
+- Jupyter
 layout: application
 menu_template: menu_tutorial_application.html
 menu_items: lightning

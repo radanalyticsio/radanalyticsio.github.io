@@ -2,6 +2,9 @@
 title: Spring Boot SparkPi
 link: spring_sparkpi
 weight: 100
+labels:
+- Java
+- S2I
 layout: application
 menu_template: menu_tutorial_application.html
 menu_items: lightning

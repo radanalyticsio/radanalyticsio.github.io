@@ -2,6 +2,10 @@
 title: jGraf Zahl
 link: jgrafzahl
 weight: 100
+labels:
+- Java
+- Kafka
+- S2I
 layout: application
 menu_template: menu_tutorial_application.html
 menu_items: lightning

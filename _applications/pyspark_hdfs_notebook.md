@@ -2,6 +2,10 @@
 title: PySpark HDFS Notebook
 link: pyspark_hdfs_notebook
 weight: 100
+labels:
+- Python
+- HDFS
+- Jupyter
 layout: application
 menu_template: menu_tutorial_application.html
 menu_items: lightning

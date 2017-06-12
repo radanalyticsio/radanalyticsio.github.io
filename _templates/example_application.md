@@ -2,6 +2,8 @@
 title: Example Application
 link: example_application
 weight: 100
+labels:
+- Language
 layout: application
 menu_template: menu_tutorial_application.html
 menu_items: lightning
@@ -37,6 +39,8 @@ documentation are: `title`, `link`, `description` and `project_links`.
   page with your application, add any links to your source material here
 * `menu_items` is an array that aids in the construction of the menu links
   on the application page. The current options are: `lightning`.
+* `labels` is an array of strings that describe the primary technologies in
+  use within the application (eg Python, ActiveMQ, S3).
 
 If you need to add graphics or other assets to your application page, please
 make a directory under the top level `assets` directory. This new directory
