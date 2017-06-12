@@ -2,6 +2,9 @@
 title: Ophicleide
 link: ophicleide
 weight: 0
+labels:
+- Python
+- MongoDB
 layout: application
 menu_template: menu_tutorial_application.html
 menu_items: lightning

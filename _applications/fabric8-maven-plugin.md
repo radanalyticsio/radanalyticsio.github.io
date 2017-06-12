@@ -2,6 +2,9 @@
 title: Fabric8 Maven Plugin Example
 link: fabric8-maven-plugin
 weight: 100
+labels:
+- Java
+- Kafka
 layout: application
 menu_template: menu_tutorial_application.html
 menu_items: lightning

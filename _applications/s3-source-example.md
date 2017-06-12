@@ -2,6 +2,10 @@
 title: S3 Source Example
 link: s3-source-example
 weight: 100
+labels:
+- Python
+- S3
+- Jupyter
 layout: application
 menu_template: menu_tutorial_application.html
 menu_items: lightning

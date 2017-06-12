@@ -14,7 +14,12 @@ your own settings.
 
 {% assign sorted_applications = site.applications | sort: 'weight' %}
 {% for app in sorted_applications %}
-<h2><a href="/applications/{{ app.link }}">{{ app.title }}</a></h2>
+<h2>
+<a href="/applications/{{ app.link }}">{{ app.title }}</a>
+{% for label in app.labels %}
+<span class="badge">{{ label }}</span>
+{% endfor %}
+</h2>
 
 <p>
 {{ app.description }}
