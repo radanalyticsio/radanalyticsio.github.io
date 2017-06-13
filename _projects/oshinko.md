@@ -1,5 +1,7 @@
 ---
 title: Oshinko
+labels:
+- Infrastructure
 ---
 
 Oshinko is a top level namespace that covers several individual projects

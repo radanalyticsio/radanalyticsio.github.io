@@ -1,5 +1,7 @@
 ---
 title: Scorpion Stare
+labels:
+- Spark Extension
 ---
 
 This project provides Apache Spark backend plugin-ins for awareness of
