@@ -1,5 +1,7 @@
 ---
 title: Silex
+labels:
+- Spark Extension
 ---
 
 This is a library of reusable code for Spark applications, factored out of

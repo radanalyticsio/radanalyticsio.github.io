@@ -1,5 +1,7 @@
 ---
 title: OpenShift Spark
+labels:
+- Infrastructure
 ---
 
 The openshift-spark repository contains all the files necessary to create

@@ -1,5 +1,7 @@
 ---
 title: Spark AMQP Connector
+labels:
+- Spark Extension
 ---
 
 This project provides an AMQP (Advanced Message Queuing Protocol) connector

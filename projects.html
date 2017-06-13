@@ -24,7 +24,12 @@ menu_entry: Projects
   {% for project in site.projects %}
   <div class="row">
     <div class="col-lg-10 col-lg-offset-1">
-      <h2>{{ project.title }}</h2>
+      <h2>
+        {{ project.title }}
+        {% for label in project.labels %}
+        <span class="badge">{{ label }}</span>
+        {% endfor %}
+      </h2>
       {{ project.content }}
     </div>
   </div>
