@@ -11,6 +11,25 @@
 # Optionally, you may add the `slides-url` field with a link to your slides
 #
 
+- title: The Revolution Will Be Containerized • Architecting the Intelligent Applications of Tomorrow
+  presentor: William Benton
+  abstract: |-
+    Linux containers are increasingly popular with application developers:  they offer improved elasticity, fault-tolerance, and portability between different public and private clouds, along with an unbeatable development workflow.  It’s hard to imagine a technology that has had more impact on application developers in the last decade than containers, with the possible exception of ubiquitous analytics.  Indeed, analytics is no longer a separate workload that occasionally generates reports on things that happened yesterday; instead, it pulses beneath the rhythms of contemporary business and supports today’s most interesting and vital applications.  Since applications depend on analytic capabilities, it makes good sense to deploy our data-processing frameworks alongside our applications.
+
+    In this talk, you’ll learn from our expertise deploying Apache Spark and other data-processing frameworks in Linux containers on Kubernetes.  We’ll explain what containers are and why you should care about them. We'll cover the benefits of containerizing applications, architectures for analytic applications that make sense in containers, and how to handle external data sources.  You’ll also get practical advice on how to ensure security and isolation, how to achieve high performance, and how to sidestep and negotiate potential challenges.  Throughout the talk, we’ll refer back to concrete lessons we’ve learned about containerized analytic jobs ranging from interactive notebooks to production applications.  You’ll leave inspired and enabled to deploy high-performance analytic applications without giving up the security you need or the developer-friendly workflow you want.
+  media-url: https://www.youtube.com/watch?v=4sooT4UfAJw
+
+- title: Smart Scalable Feature Reduction With Random Forests
+  presentor: Erik Erlandson
+  abstract: |-
+    Modern datacenters and IoT networks generate a wide variety of telemetry that makes excellent fodder for machine learning algorithms. Combined with feature extraction and expansion techniques such as word2vec or polynomial expansion, these data yield an embarrassment of riches for learning models and the data scientists who train them. However, these extremely rich feature sets come at a cost. High-dimensional feature spaces almost always include many redundant or noisy dimensions. These low-information features waste space and computation, and reduce the quality of learning models by diluting useful features.
+
+    In this talk, Erlandson will describe how Random Forest Clustering identifies useful features in data having many low-quality features, and will demonstrate a feature reduction application using Apache Spark to analyze compute infrastructure telemetry data.
+
+    Learn the principles of how Random Forest Clustering solves feature reduction problems, and how you can apply Random Forest tools in Apache Spark to improve your model training scalability, the quality of your models, and your understanding of application domains.
+  media-url: https://www.youtube.com/watch?v=m42LI8vBuq8&feature=youtu.be
+  slides-url: https://www.slideshare.net/databricks/smart-scalable-feature-reduction-with-random-forests-with-erik-erlandson
+
 - title: Converging insightful, data-led applications with traditional web applications
   presentor: Michael McCune, Steve Pousty
   abstract: |-
