@@ -115,9 +115,24 @@ items:
                       value: ${OSHINKO_NAMED_CONFIG}
                     - name: OSHINKO_SPARK_DRIVER_CONFIG
                       value: ${OSHINKO_SPARK_DRIVER_CONFIG}
+                    - name: POD_NAME
+                      valueFrom:
+                        fieldRef:
+                          fieldPath: metadata.name
+                  volumeMounts:
+                  - mountPath: /etc/podinfo
+                    name: podinfo
+                    readOnly: false
               dnsPolicy: ClusterFirst
               restartPolicy: Always
               serviceAccount: oshinko
+              volumes:
+              - downwardAPI:
+                  items:
+                  - fieldRef:
+                      fieldPath: metadata.labels
+                    path: labels
+                name: podinfo
           triggers:
             - type: ConfigChange
             - type: ImageChange
@@ -272,9 +287,24 @@ items:
                       value: ${OSHINKO_NAMED_CONFIG}
                     - name: OSHINKO_SPARK_DRIVER_CONFIG
                       value: ${OSHINKO_SPARK_DRIVER_CONFIG}
+                    - name: POD_NAME
+                      valueFrom:
+                        fieldRef:
+                          fieldPath: metadata.name
+                  volumeMounts:
+                  - mountPath: /etc/podinfo
+                    name: podinfo
+                    readOnly: false
               dnsPolicy: ClusterFirst
               restartPolicy: Always
               serviceAccount: oshinko
+              volumes:
+              - downwardAPI:
+                  items:
+                  - fieldRef:
+                      fieldPath: metadata.labels
+                    path: labels
+                name: podinfo
           triggers:
             - type: ConfigChange
             - type: ImageChange
