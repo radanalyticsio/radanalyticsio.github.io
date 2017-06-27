@@ -52,7 +52,9 @@ directly from a source repository.
 
 ## 1. Connect to an OpenShift cluster
 
-Download the [oc command](https://github.com/openshift/origin/releases) and login to an existing cluster with `oc login https://...`. Alternatively, [setup your own cluster](https://www.openshift.org/#try) with `oc cluster up`.
+Download the [oc command](https://github.com/openshift/origin/releases) and login to an existing cluster with `oc login https://...`. Alternatively, [setup your own cluster](https://www.openshift.org/#try) with `oc cluster up` or the
+[Minishift](https://www.openshift.org/minishift) tool(Windows and Mac users
+may find this option easiest to start).
 
 ## 2. Install and setup Oshinko
 
