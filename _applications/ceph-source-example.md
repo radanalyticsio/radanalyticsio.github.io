@@ -38,16 +38,15 @@ steps below:
 1. Clone [ceph-ansible](https://github.com/ceph/ceph-ansible) GitHub repo.
 2. Rename ```vagrant_variables.yml.sample``` to ```vagrant_variables.yml```
    and edit the file by changing to the following snippet:
-
-~~~
-...
-# DEFINE THE NUMBER OF VMS TO RUN
-mon_vms: 1
-osd_vms: 3
-mds_vms: 0
-rgw_vms: 1
-...
-~~~
+   ~~~
+   ...
+   # DEFINE THE NUMBER OF VMS TO RUN
+   mon_vms: 1
+   osd_vms: 3
+   mds_vms: 0
+   rgw_vms: 1
+   ...
+   ~~~
 
 3. Rename also ```site.yml.sample``` to ```site.yml```.
 4. Run ```vagrant up``` inside the repo.
@@ -63,17 +62,15 @@ No architecture, this is a connectivity example.
    interface to create a new cluster, and take note of what you’ve called this cluster.
 
 2. Start a Jupyter notebook with the commands:
-
-~~~
-oc new-app rimolive/notebook
-oc expose svc/notebook
-~~~
+   ~~~
+   oc new-app rimolive/notebook
+   oc expose svc/notebook
+   ~~~
 
 3. Find the connection url using the following command:
-
-~~~
-oc logs dc/pyspark-hdfs-notebook | grep localhost | sed "s/localhost:8888/$(oc get routes/pyspark-hdfs-notebook --template='{% raw %}{{.spec.host}}{% endraw %}')/"
-~~~
+   ~~~
+   oc logs dc/pyspark-hdfs-notebook | grep localhost | sed "s/localhost:8888/$(oc get routes/pyspark-hdfs-notebook --template='{% raw %}{{.spec.host}}{% endraw %}')/"
+   ~~~
 
 4. Download [the notebook](/assets/ceph-source-example/ceph-example.ipynb), upload into jupyter and follow the notebook instructions. Make sure in the line where the notebook connects to the spark cluster you changed with the cluster name you used in step 1 and in the line where you set up the Ceph connection you change with the IP where you Ceph instance is running.
 
