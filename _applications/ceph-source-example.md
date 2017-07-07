@@ -38,6 +38,7 @@ steps below:
 1. Clone [ceph-ansible](https://github.com/ceph/ceph-ansible) GitHub repo.
 2. Rename ```vagrant_variables.yml.sample``` to ```vagrant_variables.yml```
    and edit the file by changing to the following snippet:
+
    ~~~
    ...
    # DEFINE THE NUMBER OF VMS TO RUN
@@ -62,12 +63,14 @@ No architecture, this is a connectivity example.
    interface to create a new cluster, and take note of what you’ve called this cluster.
 
 2. Start a Jupyter notebook with the commands:
+
    ~~~
    oc new-app rimolive/notebook
    oc expose svc/notebook
    ~~~
 
 3. Find the connection url using the following command:
+
    ~~~
    oc logs dc/pyspark-hdfs-notebook | grep localhost | sed "s/localhost:8888/$(oc get routes/pyspark-hdfs-notebook --template='{% raw %}{{.spec.host}}{% endraw %}')/"
    ~~~
