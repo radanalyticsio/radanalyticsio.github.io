@@ -35,18 +35,20 @@ No architecture, this is a connectivity example.
 Start a Jupyter notebook with,
 
 ```
-oc new-app mattf/workshop:base
-oc expose svc/workshop
+oc new-app radanalyticsio/base-notebook \
+   -e JUPYTER_NOTEBOOK_PASSWORD=supersecret \
+   -e JUPYTER_NOTEBOOK_X_INCLUDE=https://raw.githubusercontent.com/radanalyticsio/radanalyticsio.github.io/master/assets/s3-source-example/s3-source-example.ipynb
+oc expose svc/base-notebook
 ```
 
-Find the connection url,
+From your OpenShift Console, go to the notebook's web interface and
+login with `supersecret`.
 
-```
-oc logs dc/workshop | grep localhost | sed "s/localhost:8888/$(oc get routes/workshop --template='{% raw %}{{.spec.host}}{% endraw %}')/"
-   http://workshop-project.10.11.12.13.xip.io:8888/?token=bd4b955c45d5e9f573ee719f31e9ed12a7805b4334db93c9
-```
+<img src="/assets/s3-source-example/console.png" class="img-responsive">
 
-Download [the notebook](https://github.com/radanalyticsio/radanalyticsio.github.io/blob/master/assets/s3-source-example/s3-source-example.ipynb) and upload it.
+Open the notebook and try out the example code.
+
+<img src="/assets/s3-source-example/jupyter.png" class="img-responsive">
 
 <h1 id="usage">Usage</h1>
 
