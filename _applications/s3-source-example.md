@@ -37,7 +37,7 @@ Start a Jupyter notebook with,
 ```
 oc new-app radanalyticsio/base-notebook \
    -e JUPYTER_NOTEBOOK_PASSWORD=supersecret \
-   -e JUPYTER_NOTEBOOK_X_INCLUDE=https://raw.githubusercontent.com/radanalyticsio/radanalyticsio.github.io/master/assets/s3-source-example/s3-source-example.ipynb
+   -e JUPYTER_NOTEBOOK_X_INCLUDE=https://radanalytics.io/assets/s3-source-example/s3-source-example.ipynb
 oc expose svc/base-notebook
 ```
 
