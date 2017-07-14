@@ -41,11 +41,10 @@ install and run the notebook image.
 ## Prerequisites
 
 The easiest way to get a Spark cluster going in your OpenShift project is to
-use [`oshinko-deploy.sh`][odsh]. This provides a streamlined installation for
+use [the OpenShift template](https://radanalytics.io/get-started#quickstart-with-oshinko) 
+provided on the "Getting Started page".  This provides a streamlined installation for
 the Oshinko cluster manager into your project. Oshinko is a service to manage
 Spark clusters for OpenShift projects.
-
-[odsh]: https://github.com/radanalyticsio/oshinko-webui/blob/master/tools/oshinko-deploy.sh
 
 We'll need to use a special Spark worker image for this application. This
 worker image has a small amount of historical stock return data stored in its
@@ -54,31 +53,34 @@ storage, from a database, or from an object store service. For a demo, though,
 it's much easier to package up a small amount of data where each worker can get
 it.
 
-In order to get this special Spark worker image, we'll use the `-s` flag to
-`oshinko-deploy.sh`:
-
-`oshinko-deploy.sh -s willb/var-spark-worker`
+In order to get this special Spark worker image, we'll need to pass a special option 
+to the Oshinko template when we install it in our project.  Set the `OSHINKO_CLUSTER_IMAGE` 
+variable to `radanalyticsio/workshop-notebook`.  This image is based on the default cluster
+image, but it also includes our historical stock data.
 
 ## Setting up a cluster
 
 From the OpenShift developer console, visit the Oshinko web interface. Use the
 interface to create a new cluster, and take note of what you've called this
 cluster. The rest of this documentation will assume that your cluster is named
-`sparky`, and so your master URL is `spark://sparky:7077`.
+`sparky`, and so your master URL is `spark://sparky:7077`.  Since this application's
+compute and memory demands are extremely light, you'll get the best performance from a
+single-worker "cluster," although you can add more nodes if you want to run many
+simulations.
 
 ## Adding the notebook application
 
 The next step is to add the notebook application. From the OpenShift developer
 console, select "Add to Project" and then "Deploy Image." We'll be deploying an
 image with a particular name, so select "Image Name" and then enter
-`willb/var-notebook:var35`.
+`radanalyticsio/workshop-notebook`.
 
 Once the `var-notebook` service is visible within the developer console, select
 "Create Route" and create a public route to the `var-notebook` service,
 targeting port 8888. The public route you create will depend on your DNS
 configuration, but you can use the [xip.io
 service](https://access.redhat.com/solutions/2141701) for development and
-testing.
+testing.  If you just select "Create Route," OpenShift will do the right 
 
 <h1 id="usage">Launching and Using the Notebook</h1>
 
