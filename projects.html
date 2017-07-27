@@ -21,12 +21,14 @@ menu_entry: Projects
     </div>
   </div>
 
-  {% for project in site.projects %}
+  {% assign sorted_projects = site.projects | sort: 'weight' %}
+  {% for project in sorted_projects %}
   <div class="row">
     <div class="col-lg-10 col-lg-offset-1">
       <h2>
         {{ project.title }}
-        {% for label in project.labels %}
+        {% assign split_labels = project.labels | split: ',' %}
+        {% for label in split_labels %}
         <span class="badge">{{ label }}</span>
         {% endfor %}
       </h2>
