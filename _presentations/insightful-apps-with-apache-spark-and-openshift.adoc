@@ -1,0 +1,16 @@
+= Insightful Apps with Apache Spark and OpenShift
+:page-presentor: William Benton, Michael McCune
+:page-date: 2017-01-28
+:page-media-url: https://www.youtube.com/watch?v=dnhrsKdV4C0&feature=youtu.be&t=395
+:page-slides-url: http://radanalytics.io/assets/insightful_apps_workshop/insightful_apps_with_apache_spark_and_openshift_workshop.pdf
+
+Nearly all of today’s most exciting applications are insightful applications: they employ machine learning and large-scale data processing to improve with longevity and popularity. It’s an easy bet that the important applications of tomorrow will be insightful as well. It’s also an easy bet that you’ll want to be deploying tomorrow’s applications on a contemporary container platform with a great developer workflow like OpenShift.
+
+Insightful applications pose some new challenges for developers, but this hands-on workshop will show you how to navigate them confidently. You'll learn how to develop an insightful application on OpenShift with Apache Spark from the ground up. We’ll cover:
+
+* architectures for analytic applications and microservices;
+* a crash course in Apache Spark, some data science techniques, and OpenShift;
+* how to deploy Apache Spark as part of an OpenShift application; and
+* building a data-driven application from the ground up.
+
+This workshop is largely self-contained: the only prerequisite is some familiarity with Python. Learn from the experience of Red Hat emerging technology engineers who are focused on bringing data-driven application development to OpenShift!

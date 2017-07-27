@@ -1,0 +1,9 @@
+= Big Data and Apache Spark on OpenShift Pt. I
+:page-presentor: William Benton
+:page-date: 2016-07-22
+:page-media-url: https://www.youtube.com/watch?v=YJSOz5AU2x8
+:page-slides-url: https://blog.openshift.com/wp-content/uploads/openshift-commons-20160714.pdf
+
+In this introductory Big Data briefing session, Red Hat’s Will Benton gave an overview into Big Data architecture and concepts to help level the playing field. This video will give us a better understanding of what a data-intensive application should actually look like on a modern container orchestration platform, and to help kick off the OpenShift Common Big Data SIG.
+
+In this recording, you’ll learn about the anatomy of data-intensive applications, how they come to life, and what they have to accomplish. We walked through a few applications and explored their responsibilities, saw how they use data, discuss trade-offs they must negotiate, and point to some example architectures that make sense for realizing data-intensive applications on OpenShift.

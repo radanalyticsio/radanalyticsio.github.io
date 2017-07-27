@@ -1,0 +1,9 @@
+= Optimizing Spark Deployments for Containers: Isolation, Safety, and Performance
+:page-presentor: William Benton
+:page-date: 2017-02-09
+:page-media-url: https://www.youtube.com/watch?v=i7OjHrpVvxk
+:page-slides-url: http://www.slideshare.net/SparkSummit/optimizing-spark-deployments-for-containers-isolation-safety-and-performance-spark-summit-east-talk-by-william-benton
+
+Developers love Linux containers, which neatly package up an application and its dependencies and are easy to create and share. However, this unbeatable developer experience hides some deployment challenges for real applications: how do you wire together pieces of a multi-container application? Where do you store your persistent data if your containers are ephemeral? Do containers really contain and isolate your application, or are they merely hiding potential security vulnerabilities? Are your containers scheduled across your compute resources efficiently, or are they trampling on one another?
+
+Container application platforms like Kubernetes provide the answers to some of these questions. We’ll draw on expertise in Linux security, distributed scheduling, and the Java Virtual Machine to dig deep on the performance and security implications of running in containers. This talk will provide a deep dive into tuning and orchestrating containerized Spark applications. You’ll leave this talk with an understanding of the relevant issues, best practices for containerizing data-processing workloads, and tips for taking advantage of the latest features and fixes in Linux Containers, the JDK, and Kubernetes. You’ll leave inspired and enabled to deploy high-performance Spark applications without giving up the security you need or the developer-friendly workflow you want.

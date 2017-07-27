@@ -89,6 +89,20 @@ simply do the following:
 1. Commit the new file to your feature branch and propose a pull request when
    you are ready.
 
+## Adding a new presentation
+
+The community page contains a list of presentations given by and about
+radanalytics related topics. If you would like to add your presentation to
+this list, please follow these instructions:
+
+1. Copy the `_templates_example_presentation.adco` file to the
+   `_presentations` directory and rename it to reflect the name of your
+   presentation.
+1. Edit the contents of the new file to contain your presentation abstract
+   and related information.
+1. Commit the new file to your feature branch and propose a pull request
+   when you are ready.
+
 ### A note on front matter
 
 Files that will be processed by jekyll contain a bit at the beginning referred

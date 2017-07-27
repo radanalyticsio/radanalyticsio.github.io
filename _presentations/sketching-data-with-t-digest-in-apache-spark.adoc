@@ -1,0 +1,11 @@
+= Sketching Data with T-Digest In Apache Spark
+:page-presentor: Erik Erlandson
+:page-date: 2017-02-09
+:page-media-url: https://www.youtube.com/watch?v=ETUYhEZRtWE
+:page-slides-url: http://www.slideshare.net/SparkSummit/sketching-data-with-tdigest-in-apache-spark-spark-summit-east-talk-by-erik-erlandson
+
+Algorithms for sketching probability distributions from large data sets are a fundamental building block of modern data science. Sketching plays a role in diverse applications ranging from visualization, optimizing data encodings, estimating quantiles, data synthesis and imputation. The T-Digest is a versatile sketching data structure. It operates on any numeric data, models tricky distribution tails with high fidelity, and most crucially it works smoothly with aggregators and map-reduce.
+
+T-Digest is a perfect fit for Apache Spark; it is single-pass and intermediate results can be aggregated across partitions in batch jobs or aggregated across windows in streaming jobs. In this talk I will describe a native Scala implementation of the T-Digest sketching algorithm and demonstrate its use in Spark applications for visualization, quantile estimations and data synthesis.
+
+Attendees of this talk will leave with an understanding of data sketching with T-Digest sketches, and insights about how to apply T-Digest to their own data analysis applications.
