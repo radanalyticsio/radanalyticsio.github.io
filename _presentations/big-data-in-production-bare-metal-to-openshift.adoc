@@ -1,0 +1,14 @@
+= Big Data In Production: Bare Metal to OpenShift
+:page-presentor: William Benton
+:page-date: 2017-01-29
+:page-media-url: https://youtu.be/Va1ciXQ7wDY?t=4m53s
+
+Apache Spark is one of the most exciting open-source data-processing frameworks today. It features a range of useful capabilities and an unusually developer-friendly programming model. However, the ease of getting a simple Spark application running can hide some of the challenges you might face while going from a proof of concept to a real-world application. This talk will distill our experiences as early adopters of Spark in production, present a case study where using Spark effectively provided huge benefits over legacy solutions, explain why we migrated from a dedicated Spark cluster to OpenShift, and provide concrete advice regarding:
+
+* how to integrate Spark with external data sources (including databases, in-memory data grids, and message queues),
+* how best to deploy and manage Spark in the cloud,
+* the tradeoffs of various archive storage options for Spark,
+* how to evaluate predictive models and make sense of the analytic components of insightful applications, and
+* integrating Spark into microservice applications on OpenShift
+
+This talk assumes some familiarity with Apache Spark but will provide context for attendees who are new to Spark. You’ll learn from a seasoned Red Hat engineer with over three years of experience running Spark in production and contributing to the Spark community.

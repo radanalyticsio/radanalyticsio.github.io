@@ -28,11 +28,12 @@ and add it to the list!
 
 <!-- to add presentatations, see the _data/presentations.yaml file -->
 
-{% for pres in site.data.presentations %}
+{% assign sorted_presentations = site.presentations | sort: 'date' | reverse %}
+{% for pres in sorted_presentations %}
 ## {{ pres.title }}
 *{{ pres.presentor }}*
 
-{{ pres.abstract }}
+{{ pres.content }}
 
 <a href="{{ pres.media-url }}">
 <i class="fa fa-video-camera" aria-hidden="true"></i>

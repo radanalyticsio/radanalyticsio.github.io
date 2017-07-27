@@ -1,0 +1,14 @@
+= Analyzing Log Data With Apache Spark
+:page-presentor: William Benton
+:page-date: 2016-06-08
+:page-media-url: https://www.youtube.com/watch?v=fhuoKe4li6E
+:page-slides-url: http://www.slideshare.net/SparkSummit/analyzing-log-data-with-apache-spark
+
+Contemporary applications and infrastructure software leave behind a tremendous volume of metric and log data. This aggregated “digital exhaust” is inscrutable to humans and difficult for computers to analyze, since it is vast, complex, and not explicitly structured. This session will introduce the log processing domain and provide practical advice for analyzing log data with Apache Spark, including:
+
+* how to impose a uniform structure on disparate log sources;
+* machine-learning techniques to detect infrastructure failures automatically and characterize the text of log messages;
+* best practices for tuning Spark, training models against structured data, and ingesting data from external sources like ElasticSearch; and
+* a few relatively painless ways to visualize your results.
+
+You’ll have a better understanding of the unique challenges posed by infrastructure log data after this session. You’ll also learn the most important lessons from our efforts both to develop analytic capabilities for an open-source log aggregation service and to evaluate these at enterprise scale.

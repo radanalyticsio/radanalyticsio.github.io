@@ -1,0 +1,7 @@
+= Running Apache Spark Natively on Kubernetes with OpenShift
+:page-presentor: Erik Erlandson
+:page-date: 2016-11-03
+:page-media-url: https://www.youtube.com/watch?v=v6FYspu4OxI
+:page-slides-url: https://drive.google.com/file/d/0B_I24Drpk4MFVFhOc0FzZ0RqUjg/view?usp=sharing
+
+Apache Spark can be made natively aware of Kubernetes by implementing a Spark scheduler back-end that can run Spark application Drivers and bare Executors in kubernetes pods. In this talk, Erik will explain the design of a native-Kubernetes scheduler back-end in Spark and demonstrate a Spark application submission with OpenShift.

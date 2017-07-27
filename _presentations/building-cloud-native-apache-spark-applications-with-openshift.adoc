@@ -1,0 +1,7 @@
+= Building Cloud Native Apache Spark Applications with OpenShift
+:page-presentor: Michael McCune
+:page-date: 2017-01-17
+:page-media-url: https://www.youtube.com/watch?v=WAUFk-5J9U0
+:page-slides-url: https://blog.openshift.com/wp-content/uploads/OpenShift-Commons-Building_Cloud_Native_Apache_Spark_Applications_with_OpenShift.pdf
+
+Apache Spark based applications are often comprised of many separate, interconnected components that are a good match for an orchestrated containerized platform like OpenShift which is built on Kubernetes. But with the increased flexibility afforded by these technologies comes a new set of challenges for building rich data-centric applications. Mike starts off with how to build Apache Spark Application pipelines and then walks thru a demo of building one on OpenShift. He also gave some great insights into the road ahead for Apache Spark on OpenShift.

@@ -1,0 +1,8 @@
+= Big Data and Apache Spark on OpenShift Pt. II
+:page-presentor: William Benton
+:page-date: 2016-08-31
+:page-media-url: https://www.youtube.com/watch?v=D9-MPTjn1W0
+
+The first meeting of the Big Data Special Interest Group, expanded on a previous Commons session entitled Big Data and Apache Spark on OpenShift (Part 1) which kicked off the Big Data SIG.
+
+In the previous session, Red Hat’s Will Benton gave us a vocabulary for talking about data-driven applications and outlined some example architectures for building data-driven applications with microservices. In this SIG session, he gave us an introduction to using Apache Spark on OpenShift and walk through an example data-driven application.

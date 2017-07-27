@@ -1,0 +1,8 @@
+= Title of the presentation goes here
+:page-presentor: put the presentors here (required)
+:page-date: YYYY-MM-DD when the presentation was given (required)
+:page-media-url: a url to the broadcast of the presentation (required)
+:page-slides-url: a url to the slides from the presentation (optional)
+
+The abstract of the presentation goes here. This is an AsciiDoc document and
+as such you may use the available markup syntax.

@@ -42,6 +42,8 @@ exclude:
 collections:
   faqs:
     output: true # this is to workaround issue #161 in jekyll-asciidoc
+  presentations:
+    output: true # this is to workaround issue #161 in jekyll-asciidoc
   projects: {}
   applications:
     output: true

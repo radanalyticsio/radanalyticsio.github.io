@@ -1,0 +1,11 @@
+= Smart Scalable Feature Reduction With Random Forests
+:page-presentor: Erik Erlandson
+:page-date: 2017-06-06
+:page-media-url: https://www.youtube.com/watch?v=m42LI8vBuq8&feature=youtu.be
+:page-slides-url: https://www.slideshare.net/databricks/smart-scalable-feature-reduction-with-random-forests-with-erik-erlandson
+
+Modern datacenters and IoT networks generate a wide variety of telemetry that makes excellent fodder for machine learning algorithms. Combined with feature extraction and expansion techniques such as word2vec or polynomial expansion, these data yield an embarrassment of riches for learning models and the data scientists who train them. However, these extremely rich feature sets come at a cost. High-dimensional feature spaces almost always include many redundant or noisy dimensions. These low-information features waste space and computation, and reduce the quality of learning models by diluting useful features.
+
+In this talk, Erlandson will describe how Random Forest Clustering identifies useful features in data having many low-quality features, and will demonstrate a feature reduction application using Apache Spark to analyze compute infrastructure telemetry data.
+
+Learn the principles of how Random Forest Clustering solves feature reduction problems, and how you can apply Random Forest tools in Apache Spark to improve your model training scalability, the quality of your models, and your understanding of application domains.

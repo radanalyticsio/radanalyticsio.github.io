@@ -1,0 +1,7 @@
+= Diagnosing Open-Source Community Health with Spark
+:page-presentor: William Benton
+:page-date: 2015-06-15
+:page-media-url: https://www.youtube.com/watch?v=T5HbpKCzexw
+:page-slides-url: http://www.slideshare.net/SparkSummit/diagnosing-opensourcewilliam-benton
+
+Successful companies use analytic measures to identify and reward their best projects and contributors. Successful open source developers often make similar decisions when they evaluate whether or not to reward a project or community by investing their time. This talk will show how Spark enables a data-driven understanding of the dynamics of open source communities, using operational data from the Fedora Project as an example. With thousands of contributors and millions of users, Fedora is one of the world’s largest open-source communities. Notably, Fedora also has completely open infrastructure: every event related to the project’s daily operation is logged to a public messaging bus, and historical event data are available in bulk. We’ll demonstrate best practices for using Spark SQL to ingest bulk data with rich, nested structure, using ML pipelines to make sense of software community data, and keeping insights current by processing streaming updates.
