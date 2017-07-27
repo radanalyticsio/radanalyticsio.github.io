@@ -95,11 +95,24 @@ The community page contains a list of presentations given by and about
 radanalytics related topics. If you would like to add your presentation to
 this list, please follow these instructions:
 
-1. Copy the `_templates_example_presentation.adco` file to the
+1. Copy the `_templates/example_presentation.adoc` file to the
    `_presentations` directory and rename it to reflect the name of your
    presentation.
 1. Edit the contents of the new file to contain your presentation abstract
    and related information.
+1. Commit the new file to your feature branch and propose a pull request
+   when you are ready.
+
+## Adding a new project
+
+The projects page contains a list of the radanalytics hosted projects. If
+you would like to add a new project to this list, please follow these
+instructions:
+
+1. Copy the `_templates/example_project.adoc` file to the
+   `_projects` directory and rename it to reflect the name of the project.
+1. Edit the contents of the new file to contain the project information and
+   links.
 1. Commit the new file to your feature branch and propose a pull request
    when you are ready.
 

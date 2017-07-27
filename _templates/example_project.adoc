@@ -1,0 +1,9 @@
+= Name of project goes here
+:page-labels: this should be a comma separated list of labels to display with the project (optional)
+:page-weight: 100
+
+A description of the project should go here. This is an AsciiDoc document and
+as such you may use the available markup syntax.
+
+A list of project links should be added as well, for example:
+* https://github.com/radanalyticsio/example-project.git[Example Project]
