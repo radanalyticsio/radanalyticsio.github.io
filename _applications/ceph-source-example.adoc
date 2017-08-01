@@ -65,7 +65,7 @@ No architecture, this is a connectivity example.
 
 3. Find the connection url using the following command:
 
-   oc logs dc/pyspark-hdfs-notebook | grep localhost | sed "s/localhost:8888/$(oc get routes/pyspark-hdfs-notebook --template='{% raw %}{{.spec.host}}{% endraw %}')/"
+   oc logs dc/pyspark-hdfs-notebook | grep localhost | sed "s/localhost:8888/$(oc get routes/pyspark-hdfs-notebook --template='{{.spec.host}}')/"
 
 4. Download link:/assets/ceph-source-example/ceph-example.ipynb[the notebook], upload into jupyter and follow the notebook instructions. Make sure in the line where the notebook connects to the spark cluster you changed with the cluster name you used in step 1 and in the line where you set up the Ceph connection you change with the IP where you Ceph instance is running.
 
