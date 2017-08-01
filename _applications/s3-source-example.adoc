@@ -1,0 +1,62 @@
+= S3 Source Example
+:page-link: s3-source-example
+:page-weight: 100
+:page-labels: [Python, S3, Jupyter]
+:page-layout: application
+:page-menu_template: menu_tutorial_application.html
+:page-menu_items: lightning
+:page-description: This is an example of how to connect your application to data in S3.
+:page-project_links: ["https://github.com/radanalyticsio/radanalyticsio.github.io/blob/master/assets/s3-source-example"]
+
+[[introduction]]
+== Introduction
+
+Processing data stored in an external object store is a practical and
+popular way for an intelligent application to operate.
+
+This is an example of the key pieces needed to connect your
+application to data in S3. It is presented as steps in a Jupyter
+notebook.
+
+https://github.com/radanalyticsio/radanalyticsio.github.io/blob/master/assets/s3-source-example/s3-source-example.ipynb[S3 Source Example]
+
+[[architecture]]
+== Architecture
+
+No architecture, this is a connectivity example.
+
+[[installation]]
+== Installation
+
+Start a Jupyter notebook with,
+
+....
+oc new-app radanalyticsio/base-notebook \
+   -e JUPYTER_NOTEBOOK_PASSWORD=supersecret \
+   -e JUPYTER_NOTEBOOK_X_INCLUDE=https://radanalytics.io/assets/s3-source-example/s3-source-example.ipynb
+oc expose svc/base-notebook
+....
+
+From your OpenShift Console, go to the notebook's web interface and
+login with `supersecret`.
+
+pass:[<img src="/assets/s3-source-example/console.png" class="img-responsive">]
+
+Open the notebook and try out the example code.
+
+pass:[<img src="/assets/s3-source-example/jupyter.png" class="img-responsive">]
+
+[[usage]]
+== Usage
+
+No specific usage.
+
+[[expansion]]
+== Expansion
+
+No specific expansion.
+
+[[videos]]
+== Videos
+
+No video, follow the notebook steps.
