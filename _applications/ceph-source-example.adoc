@@ -5,7 +5,7 @@
 :page-layout: application
 :page-menu_template: menu_tutorial_application.html
 :page-description: This is an example of how to connect your application to data in Ceph using S3 API.
-:page-project_links: https://github.com/rimolive/ceph-spark-integration
+:page-project_links: ["https://github.com/rimolive/ceph-spark-integration"]
 
 [[introduction]]
 == Introduction
