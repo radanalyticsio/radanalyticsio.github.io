@@ -64,7 +64,7 @@ tool capable of reading HTTP, such as `curl`.
 **For example**
 
 ....
-curl http://`oc get routes/spring-sparkpi --template='{% raw %}{{.spec.host}}{% endraw %}'`
+curl http://`oc get routes/spring-sparkpi --template='{{.spec.host}}'`
 Pi is rouuuughly 3.1335
 ....
 
