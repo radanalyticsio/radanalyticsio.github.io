@@ -75,7 +75,7 @@ Spark cluster, and a MongoDB datastore.
 1. To install an Apache Spark cluster into your OpenShift project, you should
   use one of the Oshinko related technologies. A quick start guide for getting
   these up and running can be found on the
-  radanalytics.io [Get Started](/get-started) page. You will need to
+  radanalytics.io link:/get-started[Get Started] page. You will need to
   record the Spark master URL from this deployment.
 
 2. OpenShift includes a MongDB template in its projects, you can read more
@@ -98,7 +98,7 @@ https://docs.openshift.org/latest/dev_guide/templates.html[OpenShift documentati
 
 Let's examine the template and explore the various objects that are created.
 
-https://radanalytics.io/assets/ophicleide/ophicleide-setup-list.yaml[ophicleide-setup-list.yaml]
+file:/assets/ophicleide/ophicleide-setup-list.yaml[ophicleide-setup-list.yaml]
 
 This template encapsulates a `List` object which is used to bundle together
 the various components necessary for building and deploying Ophicleide. The
