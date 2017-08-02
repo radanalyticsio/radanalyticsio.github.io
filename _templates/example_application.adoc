@@ -1,0 +1,101 @@
+= Example Application
+:page-link: example_application
+:page-weight: 100
+:page-labels: [Example, Programming Language, Technology]
+:page-layout: application
+:page-menu_template: menu_tutorial_application.html
+:page-menu_items: lightning
+:page-description: Put your description here, this text will be rendered on the "Tutorials" page under your application's title.
+:page-project_links: ["https://github.com/example/example-application", "https://github.com/example/another-repo"]
+
+[[introduction]]
+== Introduction
+
+Add an introduction about your application here, what it does, what the
+user will expect, and any other general high level information. For examples
+of other applications, see the `_applications` directory. All the sections
+of this document that are delineated with `[[identifier]]` blocks are the mandatory
+sections. Please do not edit them as out as the page framework depends on
+the internal links. This document uses the AsciiDoc format and you are free
+to use any of the available markup (see http://asciidoc.org/).
+
+The AsciiDoc attribute entity blocks defined after the document title are
+important for displaying information about the application on the site. The
+most important variables to fill out while creating your documentation are:
+`page-link`, `page-description` and `page-project_links`.
+
+* `page-link` is the name that will be used internally when generating the site,
+  it has meaning for the directory structure and links that will be created,
+  it should be a single continuous word with no spaces (underscores and
+  hyphens are acceptable)
+* `page-description` is the text that will be used on the tutorials page to
+  describe your application
+* `page-project_links` is an array of links that will be displayed on the tutorials
+  page with your application, add any links to your source material here
+  (links should be enclosed by quotes "http://link")
+* `page-menu_items` is an array that aids in the construction of the menu links
+  on the application page. The current options are: `lightning`.
+* `page-labels` is an array of strings that describe the primary technologies in
+  use within the application (eg Python, ActiveMQ, S3).
+
+If you need to add graphics or other assets to your application page, please
+make a directory under the top level `assets` directory. This new directory
+should have the same name that you supplied in the front matter `page-link`
+variable. You may reference your assets as follows:
+
+```
+image:/assets/example_application/my_image.png[Alt text]
+```
+
+or, if you need to add a custom class to your `img` element
+
+```
+pass:[<img src="/assets/example_application/my_image.png" alt="Alt text" class="img-responsive">]
+```
+
+Assets may be used in your slide decks as well, using the same link
+references. For example:
+
+```
+link:/assets/example_application/my_yaml_file.yaml[My YAML file]
+```
+
+[[architecture]]
+== Architecture
+
+In this section talk about how the application is structured, what
+technologies does it use, when deployed to the cloud how many components
+should the user expect to encounter. Any information along these lines is
+helpful.
+
+[[installation]]
+== Installation
+
+How will the user install this application, these should be detailed
+step-by-step instructions.
+
+[[usage]]
+== Usage
+
+Once installed and running, what is the intended usage of this application.
+How will the user interact with it, and what results should they expect.
+
+[[expansion]]
+== Expansion
+
+How could this application be expanded, are there some exercises that a user
+could perform to learn more about this application. This section should be
+used to pose open ended questions to the reader and inspire them to add more
+functionality.
+
+[[videos]]
+== Videos
+
+Embed any videos here, you may use full HTML to have the videos displayed on
+this page. For example, Vimeo provides an embeddable iframe code for their
+videos, this content is acceptable here. To utilize custom HTML within the
+AsciiDoc context please use the `pass:` macro, like this:
+
+```
+pass:[<iframe src="https://player.vimeo.com/video/189710503?title=0&byline=0&portrait=0" width="800" height="425" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>]
+```

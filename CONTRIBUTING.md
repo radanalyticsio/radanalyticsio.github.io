@@ -55,21 +55,21 @@ The site will now be served locally at `http://localhost:4000`
 If you would like to propose a new application for inclusion in the tutorials
 section, there are a couple steps that need to be completed:
 
-1. Copy the `_templates/example_application.md` file to the `_applications`
+1. Copy the `_templates/example_application.adoc` file to the `_applications`
    directory, and rename it to suite your application's name.
-2. Edit your new application markdown file with the appropriate information.
+2. Edit your new application AsciiDoc file with the appropriate information.
    (there is information in the example on what to provide)
 3. Create a directory for your application documentation assets in the
    `assets` directory. This new directory should be named to match the value
-   you provided in the `link` variable front matter in your application
+   you provided in the `page-link` attribute entry in your application
    document.
 4. Add any assets you will need (graphics, files, etc) to your assets
    directory.
 5. If your application includes a lightning talk, copy the
    `_templates/lightning` directory into your assets directory. This
    directory contains the [reveal.js](https://github.com/hakimel/reveal.js)
-   slide deck template. Also ensure that the `menu_items` front matter
-   contains the `lightning` entry, this will create the proper menu link for
+   slide deck template. Also ensure that the `page-menu_items` attribute entry
+   contains the `lightning` value, this will create the proper menu link for
    the slide deck.
 6. Edit the `index.html` file for the lightning slide deck. (there is
    information in the file on what to provide)
@@ -125,3 +125,13 @@ processing engine. When creating your application documentation there are
 several front matter variables which will help with the proper display of
 your information. Please be careful to follow the instructions in the template
 about their usage.
+
+### A note on AsciiDoc AttributeEntry blocks
+
+As the content of this repository is converted from Markdown to AsciiDoc, you
+might notice some changes in the way the front matter variables are handled.
+AsciiDoc documents may contain [AttributeEntry blocks](http://asciidoc.org/asciidoc.css-embedded.html#X18)
+in their headers. These variables are used in a similar manner as the Jekyll
+front matter variables. Although these attribute entries and front matter can
+co-exist within the current deployment framework, the preference should be to
+always use AsciiDoc attribute entries when possible.
