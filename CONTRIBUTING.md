@@ -50,22 +50,24 @@ $ docker run --rm -it -p 4000:4000 radanalytics.io
 
 The site will now be served locally at `http://localhost:4000`
 
-## Adding a new application
+## Adding a new tutorial
 
-If you would like to propose a new application for inclusion in the tutorials
-section, there are a couple steps that need to be completed:
+If you would like to propose a new application or example for inclusion in
+the tutorials section, there are a couple steps that need to be completed:
 
-1. Copy the `_templates/application.adoc` file to the `_applications`
-   directory, and rename it to suite your application's name.
-2. Edit your new application AsciiDoc file with the appropriate information.
+1. Copy the `_templates/application_or_example.adoc` file to the
+   `_applications` or `_examples` directory depending on its type and rename
+   it to suite your tutorial's name.
+2. Edit your new tutorial AsciiDoc file with the appropriate information.
    (there is information in the example on what to provide)
-3. Create a directory for your application documentation assets in the
+3. If your tutorial will require additional assets (images, slide deck, etc),
+   create a directory for your tutorial documentation assets in the
    `assets` directory. This new directory should be named to match the value
-   you provided in the `page-link` attribute entry in your application
+   you provided in the `page-link` attribute entry in your tutorial
    document.
 4. Add any assets you will need (graphics, files, etc) to your assets
    directory.
-5. If your application includes a lightning talk, copy the
+5. If your tutorial includes a lightning talk, copy the
    `_templates/lightning` directory into your assets directory. This
    directory contains the [reveal.js](https://github.com/hakimel/reveal.js)
    slide deck template. Also ensure that the `page-menu_items` attribute entry

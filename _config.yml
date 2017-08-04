@@ -51,6 +51,8 @@ collections:
     permalink: /collections/:collection/:path # this is also part of the workaround
   applications:
     output: true
+  examples:
+    output: true
 
 defaults:
 - scope:
