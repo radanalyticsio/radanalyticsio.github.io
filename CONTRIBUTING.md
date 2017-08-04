@@ -55,7 +55,7 @@ The site will now be served locally at `http://localhost:4000`
 If you would like to propose a new application for inclusion in the tutorials
 section, there are a couple steps that need to be completed:
 
-1. Copy the `_templates/example_application.adoc` file to the `_applications`
+1. Copy the `_templates/application.adoc` file to the `_applications`
    directory, and rename it to suite your application's name.
 2. Edit your new application AsciiDoc file with the appropriate information.
    (there is information in the example on what to provide)
@@ -82,7 +82,7 @@ The Frequently Asked Questions (FAQ) page is generated from the collection of
 documents stored in the `_faqs` directory. To add a new question/answer pair,
 simply do the following:
 
-1. Copy the `_templates/example_faq.adoc` file to the `_faqs` directory, and
+1. Copy the `_templates/faq.adoc` file to the `_faqs` directory, and
    rename it to suite reflect your question.
 1. Edit the contents of the new file to contain your question, the title of
    the document will get converted to be used in the FAQ page.
@@ -95,7 +95,7 @@ The community page contains a list of presentations given by and about
 radanalytics related topics. If you would like to add your presentation to
 this list, please follow these instructions:
 
-1. Copy the `_templates/example_presentation.adoc` file to the
+1. Copy the `_templates/presentation.adoc` file to the
    `_presentations` directory and rename it to reflect the name of your
    presentation.
 1. Edit the contents of the new file to contain your presentation abstract
@@ -109,7 +109,7 @@ The projects page contains a list of the radanalytics hosted projects. If
 you would like to add a new project to this list, please follow these
 instructions:
 
-1. Copy the `_templates/example_project.adoc` file to the
+1. Copy the `_templates/project.adoc` file to the
    `_projects` directory and rename it to reflect the name of the project.
 1. Edit the contents of the new file to contain the project information and
    links.
