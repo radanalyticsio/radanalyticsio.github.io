@@ -40,7 +40,7 @@ tool. Once you are logged in to your OpenShift project, follow these
 instructions:
 
 
-1. Follow the [Get Started](/get-started) guide to ensure that you are
+1. Follow the link:/get-started[Get Started] guide to ensure that you are
    connected to an OpenShift project with Oshinko installed
 
 2. Launch spring-sparkpi
