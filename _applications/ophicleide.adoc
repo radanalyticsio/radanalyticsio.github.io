@@ -21,6 +21,13 @@ protocols. Word2vec models are then trained from these texts, with the end
 result being an interface to make single word queries against the models to
 find other words in the corpora with similar vectors.
 
+.Command line quickstart
+****
+Throughout this document you will find these quickstart sections which
+contain command line shortcuts for the console workflows and  proceedures
+described in the text.
+****
+
 [[architecture]]
 == Architecture
 
@@ -95,6 +102,14 @@ suite.
 For information on how to load this template into your OpenShift project,
 please see the
 https://docs.openshift.org/latest/dev_guide/templates.html[OpenShift documentation on templates].
+
+.Command line quickstart
+****
+The following command will install the Ophicleide template into OpenShift
+....
+oc create -f https://radanalytics.io/assets/ophicleide/ophicleide-setup-list.yaml
+....
+****
 
 Let's examine the template and explore the various objects that are created.
 
@@ -309,6 +324,15 @@ begin the process of building and launching the application suite. Before
 the Ophicleide components can be started though, their images must be built
 and tagged as image streams in the project.
 
+.Command line quickstart
+****
+The following commands will start building the Ophicleide components
+....
+oc start-build ophicleide-web
+oc start-build ophicleide-training
+....
+****
+
 Previously, the `ImageStream` objects were created to provde a location within
 the project to store the built applications. Now you must build the
 ophicleide-training and ophicleide-web images. This can be done by navigating
@@ -327,6 +351,16 @@ With both images successfully built, you are now ready to launch the entire
 application suite. As mentioned previously, you will need two pieces of
 information to complete the launch: the Spark master URL, and the MongoDB
 connection string.
+
+.Command line quickstart
+****
+The following command will launch the Ophicleide application. You will need
+to replace the `SPARK` and `MONGO` parameters with the values you have used
+during your setup.
+....
+oc new-app --template ophicleide -p SPARK=spark://mycluster:7077 -p MONGO=mongodb://admin:admin@mongodb
+....
+****
 
 Ophicleide can be lauched by navigating to the "Add to Project" section of
 your project, and then searching for `ophicleide` in the provided form. You
