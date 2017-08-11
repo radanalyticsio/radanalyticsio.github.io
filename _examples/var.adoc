@@ -70,7 +70,6 @@ https://github.com/radanalyticsio/base-notebook[base-notebook] image.
 You can see a demo of installing and running the notebook application in the
 following video:
 
-pass:[<iframe src="https://player.vimeo.com/video/194528216" width="640" height="360" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>]
+pass:[<iframe src="https://player.vimeo.com/video/229217009" width="640" height="360" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>]
 
-https://vimeo.com/194528216[Value-at-risk notebook demo in OpenShift]
-
+https://vimeo.com/229217009[Value-at-risk notebook demo in OpenShift]
