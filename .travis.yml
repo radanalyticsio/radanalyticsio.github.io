@@ -8,13 +8,13 @@ matrix:
   # no need to include the build target at present because the template
   # tests perform builds from the local source to do the tests
   include:
-    - env: TO_TEST=resources
+    - env: TO_TEST=pyspark-templates
   fast_finish: true
 
 before_install:
 ## add insecure-registry and restart docker
 - |
-  if [ "$TO_TEST" == "resources" ]; then
+  if [ "$TO_TEST" == pyspark-templates ]; then
       wget https://raw.githubusercontent.com/radanalyticsio/radanalyticsio.github.io/master/resources.yaml -O master_resources.yaml
       diff master_resources.yaml resources.yaml
       if [ "$?" -eq 0 ]; then
@@ -88,16 +88,10 @@ before_install:
   fi
 
 install:
+  git clone https://github.com/radanalyticsio/oshinko-s2i  
 before_script:
 script:
-- if [ "$TO_TEST" = "build" ]; then docker build -f Dockerfile.pyspark . ; fi
-- if [ "$TO_TEST" = "build" ]; then docker build -f Dockerfile.java . ; fi
-- if [ "$TO_TEST" = "build" ]; then docker build -f Dockerfile.scala . ; fi
-
-- if [ "$TO_TEST" = "ephemeral" ]; then export TEST_ONLY=1; make test-ephemeral ; fi
-- if [ "$TO_TEST" = "pyspark-templates" ]; then export TEST_ONLY=1; make test-pyspark-templates ; fi
-- if [ "$TO_TEST" = "java-templates" ]; then export TEST_ONLY=1; make test-java-templates ; fi
-- if [ "$TO_TEST" = "scala-templates" ]; then export TEST_ONLY=1; make test-scala-templates ; fi
+- if [ "$TO_TEST" = "pyspark-templates" ]; then export TEST_ONLY=1; cd oshinko-s2i; make test-pyspark-templates ; fi
 notifications:
  email:
    on_success: never
