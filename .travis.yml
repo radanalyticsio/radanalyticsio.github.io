@@ -83,8 +83,8 @@ before_install:
   fi
 
 install:
-  git clone https://github.com/radanalyticsio/oshinko-s2i
-  sudo chmod -R a+rwX $TEST_DIR/oshinko-s2i
+- git clone https://github.com/radanalyticsio/oshinko-s2i
+- sudo chmod -R a+rwX $TEST_DIR/oshinko-s2i
 
 before_script:
 script:
