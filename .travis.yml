@@ -9,6 +9,8 @@ matrix:
   # tests perform builds from the local source to do the tests
   include:
     - env: TO_TEST=pyspark-templates
+    - env: TO_TEST=java-templates
+    - env: TO_TEST=scala-templates
   fast_finish: true
 
 before_install:
@@ -16,7 +18,6 @@ before_install:
 - export TEST_DIR=`pwd`
 - export ORIGIN_DIR=$TEST_DIR/../origin
 - |
-  if [ "$TO_TEST" == pyspark-templates ]; then
       wget https://raw.githubusercontent.com/radanalyticsio/radanalyticsio.github.io/master/resources.yaml -O master_resources.yaml
       diff master_resources.yaml resources.yaml
       if [ "$?" -eq 0 ]; then
@@ -80,16 +81,17 @@ before_install:
       echo ${IP}
       IPSTR=`sudo oc login -u system:admin`
       echo $IPSTR
-  fi
 
 install:
 - git clone https://github.com/radanalyticsio/oshinko-s2i
 - sudo chmod -R a+rwX $TEST_DIR/oshinko-s2i
+- cp resources.yaml $TEST_DIR/oshinko-s2i/test/e2e/resources
 
 before_script:
 script:
-- echo $TEST_DIR
 - if [ "$TO_TEST" = "pyspark-templates" ]; then export TEST_ONLY=1; cd oshinko-s2i; make test-pyspark-templates ; fi
+- if [ "$TO_TEST" = "java-templates" ]; then export TEST_ONLY=1; cd oshinko-s2i; make test-java-templates ; fi
+- if [ "$TO_TEST" = "scala-templates" ]; then export TEST_ONLY=1; cd oshinko-s2i; make test-scala-templates ; fi
 notifications:
  email:
    on_success: never
