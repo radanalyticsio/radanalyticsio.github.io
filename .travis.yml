@@ -19,7 +19,7 @@ before_install:
       diff master_resources.yaml resources.yaml
       if [ "$?" -eq 0 ]; then
           echo "No change in resources.yaml, exiting ..."
-#          exit 0
+          ## exit 0
       fi 
 
       pwd
