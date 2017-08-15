@@ -9,6 +9,7 @@ matrix:
   # tests perform builds from the local source to do the tests
   include:
     - env: TO_TEST=pyspark-templates
+    - env: TEST_DIR2=`pwd`
   fast_finish: true
 
 before_install:
@@ -25,6 +26,7 @@ before_install:
 
       pwd
       echo $TEST_DIR
+      echo $TEST_DIR2
       bash --version
       sudo apt-get install --only-upgrade bash
       bash --version
