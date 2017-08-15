@@ -14,7 +14,7 @@ matrix:
 before_install:
 ## add insecure-registry and restart docker
 - export TEST_DIR=`pwd`
-- export ORIGIN_DIR=$TEST_DIR/..
+- export ORIGIN_DIR=$TEST_DIR/../origin
 - |
   if [ "$TO_TEST" == pyspark-templates ]; then
       wget https://raw.githubusercontent.com/radanalyticsio/radanalyticsio.github.io/master/resources.yaml -O master_resources.yaml
