@@ -89,9 +89,9 @@ install:
 
 before_script:
 script:
-- if [ "$TO_TEST" = "pyspark-templates" ]; then export TEST_ONLY=1; cd oshinko-s2i; make test-pyspark-templates ; fi
-- if [ "$TO_TEST" = "java-templates" ]; then export TEST_ONLY=1; cd oshinko-s2i; make test-java-templates ; fi
-- if [ "$TO_TEST" = "scala-templates" ]; then export TEST_ONLY=1; cd oshinko-s2i; make test-scala-templates ; fi
+- if [ "$TO_TEST" = "pyspark-templates" ]; then export TEST_ONLY=1; cd oshinko-s2i; make test-pyspark-radio ; fi
+- if [ "$TO_TEST" = "java-templates" ]; then export TEST_ONLY=1; cd oshinko-s2i; make test-java-radio ; fi
+- if [ "$TO_TEST" = "scala-templates" ]; then export TEST_ONLY=1; cd oshinko-s2i; make test-scala-radio ; fi
 notifications:
  email:
    on_success: never
