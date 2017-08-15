@@ -9,12 +9,12 @@ matrix:
   # tests perform builds from the local source to do the tests
   include:
     - env: TO_TEST=pyspark-templates
-    - env: TEST_DIR2=`pwd`
   fast_finish: true
 
 before_install:
 ## add insecure-registry and restart docker
-- export TEST_DIR=`pwd` 
+- export TEST_DIR=`pwd`
+- export ORIGIN_DIR=$TEST_DIR/..
 - |
   if [ "$TO_TEST" == pyspark-templates ]; then
       wget https://raw.githubusercontent.com/radanalyticsio/radanalyticsio.github.io/master/resources.yaml -O master_resources.yaml
@@ -24,9 +24,7 @@ before_install:
           ## exit 0
       fi 
 
-      pwd
       echo $TEST_DIR
-      echo $TEST_DIR2
       bash --version
       sudo apt-get install --only-upgrade bash
       bash --version
@@ -37,27 +35,21 @@ before_install:
       sudo service docker start
       sudo service docker status
       ## chmod needs sudo, so all other commands are with sudo
-      sudo mkdir -p /home/travis/gopath/src/github.com/radanalyticsio/origin
-      sudo chmod -R 766 /home/travis/gopath/src/github.com/radanalyticsio/origin
+      sudo mkdir -p $ORIGIN_DIR
+      sudo chmod -R 766 $ORIGIN_DIR
       ## download oc 1.4.1 binary
-      sudo wget https://github.com/openshift/origin/releases/download/v1.5.1/openshift-origin-client-tools-v1.5.1-7b451fc-linux-64bit.tar.gz -P ../origin/
-      sudo wget https://github.com/openshift/origin/releases/download/v1.5.1/openshift-origin-server-v1.5.1-7b451fc-linux-64bit.tar.gz -P ../origin/
-      sudo ls -l /home/travis/gopath/src/github.com/radanalyticsio/origin
-      sudo tar -C ../origin -xvzf /home/travis/gopath/src/github.com/radanalyticsio/origin/openshift-origin-client-tools-v1.5.1-7b451fc-linux-64bit.tar.gz
-      sudo tar -C ../origin -xvzf /home/travis/gopath/src/github.com/radanalyticsio/origin/openshift-origin-server-v1.5.1-7b451fc-linux-64bit.tar.gz
-      sudo chmod -R 766 /home/travis/gopath/src/github.com/radanalyticsio/oshinko-s2i/
-      sudo ls -l /home/travis/gopath/src/github.com/radanalyticsio/origin/openshift-origin-client-tools-v1.5.1-7b451fc-linux-64bit
-      sudo ls -l /home/travis/gopath/src/github.com/radanalyticsio/origin/openshift-origin-server-v1.5.1-7b451fc-linux-64bit
-      sudo cp /home/travis/gopath/src/github.com/radanalyticsio/origin/openshift-origin-client-tools-v1.5.1-7b451fc-linux-64bit/oc /home/travis/gopath/src/github.com/radanalyticsio/origin
-      sudo cp /home/travis/gopath/src/github.com/radanalyticsio/origin/openshift-origin-server-v1.5.1-7b451fc-linux-64bit/* /home/travis/gopath/src/github.com/radanalyticsio/origin
-      sudo chmod -R 766 /home/travis/gopath/src/github.com/radanalyticsio/origin
-      sudo ls -l /home/travis/gopath/src/github.com/radanalyticsio/origin
-      sudo chmod -R +755 /home/travis/gopath/src/github.com/radanalyticsio/origin/*
-      sudo chmod -R a+rwX /home/travis/gopath/src/github.com/radanalyticsio/oshinko-s2i
-      sudo cp /home/travis/gopath/src/github.com/radanalyticsio/origin/* /bin
+      sudo wget https://github.com/openshift/origin/releases/download/v1.5.1/openshift-origin-client-tools-v1.5.1-7b451fc-linux-64bit.tar.gz -P $ORIGIN_DIR
+      sudo wget https://github.com/openshift/origin/releases/download/v1.5.1/openshift-origin-server-v1.5.1-7b451fc-linux-64bit.tar.gz -P $ORIGIN_DIR
+      sudo ls -l $ORIGIN_DIR
+      sudo tar -C $ORIGIN_DIR -xvzf $ORIGIN_DIR/openshift-origin-client-tools-v1.5.1-7b451fc-linux-64bit.tar.gz
+      sudo tar -C $ORIGIN_DIR -xvzf $ORIGIN_DIR/openshift-origin-server-v1.5.1-7b451fc-linux-64bit.tar.gz
+      sudo cp $ORIGIN_DIR/openshift-origin-client-tools-v1.5.1-7b451fc-linux-64bit/oc $ORIGIN_DIR
+      sudo cp $ORIGIN_DIR/openshift-origin-server-v1.5.1-7b451fc-linux-64bit/* $ORIGIN_DIR
+      sudo chmod -R +755 $ORIGIN_DIR/*
+      sudo cp $ORIGIN_DIR/origin/* /bin
       sudo ls -l /bin
       oc version
-      export PATH=$PATH:/home/travis/gopath/src/github.com/radanalyticsio/origin/
+      export PATH=$PATH:$ORIGIN_DIR
       echo $PATH
       # below cmd is important to get oc working in ubuntu
       sudo docker run -v /:/rootfs -ti --rm --entrypoint=/bin/bash --privileged openshift/origin:v1.5.1 -c "mv /rootfs/bin/findmnt /rootfs/bin/findmnt.backup"
@@ -67,7 +59,7 @@ before_install:
       set +e
       built=false
       for tries in {1..3}; do
-          sudo oc cluster up --host-config-dir=/home/travis/gopath/src/github.com/radanalyticsio/origin
+          sudo oc cluster up --host-config-dir=$ORIGIN_DIR
           if [ "$?" -eq 0 ]; then
               built=true
               break
@@ -81,7 +73,6 @@ before_install:
       fi
 
       sudo chmod -R a+rwX /home/travis/.kube
-      sudo ls -l /home/travis/gopath/src/github.com/radanalyticsio/origin
       # find IP:PORT of openshift
       IPSTR=`sudo oc status |grep server`
       echo $IPSTR
@@ -92,7 +83,9 @@ before_install:
   fi
 
 install:
-  git clone https://github.com/radanalyticsio/oshinko-s2i  
+  git clone https://github.com/radanalyticsio/oshinko-s2i
+  sudo chmod -R a+rwX $TEST_DIR/oshinko-s2i
+
 before_script:
 script:
 - echo $TEST_DIR
