@@ -13,7 +13,7 @@ matrix:
 
 before_install:
 ## add insecure-registry and restart docker
-- echo $TRAVIS_HOME
+- export TEST_DIR=`pwd` 
 - |
   if [ "$TO_TEST" == pyspark-templates ]; then
       wget https://raw.githubusercontent.com/radanalyticsio/radanalyticsio.github.io/master/resources.yaml -O master_resources.yaml
@@ -24,6 +24,7 @@ before_install:
       fi 
 
       pwd
+      echo $TEST_DIR
       bash --version
       sudo apt-get install --only-upgrade bash
       bash --version
@@ -92,6 +93,7 @@ install:
   git clone https://github.com/radanalyticsio/oshinko-s2i  
 before_script:
 script:
+- echo $TEST_DIR
 - if [ "$TO_TEST" = "pyspark-templates" ]; then export TEST_ONLY=1; cd oshinko-s2i; make test-pyspark-templates ; fi
 notifications:
  email:
