@@ -46,11 +46,11 @@ before_install:
       sudo cp $ORIGIN_DIR/openshift-origin-client-tools-v1.5.1-7b451fc-linux-64bit/oc $ORIGIN_DIR
       sudo cp $ORIGIN_DIR/openshift-origin-server-v1.5.1-7b451fc-linux-64bit/* $ORIGIN_DIR
       sudo chmod -R +755 $ORIGIN_DIR/*
-      sudo cp $ORIGIN_DIR/origin/* /bin
+      sudo cp $ORIGIN_DIR/* /bin
       sudo ls -l /bin
       oc version
-      export PATH=$PATH:$ORIGIN_DIR
-      echo $PATH
+      ## export PATH=$PATH:$ORIGIN_DIR
+      ## echo $PATH
       # below cmd is important to get oc working in ubuntu
       sudo docker run -v /:/rootfs -ti --rm --entrypoint=/bin/bash --privileged openshift/origin:v1.5.1 -c "mv /rootfs/bin/findmnt /rootfs/bin/findmnt.backup"
 
