@@ -1,0 +1,98 @@
+sudo: required
+dist: trusty
+language: go
+## home folder is /home/travis/gopath/src/github.com/radanalyticsio/oshinko-s2i
+services:
+- docker
+matrix:
+  # no need to include the build target at present because the template
+  # tests perform builds from the local source to do the tests
+  include:
+    - env: TO_TEST=pyspark-templates
+    - env: TO_TEST=java-templates
+    - env: TO_TEST=scala-templates
+  fast_finish: true
+
+before_install:
+## add insecure-registry and restart docker
+- export TEST_DIR=`pwd`
+- export ORIGIN_DIR=$TEST_DIR/../origin
+- |
+      wget https://raw.githubusercontent.com/radanalyticsio/radanalyticsio.github.io/master/resources.yaml -O master_resources.yaml
+      diff master_resources.yaml resources.yaml
+      if [ "$?" -eq 0 ]; then
+          echo "No change in resources.yaml, exiting ..."
+          ## exit 0
+      fi 
+
+      echo $TEST_DIR
+      bash --version
+      sudo apt-get install --only-upgrade bash
+      bash --version
+      sudo cat /etc/default/docker
+      sudo service docker stop
+      sudo sed -i -e 's/sock/sock --insecure-registry 172.30.0.0\/16/' /etc/default/docker
+      sudo cat /etc/default/docker
+      sudo service docker start
+      sudo service docker status
+      ## chmod needs sudo, so all other commands are with sudo
+      sudo mkdir -p $ORIGIN_DIR
+      sudo chmod -R 766 $ORIGIN_DIR
+      ## download oc 1.4.1 binary
+      sudo wget https://github.com/openshift/origin/releases/download/v1.5.1/openshift-origin-client-tools-v1.5.1-7b451fc-linux-64bit.tar.gz -P $ORIGIN_DIR
+      sudo wget https://github.com/openshift/origin/releases/download/v1.5.1/openshift-origin-server-v1.5.1-7b451fc-linux-64bit.tar.gz -P $ORIGIN_DIR
+      sudo ls -l $ORIGIN_DIR
+      sudo tar -C $ORIGIN_DIR -xvzf $ORIGIN_DIR/openshift-origin-client-tools-v1.5.1-7b451fc-linux-64bit.tar.gz
+      sudo tar -C $ORIGIN_DIR -xvzf $ORIGIN_DIR/openshift-origin-server-v1.5.1-7b451fc-linux-64bit.tar.gz
+      sudo cp $ORIGIN_DIR/openshift-origin-client-tools-v1.5.1-7b451fc-linux-64bit/oc $ORIGIN_DIR
+      sudo cp $ORIGIN_DIR/openshift-origin-server-v1.5.1-7b451fc-linux-64bit/* $ORIGIN_DIR
+      sudo chmod -R +755 $ORIGIN_DIR/*
+      sudo cp $ORIGIN_DIR/* /bin
+      sudo ls -l /bin
+      oc version
+      ## export PATH=$PATH:$ORIGIN_DIR
+      ## echo $PATH
+      # below cmd is important to get oc working in ubuntu
+      sudo docker run -v /:/rootfs -ti --rm --entrypoint=/bin/bash --privileged openshift/origin:v1.5.1 -c "mv /rootfs/bin/findmnt /rootfs/bin/findmnt.backup"
+
+      # Sometimes oc cluster up fails with a permission error and works when the test is relaunched.
+      # See if a retry within the same test works
+      set +e
+      built=false
+      for tries in {1..3}; do
+          sudo oc cluster up --host-config-dir=$ORIGIN_DIR
+          if [ "$?" -eq 0 ]; then
+              built=true
+              break
+          fi
+          echo "Retrying oc cluster up after failure"
+          sudo oc cluster down
+      done
+      set -e
+      if [ "$built" == false ]; then
+          exit 1
+      fi
+
+      sudo chmod -R a+rwX /home/travis/.kube
+      # find IP:PORT of openshift
+      IPSTR=`sudo oc status |grep server`
+      echo $IPSTR
+      IP=${IPSTR##*/}
+      echo ${IP}
+      IPSTR=`sudo oc login -u system:admin`
+      echo $IPSTR
+
+install:
+- git clone https://github.com/radanalyticsio/oshinko-s2i
+- sudo chmod -R a+rwX $TEST_DIR/oshinko-s2i
+- cp resources.yaml $TEST_DIR/oshinko-s2i/test/e2e/resources
+
+before_script:
+script:
+- if [ "$TO_TEST" = "pyspark-templates" ]; then export TEST_ONLY=1; cd oshinko-s2i; make test-pyspark-radio ; fi
+- if [ "$TO_TEST" = "java-templates" ]; then export TEST_ONLY=1; cd oshinko-s2i; make test-java-radio ; fi
+- if [ "$TO_TEST" = "scala-templates" ]; then export TEST_ONLY=1; cd oshinko-s2i; make test-scala-radio ; fi
+notifications:
+ email:
+   on_success: never
+   on_failure: never
