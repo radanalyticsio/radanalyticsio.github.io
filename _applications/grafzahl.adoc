@@ -60,7 +60,7 @@ components and not an application itself, so instead of using S2I, it
 is directly deployed from a template and pre-built container images.
 
 First, make sure you are connected to an OpenShift cluster and are in
-a project with Oshinko installed. See [Get Started](/get-started) if
+a project with Oshinko installed. See link:/get-started[Get Started] if
 you need help.
 
 Second, load the Apache Kafka infrastructure components into your
