@@ -1,12 +1,10 @@
 sudo: required
 dist: trusty
 language: go
-## home folder is /home/travis/gopath/src/github.com/radanalyticsio/oshinko-s2i
+## home folder is /home/travis/gopath/src/github.com/radanalyticsio/radanalyticsio.github.io
 services:
 - docker
 matrix:
-  # no need to include the build target at present because the template
-  # tests perform builds from the local source to do the tests
   include:
     - env: TO_TEST=pyspark-templates
     - env: TO_TEST=java-templates
@@ -22,7 +20,7 @@ before_install:
       diff master_resources.yaml resources.yaml
       if [ "$?" -eq 0 ]; then
           echo "No change in resources.yaml, exiting ..."
-          ## exit 0
+          exit 0
       fi
 
       echo $TEST_DIR
@@ -35,10 +33,8 @@ before_install:
       sudo cat /etc/default/docker
       sudo service docker start
       sudo service docker status
-      ## chmod needs sudo, so all other commands are with sudo
       sudo mkdir -p $ORIGIN_DIR
       sudo chmod -R 766 $ORIGIN_DIR
-      ## download oc 1.4.1 binary
       sudo wget https://github.com/openshift/origin/releases/download/v1.5.1/openshift-origin-client-tools-v1.5.1-7b451fc-linux-64bit.tar.gz -P $ORIGIN_DIR
       sudo wget https://github.com/openshift/origin/releases/download/v1.5.1/openshift-origin-server-v1.5.1-7b451fc-linux-64bit.tar.gz -P $ORIGIN_DIR
       sudo ls -l $ORIGIN_DIR
@@ -50,8 +46,6 @@ before_install:
       sudo cp $ORIGIN_DIR/* /bin
       sudo ls -l /bin
       oc version
-      ## export PATH=$PATH:$ORIGIN_DIR
-      ## echo $PATH
       # below cmd is important to get oc working in ubuntu
       sudo docker run -v /:/rootfs -ti --rm --entrypoint=/bin/bash --privileged openshift/origin:v1.5.1 -c "mv /rootfs/bin/findmnt /rootfs/bin/findmnt.backup"
 
