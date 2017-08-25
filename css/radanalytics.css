@@ -84,3 +84,7 @@ a.fp-link {
 a.fp-link:hover {
     text-decoration: none;
 }
+
+div.literalblock {
+    margin-bottom: 2em;
+}

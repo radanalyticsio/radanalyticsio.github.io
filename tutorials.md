@@ -42,6 +42,7 @@ them to your peers and colleagues.
 {{ item.description }}
 </p>
 
+{% if item.project_links %}
 #### Project Links
 
 <ul>
@@ -49,6 +50,7 @@ them to your peers and colleagues.
 <li><a href="{{ link }}" target="blank">{{ link }}</a></li>
 {% endfor %}
 </ul>
+{% endif %}
 
 {% endfor %}
 
@@ -67,6 +69,7 @@ them to your peers and colleagues.
 {{ item.description }}
 </p>
 
+{% if item.project_links %}
 #### Project Links
 
 <ul>
@@ -74,5 +77,6 @@ them to your peers and colleagues.
 <li><a href="{{ link }}" target="blank">{{ link }}</a></li>
 {% endfor %}
 </ul>
+{% endif %}
 
 {% endfor %}
