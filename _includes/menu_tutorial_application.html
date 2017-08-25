@@ -10,5 +10,15 @@
 {% endif %}
 
 <li>
+{% if page.menu_backurl %}
+<a href="{{ page.menu_backurl }}">
+  {% if page.menu_backtext %}
+  {{ page.menu_backtext }}
+  {% else %}
+  Back
+  {% endif %}
+</a>
+{% else %}
   <a href="/tutorials">Back to tutorials</a>
+{% endif %}
 </li>

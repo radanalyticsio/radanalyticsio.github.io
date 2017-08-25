@@ -1,0 +1,670 @@
+= SparkPi Java Spring
+:page-layout: markdown
+:page-menu_template: menu_tutorial_application.html
+:page-menu_backurl: /my-first-radanalytics-app.html
+:page-menu_backtext: Back to My First RADanalytics Application
+
+== Building SparkPi in Java with Spring
+
+These instructions will help you to create a SparkPi microservice using the https://www.oracle.com/java[Java language] and the https://spring.io/[Spring framework].
+
+You should already have the necessary prerequisites installed and configured, but if not please review the link:/applications/my-first-radanalytics-app[instructions].
+
+== Create the application source files
+
+Although this application is relatively small overall, it is organized into five source files. If you are familiar with the structure of Java programs, you will know that the source files must be placed in the proper directories. To begin creating your source files, you will first need to create the directory structure for them. In the root of the new directory that you made for this tutorial, run the following command to make that structure:
+
+....
+mkdir -p src/main/java/io/radanalytics
+....
+
+The first file to create is named `SparkPiBootApplication.java` and it will contain the starting point for your application. Place the following contents into the file:
+
+....
+package io.radanalytics;
+
+import javax.annotation.*;
+
+import org.apache.log4j.*;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.beans.factory.annotation.Autowired;
+
+@SpringBootApplication
+public class SparkPiBootApplication {
+
+    private static final Logger log = Logger.getRootLogger();
+
+    @Autowired
+    private SparkPiProperties properties;
+
+    @PostConstruct
+    public void init() {
+        log.info("SparkPi submit jar is: "+properties.getJarFile());
+        if (!SparkContextProvider.init(properties)) {
+            // masterURL probably not set,
+            // meaning this was likely run outside of oshinko
+            System.exit(1);
+        }
+    }
+
+    public static void main(String[] args) {
+        SpringApplication.run(SparkPiBootApplication.class, args);
+    }
+
+}
+....
+
+Next, create a file named `SparkPiController.java`. This file contains the code to create the Spring based HTTP routes and handlers. It should contain these contents:
+
+....
+package io.radanalytics;
+
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+@RestController
+public class SparkPiController {
+
+    @RequestMapping("/")
+    public String index() {
+        return "Java Spring Boot SparkPi server running. Add the 'sparkpi' route to this URL to invoke the app.";
+    }
+
+    @RequestMapping("/sparkpi")
+    public String sparkpi(@RequestParam(value="scale", defaultValue="2") String scale) {
+        SparkPiProducer pi = new SparkPiProducer();
+        return pi.GetPi(Integer.parseInt(scale));
+    }
+}
+....
+
+The next file you will create is named `SparkPiContextProvider.java`. This file contains a helper class for creating the connection to the Apache Spark cluster. It should contain these contents:
+
+....
+package io.radanalytics;
+
+import org.apache.spark.SparkConf;
+import org.apache.spark.SparkException;
+import org.apache.spark.api.java.JavaSparkContext;
+import org.springframework.beans.factory.annotation.*;
+import org.springframework.stereotype.*;
+
+public class SparkContextProvider {
+
+    private static SparkContextProvider INSTANCE = null;
+
+    private SparkConf sparkConf;
+    private JavaSparkContext sparkContext;
+
+    private SparkContextProvider() {
+    }
+
+    private SparkContextProvider(SparkPiProperties props) {
+        this.sparkConf = new SparkConf().setAppName("JavaSparkPi");
+        this.sparkConf.setJars(new String[]{props.getJarFile()});
+        this.sparkContext = new JavaSparkContext(sparkConf);
+    }
+
+    public static boolean init(SparkPiProperties props) {
+        try {
+            if (INSTANCE == null) {
+                INSTANCE = new SparkContextProvider(props);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
+        return true;
+    }
+
+    public static JavaSparkContext getContext() {
+        return INSTANCE.sparkContext;
+    }
+
+}
+....
+
+The next source should be named `SparkPiProperties.java` and contains a utility class for locating the JAR file within a container. It should contain these contents:
+
+....
+package io.radanalytics;
+
+import org.apache.spark.SparkConf;
+import org.apache.spark.api.java.JavaSparkContext;
+
+import org.springframework.stereotype.*;
+import org.springframework.beans.factory.annotation.*;
+import org.springframework.context.annotation.*;
+import javax.validation.constraints.*;
+import javax.annotation.*;
+
+@Component
+public class SparkPiProperties {
+
+    @Value("${sparkpi.jarfile}")
+    private String jarFile;
+
+    public String getJarFile() {
+        return jarFile;
+    }
+
+}
+....
+
+The last source file should be named `SparkPiProducer.java` and it contains a class that will perform the Pi calculations. It should contain these contents:
+
+....
+package io.radanalytics;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import org.apache.spark.api.java.function.Function;
+import org.apache.spark.api.java.function.Function2;
+import org.apache.spark.api.java.JavaRDD;
+import org.apache.spark.api.java.JavaSparkContext;
+
+public class SparkPiProducer implements Serializable {
+    public String GetPi(int scale) {
+        JavaSparkContext jsc = SparkContextProvider.getContext();
+
+        int n = 100000 * scale;
+        List<Integer> l = new ArrayList<Integer>(n);
+        for (int i = 0; i < n; i++) {
+            l.add(i);
+        }
+
+        JavaRDD<Integer> dataSet = jsc.parallelize(l, scale);
+
+        int count = dataSet.map(integer -> {
+            double x = Math.random() * 2 - 1;
+            double y = Math.random() * 2 - 1;
+            return (x * x + y * y < 1) ? 1 : 0;
+        }).reduce((integer, integer2) -> integer + integer2);
+
+        String ret = "Pi is rouuuughly " + 4.0 * count / n;
+
+        return ret;
+    }
+}
+....
+
+With all the source files created your project directory should now look like this:
+
+....
+$ ls
+src
+
+$ find src -type f
+src/main/java/io/radanalytics/SparkPiBootApplication.java
+src/main/java/io/radanalytics/SparkPiProducer.java
+src/main/java/io/radanalytics/SparkPiController.java
+src/main/java/io/radanalytics/SparkPiProperties.java
+src/main/java/io/radanalytics/SparkPiContextProvider.java
+....
+
+== Analysis of the source code
+
+Let us now take a look at the individual statements of the source files and break down what each component is doing.
+
+To begin with we will start with the `SparkPiBootApplication.java` file. This file defines the main entry class for our application, at the beginning of the file we define the namespace for this source and include several classes and packages that will be needed:
+
+....
+package io.radanalytics;
+
+import javax.annotation.*;
+
+import org.apache.log4j.*;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.beans.factory.annotation.Autowired;
+....
+
+The next lines set up the class that will serve as our application's entry point. The https://docs.spring.io/spring-boot/docs/1.5.7.RELEASE/api/org/springframework/boot/autoconfigure/SpringBootApplication.html[SpringBootApplication] annotation is a helper that configures our class for Spring.
+
+....
+@SpringBootApplication
+public class SparkPiBootApplication {
+....
+
+Next we declare a class member that contains property variables that the application will need. The https://docs.spring.io/spring/docs/5.0.0.RELEASE/javadoc-api/org/springframework/beans/factory/annotation/Autowired.html[Autowired] annotation ensures that this variable will be available for our application at construction time.
+
+....
+@Autowired
+private SparkPiProperties properties;
+....
+
+In the next function, we declare how our application should be initialized. We log the location of the Jar file within the container to help with debugging, and then initialize our Spark context with the values in the properties object. Since we cannot operate without a Spark cluster, this function will exit the application if no properties are specified. The `PostConstruct` annotation simply instructs that this function should not be run until the dependency injection is completed.
+
+....
+@PostConstruct
+public void init() {
+    log.info("SparkPi submit jar is: "+properties.getJarFile());
+    if (!SparkContextProvider.init(properties)) {
+        // masterURL probably not set,
+        // meaning this was likely run outside of oshinko
+        System.exit(1);
+    }
+}
+....
+
+Finally, we have the main method which will start the application.
+
+....
+public static void main(String[] args) {
+    SpringApplication.run(SparkPiBootApplication.class, args);
+}
+....
+
+The next file we will examine is `SparkPiController.java`. This file contains the bindings between external HTTP routes and our internal functions. As is usual, we begin by declaring the package namespace for this file and include a few classes that will be used.
+
+....
+package io.radanalytics;
+
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+....
+
+Next we declare the class that contains our route methods using the Spring https://docs.spring.io/spring/docs/5.0.0.RELEASE/javadoc-api/org/springframework/web/bind/annotation/RestController.html[RestController] annotation.
+
+....
+@RestController
+public class SparkPiController {
+....
+
+We use Spring's https://docs.spring.io/spring/docs/5.0.0.RELEASE/javadoc-api/org/springframework/web/bind/annotation/RequestMapping.html[RequestMapping] annotation to assist in creating the route handling functions. The first route function will register the root `/` endpoint to simply return a string that we would like to display for our users. This endpoint will allow us to confirm that the server is running without needing to invoke Spark.
+
+....
+    @RequestMapping("/")
+    public String index() {
+        return "Java Spring Boot SparkPi server running. Add the 'sparkpi' route to this URL to invoke the app.";
+    }
+....
+
+The second endpoint we define, `/sparkpi`,  is for our Pi calculation. We use Spring's https://docs.spring.io/spring/docs/5.0.0.RELEASE/javadoc-api/org/springframework/web/bind/annotation/RequestParam.html[RequestParam] annotation to allow for the `scale` request parameter in our URL. The `SparkPiProducer` class does the actual work of calculating Pi and we pass it the requested scale value, defaulting to `2`.
+
+....
+    @RequestMapping("/sparkpi")
+    public String sparkpi(@RequestParam(value="scale", defaultValue="2") String scale) {
+        SparkPiProducer pi = new SparkPiProducer();
+        return pi.GetPi(Integer.parseInt(scale));
+    }
+}
+....
+
+The next file we will examine is `SparkPiContextProvider.java`, which will create a https://spark.apache.org/docs/latest/api/java/org/apache/spark/api/java/JavaSparkContext.html[SparkContext] using the https://en.wikipedia.org/wiki/Singleton_pattern[singleton pattern]. The reasoning for this usage is to avoid threading conflicts with the Spring framework by having a singular connection to the Spark cluster. As usual, at the beginning of the file we declare the package namespace for this file and include several classes and packages for usage.
+
+....
+package io.radanalytics;
+
+import org.apache.spark.SparkConf;
+import org.apache.spark.SparkException;
+import org.apache.spark.api.java.JavaSparkContext;
+import org.springframework.beans.factory.annotation.*;
+import org.springframework.stereotype.*;
+....
+
+Next we declare our provider class and set up a few internal variables. The static `INSTANCE` will provide our concrete singular instantiation of this class which defines our singleton. The `sparkConf` and `sparkContext` variables are the actual connections to our Spark cluster.
+
+....
+public class SparkContextProvider {
+
+    private static SparkContextProvider INSTANCE = null;
+
+    private SparkConf sparkConf;
+    private JavaSparkContext sparkContext;
+....
+
+Since this class will implement the singleton pattern, we make its constructors private to ensure that it will only be instantiated by the `init` method. The second contructor function is the primary method here, it accepts the properties object and instantiates the internal private variables. The `setJars` function will instruct Spark to associate our application Jar with the https://spark.apache.org/docs/latest/api/java/org/apache/spark/SparkConf.html[SparkConf] object, and subsequently the Spark context.
+
+....
+    private SparkContextProvider() {
+    }
+
+    private SparkContextProvider(SparkPiProperties props) {
+        this.sparkConf = new SparkConf().setAppName("JavaSparkPi");
+        this.sparkConf.setJars(new String[]{props.getJarFile()});
+        this.sparkContext = new JavaSparkContext(sparkConf);
+    }
+....
+
+The `init` function is the main entry point for constructing the context provider. This function will simply check to determine if an instance has been created, and if not it will create that instance. As there is always the possibility of failure, this function will also catch any errors that result from spawning the new instance.
+
+....
+    public static boolean init(SparkPiProperties props) {
+        try {
+            if (INSTANCE == null) {
+                INSTANCE = new SparkContextProvider(props);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
+        return true;
+    }
+....
+
+The last function in this class is the primary means of interacting with the context. This function provides a convenient method for any other class to gain the Spark contenxt.
+
+....
+    public static JavaSparkContext getContext() {
+        return INSTANCE.sparkContext;
+    }
+....
+
+Finally, we will examine the `SparkPiProperties.java` file. This file contains a help class this will inform Spark about the location of our Jar file. This information is vital to Spark understanding how to start our application within the container. At the beginning of the file we declare the package namespace for this file and include several classes and packages for usage.
+
+
+....
+package io.radanalytics;
+
+import org.apache.spark.SparkConf;
+import org.apache.spark.api.java.JavaSparkContext;
+
+import org.springframework.stereotype.*;
+import org.springframework.beans.factory.annotation.*;
+import org.springframework.context.annotation.*;
+import javax.validation.constraints.*;
+import javax.annotation.*;
+....
+
+To begin we declare the class and use Spring's https://docs.spring.io/spring/docs/5.0.0.RELEASE/javadoc-api/org/springframework/stereotype/Component.html[Component] annotation marking it for auto-detection by Spring.
+
+....
+@Component
+public class SparkPiProperties {
+....
+
+In our class we declare a private variable to contain the location of the Jar file. By using Spring's https://docs.spring.io/spring/docs/5.0.0.RELEASE/javadoc-api/org/springframework/beans/factory/annotation/Value.html[Value] annotation we can set this value automatically through our resource files. We also create a public getter method for the Jar file variable.
+
+....
+    @Value("${sparkpi.jarfile}")
+    private String jarFile;
+
+    public String getJarFile() {
+        return jarFile;
+    }
+....
+
+== Create the application resource files
+
+In addition to the source files we also need a few resource files to set default properties and configurations for our application. To begin creating your resource files you will first need to make a directory for them by running the following command from the root of your project:
+
+....
+mkdir -p src/main/resources
+....
+
+The first file you will create in that directory is named `application.properties` and it should contain the following contents:
+
+....
+sparkpi.jarfile=/opt/app-root/src/@project.name@-@project.version@-original.jar
+....
+
+This line may look familiar as we create a variable in the `SparkPiProperties` class that will hold its value. This will simply allow our build process to record the location of the Jar file for our application to utilize.
+
+The next file you will create in the resources directory is named `log4j.properties` and will define some options to the logging system used by our application. It should contain the following content:
+
+....
+log4j.rootLogger=INFO, stdout
+log4j.appender.stdout=org.apache.log4j.ConsoleAppender
+log4j.appender.stdout.Target=System.out
+log4j.appender.stdout.layout=org.apache.log4j.PatternLayout
+log4j.appender.stdout.layout.ConversionPattern=%d{yyyy-MM-dd HH:mm:ss} %-5p - %m%n
+....
+
+These configuration values will define the operation of the log4j logging system, for an extended explanation of their settings please see the https://logging.apache.org/log4j/1.2/manual.html[Short introduction to log4j] from the upstream documentation.
+
+At this point your project directory should look like this:
+
+....
+$ ls
+src
+
+$ find src -type f
+src/main/java/io/radanalytics/SparkContextProvider.java
+src/main/java/io/radanalytics/SparkPiProperties.java
+src/main/java/io/radanalytics/SparkPiProducer.java
+src/main/java/io/radanalytics/SparkPiController.java
+src/main/java/io/radanalytics/SparkPiBootApplication.java
+src/main/resources/log4j.properties
+src/main/resources/application.properties
+....
+
+== Create the application build file
+
+The last piece of our project is the build file. If you are familiar with Java and the https://en.wikipedia.org/wiki/Apache_Maven[Maven] build system then this file will look familiar. Create a file name `pom.xml` in the root of your project and add these contents to it:
+
+....
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+   <modelVersion>4.0.0</modelVersion>
+   <groupId>io.radanalytics</groupId>
+   <artifactId>SparkPiBoot</artifactId>
+   <version>0.0.1-SNAPSHOT</version>
+   <packaging>jar</packaging>
+   <name>SparkPiBoot</name>
+   <description>Demo project for Spark Pi using Spring Boot</description>
+   <parent>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-parent</artifactId>
+      <version>1.5.2.RELEASE</version>
+      <relativePath />
+      <!-- lookup parent from repository -->
+   </parent>
+   <properties>
+      <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+      <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+      <java.version>1.8</java.version>
+   </properties>
+   <dependencies>
+      <dependency>
+         <groupId>org.springframework.boot</groupId>
+         <artifactId>spring-boot-starter-actuator</artifactId>
+         <exclusions>
+            <exclusion>
+               <groupId>org.springframework.boot</groupId>
+               <artifactId>spring-boot-starter-logging</artifactId>
+            </exclusion>
+         </exclusions>
+      </dependency>
+      <dependency>
+         <groupId>org.springframework.boot</groupId>
+         <artifactId>spring-boot-starter-web</artifactId>
+         <exclusions>
+            <exclusion>
+               <groupId>org.springframework.boot</groupId>
+               <artifactId>spring-boot-starter-logging</artifactId>
+            </exclusion>
+         </exclusions>
+      </dependency>
+      <dependency>
+         <groupId>org.apache.spark</groupId>
+         <artifactId>spark-core_2.11</artifactId>
+         <version>2.2.0</version>
+         <type>jar</type>
+      </dependency>
+   </dependencies>
+   <build>
+      <plugins>
+         <plugin>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-maven-plugin</artifactId>
+            <configuration>
+               <mainClass>${start-class}</mainClass>
+            </configuration>
+         </plugin>
+      <plugin>
+        <groupId>com.coderplus.maven.plugins</groupId>
+        <artifactId>copy-rename-maven-plugin</artifactId>
+        <version>1.0.1</version>
+        <executions>
+          <execution>
+            <id>rename-file</id>
+            <phase>package</phase>
+            <goals>
+              <goal>rename</goal>
+            </goals>
+            <configuration>
+              <sourceFile>target/${project.name}-${project.version}.jar.original</sourceFile>
+              <destinationFile>target/${project.name}-${project.version}-original.jar</destinationFile>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      </plugins>
+      <resources>
+        <resource>
+          <directory>src/main/resources</directory>
+          <filtering>true</filtering>
+        </resource>
+      </resources>
+   </build>
+</project>
+....
+
+This file is quite verbose and an in-depth explanation of its working is out of scope for this tutorial. If you are interested in learning more about how the Maven build system works, this https://maven.apache.org/guides/getting-started/maven-in-five-minutes.html[Mavin in 5 minutes] tutorial is a good starting point.
+
+The root of your project should now look like this:
+
+....
+$ ls
+pom.xml  src
+....
+
+== Commit your code
+
+The last step before we can build and run our application is to check in the files and push them to your repository. If you have followed the setup instructions and cloned your repository from an upstream of your creation, this should be as simple as running the following commands:
+
+....
+git add .
+git commit -m "add initial files"
+git push
+....
+
+Make sure to note the location of your remote repository as you will need it in the next step.
+
+== Build and run the application
+
+Now that all your files have been created, checked in and pushed to your online repository you are ready to command OpenShift to build and run your application. The following command will start the process, you can see that we are telling OpenShift to use the `oshinko-java-spark-build-dc` template for our application. This template contains the necessary components to invoke the Oshinko source-to-image builder. We also give our application a name, tell the builder where to find our source code and the name of the Jar file that will be produced. Issue the following command, making sure to enter your repository location for the `GIT_URI` parameter:
+
+....
+oc new-app --template oshinko-java-spark-build-dc \
+    -p APPLICATION_NAME=sparkpi \
+    -p GIT_URI=https://github.com/radanalyticsio/tutorial-sparkpi-java-spring \
+    -p APP_FILE=SparkPiBoot-0.0.1-SNAPSHOT.jar
+....
+
+Running this command should look something like this:
+
+....
+$ oc new-app --template oshinko-java-spark-build-dc \
+>     -p APPLICATION_NAME=sparkpi \
+>     -p GIT_URI=https://github.com/radanalyticsio/tutorial-sparkpi-java-spring \
+>     -p APP_FILE=SparkPiBoot-0.0.1-SNAPSHOT.jar
+--> Deploying template "sparkpi/oshinko-java-spark-build-dc" to project sparkpi
+
+     JavaSpark
+     ---------
+     Create a buildconfig, imagestream and deploymentconfig using source-to-image and java spark source hosted in git
+
+     * With parameters:
+        * Application Name=sparkpi
+        * Git Repository URL=https://github.com/radanalyticsio/tutorial-sparkpi-java-spring
+        * APP_MAIN_CLASS=
+        * Application Arguments=
+        * spark-submit Options=
+        * Git Reference=
+        * OSHINKO_CLUSTER_NAME=
+        * OSHINKO_NAMED_CONFIG=
+        * OSHINKO_SPARK_DRIVER_CONFIG=
+        * OSHINKO_DEL_CLUSTER=true
+        * APP_FILE=SparkPiBoot-0.0.1-SNAPSHOT.jar
+
+ --> Creating resources ...
+     imagestream "sparkpi" created
+     buildconfig "sparkpi" created
+     deploymentconfig "sparkpi" created
+     service "sparkpi" created
+ --> Success
+     Build scheduled, use 'oc logs -f bc/sparkpi' to track its progress.
+     Run 'oc status' to view your app.
+....
+
+Your application is now being built on OpenShift!
+
+A common task when building and running applications on OpenShift is to monitor the logs. You can even see a suggestion at the bottom of the `oc new-app` command output that suggests we run `oc logs -f bc/sparkpi`. Running this command will follow(`-f`) the BuildConfig(`bc`) for your application `sparkpi`. When you run that command you should see something that begins like this:
+
+....
+Cloning "https://github.com/radanalyticsio/tutorial-sparkpi-java-spring" ...
+	Commit:	a9c8c36d04b1b22740e4e775c7c8958e983100b9 (add scale query parameter)
+	Author:	Michael McCune <msm@redhat.com>
+	Date:	Wed Sep 6 16:55:52 2017 -0400
+Pulling image "radanalyticsio/radanalytics-java-spark:stable" ...
+==================================================================
+Starting S2I Java Build .....
+S2I source build for Maven detected
+Found pom.xml ...
+Running 'mvn -Dmaven.repo.local=/tmp/artifacts/m2 package -DskipTests -e -Dfabric8.skip=true '
+Apache Maven 3.3.3 (7994120775791599e205a5524ec3e0dfe41d4a06; 2015-04-22T11:57:37+00:00)
+Maven home: /opt/maven
+...
+....
+
+The output from this call may be quite long depending on the steps required to build the application, but at the end you should see the source-to-image builder pushing the newly created image into OpenShift. You may or may not see all the "Pushed" status lines due to output buffer logging, but at the end you should see "Push successful", like this:
+
+....
+Pushing image 172.30.1.1:5000/sparkpi/sparkpi:latest ...
+Pushed 0/35 layers, 0% complete
+Pushed 1/35 layers, 3% complete
+Pushed 2/35 layers, 6% complete
+...
+Push successful
+....
+
+To follow the progress further you will need to see the logs from the DeploymentConfig(`dc`) for your application. This can be done by changing the object type in your logs command like this `oc logs -f dc/sparkpi`. If you are quick, you might catch the log messages from OpenShift deploying your application:
+
+....
+$ oc logs -f dc/sparkpi
+--> Scaling sparkpi-1 to 1
+--> Waiting up to 10m0s for pods in rc sparkpi-1 to become ready
+--> Success
+....
+
+If you see this output, it just means that you have caught the logs before the DeploymentConfig has generated anything from your application. Run the command again and you should start to see the output from the application, which should be similar to this:
+
+....
+$ oc logs -f dc/sparkpi
+oshinko v0.4.1
+Default spark image: radanalyticsio/openshift-spark:2.2-latest
+Didn't find cluster cluster-c8c69f, creating ephemeral cluster
+Using ephemeral cluster cluster-c8c69f
+Waiting for spark master http://cluster-c8c69f-ui:8080 to be available ...
+Waiting for spark master http://cluster-c8c69f-ui:8080 to be available ...
+Waiting for spark master http://cluster-c8c69f-ui:8080 to be available ...
+Waiting for spark master http://cluster-c8c69f-ui:8080 to be available ...
+Waiting for spark workers (1/0 alive) ...
+Waiting for spark workers (1/1 alive) ...
+All spark workers alive
+spark-submit --master spark://cluster-c8c69f:7077 /opt/app-root/src/SparkPiBoot-0.0.1-SNAPSHOT.jar
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::        (v1.5.2.RELEASE)
+17/11/22 19:27:48 INFO SparkPiBootApplication: Starting SparkPiBootApplication v0.0.1-SNAPSHOT on sparkpi-1-npklx with PID 131 (/opt/app-root/src/SparkPiBoot-0.0.1-SNAPSHOT.jar started by default in /opt/jboss)
+....
+
+Let's break this down a little. These first few lines are actually being generated by the Oshinko source-to-image tooling. They show that no Apache Spark cluster has been specified for the application, and as such it must create an ephemeral cluster. It then waits for the cluster to become fully active before launching the application.
+
+The line beginning with `spark-submit` shows us the command which will run the application and the output afterwards is coming from Spring informing us that the application is starting.
+
+With your application now running on OpenShift please return to the link:/applications/my-first-radanalytics-app#user[My First RADanalytics Application page] to learn how to interact with this new microservice.
+
+You can find a reference implementation of this application in the RADanalytics GitHub organization at https://github.com/radanalyticsio/tutorial-sparkpi-java-spring
