@@ -866,6 +866,8 @@ items:
                       containerPort: 8001
                       protocol: TCP
               serviceAccount: oshinko
+=======
+>>>>>>> f6c7a8d... Adding oauth-proxy in front of the oshinko-webui.
     parameters:
       - name: SPARK_DEFAULT
         description: Full name of the spark image to use when creating clusters
