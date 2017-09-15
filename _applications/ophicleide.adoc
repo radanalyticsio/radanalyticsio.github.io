@@ -24,7 +24,7 @@ find other words in the corpora with similar vectors.
 .Command line quickstart
 ****
 Throughout this document you will find these quickstart sections which
-contain command line shortcuts for the console workflows and  proceedures
+contain command line shortcuts for the console workflows and  procedures
 described in the text.
 ****
 
@@ -85,7 +85,7 @@ Spark cluster, and a MongoDB datastore.
   radanalytics.io link:/get-started[Get Started] page. You will need to
   record the Spark master URL from this deployment.
 
-2. OpenShift includes a MongDB template in its projects, you can read more
+2. OpenShift includes a MongoDB template in its projects, you can read more
   about it in the
   https://docs.openshift.org/latest/using_images/db_images/mongodb.html[OpenShift documentation on MongoDB images].
   Be sure to create a database named `ophicleide` when you deploy the MongoDB
@@ -208,13 +208,13 @@ containers of this deployment will be based on the `ImageStreams` created
 earlier, and that each container should be redeployed if either of those
 images changes. You can also see how each container will need a few
 environment variables and a port defined during their creation. These details
-can be explored more fully by examing the source code for the Ophicleide
+can be explored more fully by examining the source code for the Ophicleide
 application components.
 
 Finally, the `Template` contains a parameters section. This section instructs
 OpenShift about variables that we may want to substitute in the final version
 of the object. In the case of Ophicleide, there are 2 required and one
-optional parameter. As noted earlier, the Spark master URL and MongDB
+optional parameter. As noted earlier, the Spark master URL and MongoDB
 connection string are required for Ophicleide to run, the optional
 `WEB_ROUTE_HOSTNAME` is used to define a custom route hostname for the
 ophicleide-web component.
@@ -333,7 +333,7 @@ oc start-build ophicleide-training
 ....
 ****
 
-Previously, the `ImageStream` objects were created to provde a location within
+Previously, the `ImageStream` objects were created to provide a location within
 the project to store the built applications. Now you must build the
 ophicleide-training and ophicleide-web images. This can be done by navigating
 to the build section in the web console or by using the command line. For a
@@ -362,7 +362,7 @@ oc new-app --template ophicleide -p SPARK=spark://mycluster:7077 -p MONGO=mongod
 ....
 ****
 
-Ophicleide can be lauched by navigating to the "Add to Project" section of
+Ophicleide can be launched by navigating to the "Add to Project" section of
 your project, and then searching for `ophicleide` in the provided form. You
 should see a screen similar to this:
 
@@ -471,7 +471,7 @@ application can evolve.
 
 2. Separate the query engine into a service. A prominent consideration when
   designing cloud native applications is scale. How will an application grow
-  to accomodate larger user bases. In the case of Ophicleide, separating out
+  to accommodate larger user bases. In the case of Ophicleide, separating out
   the query engine into a service of its own would give a graceful path to
   growth. By creating a new service specifically for queries it will become
   easier to add horizontal scalability by identifying the portions of the
