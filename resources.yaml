@@ -609,6 +609,7 @@ items:
         metadata:
           name: proxy
         spec:
+          path: /webui
           to:
             name: proxy
           tls:
@@ -692,7 +693,7 @@ items:
                   readinessProbe:
                     failureThreshold: 3
                     httpGet:
-                      path: /
+                      path: /webui
                       port: 8080
                       scheme: HTTP
                     periodSeconds: 10
@@ -702,7 +703,7 @@ items:
                   livenessProbe:
                     failureThreshold: 3
                     httpGet:
-                      path: /
+                      path: /webui
                       port: 8080
                       scheme: HTTP
                     periodSeconds: 10
