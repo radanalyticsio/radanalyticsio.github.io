@@ -25,6 +25,7 @@ GEM
       sass (~> 3.4)
     jekyll-watch (1.5.0)
       listen (~> 3.0, < 3.1)
+    json (2.1.0)
     kramdown (1.14.0)
     liquid (4.0.0)
     listen (3.0.8)
@@ -51,6 +52,7 @@ PLATFORMS
 DEPENDENCIES
   jekyll (= 3.5.1)
   jekyll-asciidoc
+  json
 
 RUBY VERSION
    ruby 2.4.1p111
