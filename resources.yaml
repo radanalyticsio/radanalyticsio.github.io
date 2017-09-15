@@ -664,6 +664,7 @@ items:
                     - --tls-key=/etc/tls/private/tls.key
                     - --cookie-secret=SECRET
                     - -openshift-sar={"namespace":"$(CURRENT_NAMESPACE)","resource":"services","name":"${OSHINKO_WEB_NAME}","verb":"get"}
+                    - -proxy-prefix=/webui
                   volumeMounts:
                   - mountPath: /etc/tls/private
                     name: proxy-tls
