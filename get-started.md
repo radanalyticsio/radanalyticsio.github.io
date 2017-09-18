@@ -96,8 +96,8 @@ data-driven application with Oshinko and OpenShift.
 
 ## 4. <a name="alternative"></a>Alternative commands to run a specific Oshinko release
 
-You can use resources.yaml to install Oshinko components from a specific release.
-First set OSHINKO_VERSION to the release version, for example:
+You can use `resources.yaml` to install Oshinko components from a specific release beginning with v0.2.6.
+First set `OSHINKO_VERSION` to the release version, for example:
 
 ```bash
 OSHINKO_VERSION="v0.2.6"
