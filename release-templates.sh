@@ -11,8 +11,8 @@ rm -rf $TOP_DIR/release_templates/*
 
 cp $TOP_DIR/resources.yaml $TOP_DIR/release_templates
 
-sed -r -i "s@(radanalyticsio/radanalytics.*spark)@\1:$1@" $TOP_DIR/release_templates/*
-sed -r -i "s@(radanalyticsio/oshinko-webui)@\1:$1@" $TOP_DIR/release_templates/*
+sed -r -i "s@(radanalyticsio/radanalytics.*spark)(:stable)@\1:$1@" $TOP_DIR/release_templates/*
+sed -r -i "s@(radanalyticsio/oshinko-webui)(:stable)@\1:$1@" $TOP_DIR/release_templates/*
 
 echo "Successfully wrote templates to release_templates/ with version tag $1"
 echo
