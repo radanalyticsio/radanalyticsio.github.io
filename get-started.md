@@ -107,7 +107,7 @@ Then run this command to generate and process a modified resources.yaml:
 
 ```
 wget https://radanalytics.io/resources.yaml -qO - \
-| sed -r -e "s@radanalyticsio/radanalytics-.*spark@&:$OSHINKO_VERSION@" \
-| sed -r -e "s@radanalyticsio/oshinko-webui@&:$OSHINKO_VERSION@" \
+| sed -r -e "s@(radanalyticsio/radanalytics.*spark)(:stable)@\1:$OSHINKO_VERSION@" \
+| sed -r -e "s@(radanalyticsio/oshinko-webui)(:stable)@\1:$OSHINKO_VERSION@" \
 | oc create -f -
 ```
