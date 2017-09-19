@@ -576,6 +576,20 @@ items:
       - kind: Service
         apiVersion: v1
         metadata:
+          name: ${PROXY_SERVICE_NAME}
+          labels:
+            name: ${PROXY_SERVICE_NAME}
+        spec:
+          ports:
+          - name: oc-proxy-port
+            protocol: TCP
+            port: 8001
+            targetPort: 8001
+          selector:
+            name: oshinko-web
+      - kind: Service
+        apiVersion: v1
+        metadata:
           name: ${OSHINKO_WEB_NAME}
           labels:
             name: ${OSHINKO_WEB_NAME}
@@ -607,6 +621,7 @@ items:
               containers:
                 - name: ${OSHINKO_WEB_NAME}
                   image: ${OSHINKO_WEB_IMAGE}
+                  imagePullPolicy: Always
                   ports:
                     - name: o-web-port
                       containerPort: 8080
@@ -616,6 +631,14 @@ items:
                       value: ${OSHINKO_CLUSTER_IMAGE}
                     - name: OSHINKO_REFRESH_INTERVAL
                       value: ${OSHINKO_REFRESH_INTERVAL}
+                    - name: WEB_ROUTE_NAME
+                      value: ${OSHINKO_WEB_NAME}
+                    - name: PROXY_SERVICE_NAME
+                      value: ${PROXY_SERVICE_NAME}
+                    - name: CURRENT_NAMESPACE
+                      valueFrom:
+                        fieldRef:
+                          fieldPath: metadata.namespace
                   readinessProbe:
                     failureThreshold: 3
                     httpGet:
@@ -625,6 +648,7 @@ items:
                     periodSeconds: 10
                     successThreshold: 1
                     timeoutSeconds: 1
+                    initialDelaySeconds: 20
                   livenessProbe:
                     failureThreshold: 3
                     httpGet:
@@ -634,6 +658,24 @@ items:
                     periodSeconds: 10
                     successThreshold: 1
                     timeoutSeconds: 1
+                    initialDelaySeconds: 20
+                - name: oc-proxy
+                  image: docker.io/radanalyticsio/oc-proxy:latest
+                  imagePullPolicy: IfNotPresent
+                  args:
+                    - proxy
+                    - "-p"
+                    - '8001'
+                    - "--address=0.0.0.0"
+                    - "--disable-filter=true"
+                    - "--api-prefix=/proxy"
+                  ports:
+                    - name: oc-proxy-port
+                      containerPort: 8001
+                      protocol: TCP
+                  volumes:
+                    - name: test-volume
+                      emptyDir: {}
               serviceAccount: oshinko
       - kind: Route
         apiVersion: v1
@@ -645,7 +687,7 @@ items:
             kind: Service
             name: ${OSHINKO_WEB_NAME}
     parameters:
-      - name: OSHINKO_CLUSTER_IMAGE
+      - name: SPARK_DEFAULT
         description: Full name of the spark image to use when creating clusters
         required: false
       - name: OSHINKO_WEB_NAME
@@ -654,7 +696,7 @@ items:
       - name: OSHINKO_WEB_IMAGE
         description: Full name of the oshinko web image
         required: true
-        value: radanalyticsio/oshinko-webui:stable
+        value: docker.io/radanalyticsio/oshinko-webui:stable
       - name: OSHINKO_WEB_ROUTE_HOSTNAME
         description: The hostname used to create the external route for the webui
       - name: OSHINKO_DEPLOYMENT_NAME
@@ -663,3 +705,6 @@ items:
       - name: OSHINKO_REFRESH_INTERVAL
         value: "5"
         description: Refresh interval for updating cluster list in seconds
+      - name: PROXY_SERVICE_NAME
+        value: "oc-proxy-service"
+        description: Name of the service running oc proxy
