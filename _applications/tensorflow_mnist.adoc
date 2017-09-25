@@ -1,0 +1,76 @@
+= Tensorflow MNIST
+:page-link: tensorflow_mnist
+:page-weight: 100
+:page-labels: [Tensorflow, S2I]
+:page-layout: application
+:page-menu_template: menu_tutorial_application.html
+:page-description: This demo shows how to use source-to-image Tensorflow Serving build to deploy a tensorflow serving prediction endpoint on Openshift. The s2i build provides a GRPC microservice endpoint for web applications to send queries to be evaluated against the tensorflow model.
+:page-project_links: ["https://github.com/radanalyticsio/tensorflow-serving-s2i"]
+
+[[introduction]]
+== Introduction
+
+MNIST digit identification application provides an example of how to use s2i build to deploy a tensorflow prediction endpoint on Openshift.
+Input data is taken from  http://yann.lecun.com/exdb/mnist/[MNIST site].
+
+
+[[architecture]]
+== Architecture
+
+The system is composed of:
+
+- A front-end application: Which has a canvas where user can draw a digit and then the image is sent to 2 prediction endpoints.
+- A Prediction Endpoint (regression): The tensorflow serving endpoint which serves a https://github.com/radanalyticsio/tensorflow-serving-s2i/tree/master/models/regression/1[regression model].
+- A Prediction Endpoint (cnn): The tensorflow serving endpoint which serves a https://github.com/radanalyticsio/tensorflow-serving-s2i/tree/master/models/cnn/1[CNN model].
+
+[[installation]]
+== Installation
+
+Installation of this application is using the `oc` command line
+tool. Once you are logged in to your OpenShift cluster, follow these
+instructions:
+
+
+1. Ensure that you are connected to an OpenShift project
+	
+	oc new-project test
+
+2. Create the template for mnist web application.
+
+   oc create -f https://raw.githubusercontent.com/sub-mod/mnist-app/master/template.json
+
+3. Create the template for tensorflow serving endpoints.
+
+   oc create -f https://raw.githubusercontent.com/radanalyticsio/tensorflow-serving-s2i/master/template.json
+
+4. Launch tensorflow serving s2i build for the tensorflow models.We need to create two prediction 
+   endpoints.One for CNN and another for regression model.
+
+	oc new-app --template=tensorflow-server --param=APPLICATION_NAME=tf-reg \
+		--param=SOURCE_REPOSITORY=https://github.com/radanalyticsio/tensorflow-serving-s2i  \
+		--param=SOURCE_DIRECTORY=models/regression
+
+
+	oc new-app --template=tensorflow-server --param=APPLICATION_NAME=tf-cnn \
+		--param=SOURCE_REPOSITORY=https://github.com/radanalyticsio/tensorflow-serving-s2i \
+		--param=SOURCE_DIRECTORY=models/cnn
+
+
+5. Launch the mnist web application with the two prediction endpoint service names.
+
+	oc new-app --template=mnistapp --param=APPLICATION_NAME=mnist-app \
+		--param=PREDICTION_SERVICE1=tf-reg \
+		--param=PREDICTION_SERVICE2=tf-cnn
+
+
+[[usage]]
+== Usage
+
+The `mnistapp` template creates a route on Openshift, so you should be able to access the web application by clicking on the link provided in the UI.
+You can now begin drawing digits on the canvas and queries will be sent to
+the two prediction endpoints.The response from the prediction endpoints are displayed on the UI.
+
+
+
+
+
