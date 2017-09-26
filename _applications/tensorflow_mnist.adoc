@@ -71,6 +71,6 @@ You can now begin drawing digits on the canvas and queries will be sent to
 the two prediction endpoints.The response from the prediction endpoints are displayed on the UI.
 
 
-
+pass:[<img src="/assets/tensorflow/mnist.png" class="img-responsive">]
 
 
