@@ -10,14 +10,14 @@
 [[introduction]]
 == Introduction
 
-MNIST digit identification application provides an example of how to use s2i build to deploy a tensorflow prediction endpoint on Openshift.
-Input data is taken from  http://yann.lecun.com/exdb/mnist/[MNIST site].
+The MNIST digit identification application provides an example of how to use https://github.com/openshift/source-to-image[source-to-image] to build to deploy a tensorflow prediction endpoint on Openshift.
+Input data is taken from the http://yann.lecun.com/exdb/mnist/[MNIST site].
 
 
 [[architecture]]
 == Architecture
 
-The system is composed of:
+The system is composed of 3 pods:
 
 - A front-end application: Which has a canvas where user can draw a digit and then the image is sent to 2 prediction endpoints.
 - A Prediction Endpoint (regression): The tensorflow serving endpoint which serves a https://github.com/radanalyticsio/tensorflow-serving-s2i/tree/master/models/regression/1[regression model].
@@ -66,9 +66,9 @@ instructions:
 [[usage]]
 == Usage
 
-The `mnistapp` template creates a route on Openshift, so you should be able to access the web application by clicking on the link provided in the UI.
+The `mnistapp` template creates a route on Openshift, so you should now be able to access the web application by clicking on the link provided in the UI.
 You can now begin drawing digits on the canvas and queries will be sent to
-the two prediction endpoints.The response from the prediction endpoints are displayed on the UI.
+the two prediction endpoints.The response from the prediction endpoints are displayed on the UI and should look similar to the following Image.
 
 
 pass:[<img src="/assets/tensorflow/mnist.png" class="img-responsive">]
