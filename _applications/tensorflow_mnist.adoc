@@ -10,7 +10,7 @@
 [[introduction]]
 == Introduction
 
-The MNIST digit identification application provides an example of how to use https://github.com/openshift/source-to-image[source-to-image] to build to deploy a tensorflow prediction endpoint on Openshift.
+The MNIST digit identification application provides an example of how to use https://github.com/openshift/source-to-image[source-to-image] to build and deploy a tensorflow prediction endpoint on Openshift.
 Input data is taken from the http://yann.lecun.com/exdb/mnist/[MNIST site].
 
 
