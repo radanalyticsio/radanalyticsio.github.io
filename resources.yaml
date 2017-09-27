@@ -667,6 +667,7 @@ items:
                     - --proxy-prefix=/webui
                     - -cookie-expire=24h0m0s
                     - -proxy-prefix=/webui
+                    - -cookie-expire=24h0m0s
                   volumeMounts:
                   - mountPath: /etc/tls/private
                     name: proxy-tls
