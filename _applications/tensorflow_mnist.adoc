@@ -32,29 +32,28 @@ instructions:
 
 
 1. Ensure that you are connected to an OpenShift project
-	
+
 	oc new-project test
 
 2. Create the template for mnist web application.
 
-   oc create -f https://raw.githubusercontent.com/sub-mod/mnist-app/master/template.json
+    oc create -f https://raw.githubusercontent.com/sub-mod/mnist-app/master/template.json
 
 3. Create the template for tensorflow serving endpoints.
 
-   oc create -f https://raw.githubusercontent.com/radanalyticsio/tensorflow-serving-s2i/master/template.json
+    oc create -f https://raw.githubusercontent.com/radanalyticsio/tensorflow-serving-s2i/master/template.json
 
 4. Launch tensorflow serving s2i build for the tensorflow models.We need to create two prediction 
    endpoints.One for CNN and another for regression model.
 
 	oc new-app --template=tensorflow-server --param=APPLICATION_NAME=tf-reg \
-		--param=SOURCE_REPOSITORY=https://github.com/radanalyticsio/tensorflow-serving-s2i  \
-		--param=SOURCE_DIRECTORY=models/regression
+		--param=SOURCE_REPOSITORY=https://github.com/sub-mod/mnist-models  \
+		--param=SOURCE_DIRECTORY=regression
 
 
 	oc new-app --template=tensorflow-server --param=APPLICATION_NAME=tf-cnn \
-		--param=SOURCE_REPOSITORY=https://github.com/radanalyticsio/tensorflow-serving-s2i \
-		--param=SOURCE_DIRECTORY=models/cnn
-
+		--param=SOURCE_REPOSITORY=https://github.com/sub-mod/mnist-models \
+		--param=SOURCE_DIRECTORY=cnn
 
 5. Launch the mnist web application with the two prediction endpoint service names.
 
