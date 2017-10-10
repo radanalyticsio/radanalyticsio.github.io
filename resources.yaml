@@ -686,6 +686,9 @@ items:
           to:
             kind: Service
             name: ${OSHINKO_WEB_NAME}
+          alternateBackends:
+            -  kind: Service
+               name: ${OSHINKO_WEB_NAME}
     parameters:
       - name: SPARK_DEFAULT
         description: Full name of the spark image to use when creating clusters
@@ -696,7 +699,7 @@ items:
       - name: OSHINKO_WEB_IMAGE
         description: Full name of the oshinko web image
         required: true
-        value: docker.io/radanalyticsio/oshinko-webui:stable
+        value: docker.io/crobby/oshinko-webui:api-based-webui
       - name: OSHINKO_WEB_ROUTE_HOSTNAME
         description: The hostname used to create the external route for the webui
       - name: OSHINKO_DEPLOYMENT_NAME
