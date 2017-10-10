@@ -621,7 +621,7 @@ items:
               containers:
                 - name: ${OSHINKO_WEB_NAME}
                   image: ${OSHINKO_WEB_IMAGE}
-                  imagePullPolicy: Always
+                  imagePullPolicy: IfNotPresent
                   ports:
                     - name: o-web-port
                       containerPort: 8080
