@@ -807,6 +807,9 @@ items:
           to:
             kind: Service
             name: ${OSHINKO_WEB_NAME}
+          alternateBackends:
+            - kind: Service
+              name: ${OSHINKO_WEB_NAME}
       - kind: DeploymentConfig
         apiVersion: v1
         metadata:
