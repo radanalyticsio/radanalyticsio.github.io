@@ -579,6 +579,7 @@ items:
           name: ${OSHINKO_WEB_NAME}-proxy
           labels:
             name: ${OSHINKO_WEB_NAME}-proxy
+            appName: ${OSHINKO_WEB_NAME}
         spec:
           ports:
           - name: oc-proxy-port
@@ -593,6 +594,7 @@ items:
           name: ${OSHINKO_WEB_NAME}
           labels:
             name: ${OSHINKO_WEB_NAME}
+            appName: ${OSHINKO_WEB_NAME}
         spec:
           ports:
             - name: o-web-port
@@ -605,6 +607,9 @@ items:
         apiVersion: v1
         metadata:
           name: ${OSHINKO_WEB_NAME}
+          labels:
+            name: ${OSHINKO_WEB_NAME}
+            appName: ${OSHINKO_WEB_NAME}
         spec:
           strategy:
             type: Rolling
@@ -617,6 +622,7 @@ items:
             metadata:
               labels:
                 name: ${OSHINKO_WEB_NAME}
+                appName: ${OSHINKO_WEB_NAME}
             spec:
               containers:
                 - name: ${OSHINKO_WEB_NAME}
@@ -679,6 +685,8 @@ items:
         apiVersion: v1
         metadata:
           name: ${OSHINKO_WEB_NAME}
+          labels:
+            appName: ${OSHINKO_WEB_NAME}
         spec:
           host: ${OSHINKO_WEB_ROUTE_HOSTNAME}
           to:
