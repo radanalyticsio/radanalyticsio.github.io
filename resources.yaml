@@ -627,8 +627,8 @@ items:
                       containerPort: 8080
                       protocol: TCP
                   env:
-                    - name: OSHINKO_SPARK_IMAGE
-                      value: ${OSHINKO_CLUSTER_IMAGE}
+                    - name: SPARK_DEFAULT
+                      value: ${SPARK_DEFAULT}
                     - name: OSHINKO_REFRESH_INTERVAL
                       value: ${OSHINKO_REFRESH_INTERVAL}
                     - name: WEB_ROUTE_NAME
