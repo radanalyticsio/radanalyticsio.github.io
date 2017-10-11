@@ -697,7 +697,7 @@ items:
       - name: OSHINKO_WEB_IMAGE
         description: Full name of the oshinko web image
         required: true
-        value: crobby/oshinko-webui:api-based-webui
+        value: radanalyticsio/oshinko-webui:stable
       - name: OSHINKO_WEB_ROUTE_HOSTNAME
         description: The hostname used to create the external route for the webui
       - name: OSHINKO_REFRESH_INTERVAL
