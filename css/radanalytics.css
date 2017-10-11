@@ -76,3 +76,11 @@ div.sidebarblock > div.content > div.title {
     font-weight: 400;
     margin-bottom: 10px;
 }
+
+a.fp-link {
+    color: black;
+}
+
+a.fp-link:hover {
+    text-decoration: none;
+}
