@@ -6,4 +6,4 @@ This project provides an AMQP (Advanced Message Queuing Protocol) connector
 for Apache Spark Streaming in order to ingest data as a stream from all
 possible AMQP based sources.
 
-* https://github.com/radanalyticsio/streaming-amqp[streaming-amqp]
+* https://github.com/radanalyticsio/streaming-amqp[streaming-amqp] +++<iframe src="https://ghbtns.com/github-btn.html?user=radanalyticsio&repo=streaming-amqp&type=star&count=true" frameborder="0" scrolling="0" width="80px" height="20px"></iframe>+++

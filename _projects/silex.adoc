@@ -8,4 +8,4 @@ for now it has an application skeleton, some useful extensions to data frames
 and RDDs, utility functions for handling time and stemming text, and helpers
 for feature extraction.
 
-* https://github.com/radanalyticsio/silex[silex]
+* https://github.com/radanalyticsio/silex[silex] +++<iframe src="https://ghbtns.com/github-btn.html?user=radanalyticsio&repo=silex&type=star&count=true" frameborder="0" scrolling="0" width="80px" height="20px"></iframe>+++

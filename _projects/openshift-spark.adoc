@@ -7,4 +7,4 @@ Apache Spark images for OpenShift. These images can then be used to deploy
 Spark clusters within an OpenShift project, or for creating applications which
 utilize Spark in a standalone fashion.
 
-* https://github.com/radanalyticsio/openshift-spark[openshift-spark]
+* https://github.com/radanalyticsio/openshift-spark[openshift-spark] +++<iframe src="https://ghbtns.com/github-btn.html?user=radanalyticsio&repo=openshift-spark&type=star&count=true" frameborder="0" scrolling="0" width="170px" height="20px"></iframe>+++
