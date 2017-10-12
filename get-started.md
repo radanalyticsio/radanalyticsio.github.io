@@ -64,7 +64,7 @@ First, install all the Oshinko resources into your project -
 oc create -f https://radanalytics.io/resources.yaml
 ```
 
-This creates the latest versions of the Oshinko S2I (source-to-image) templates and the Oshinko Web UI application, as well as a ServiceAccount and RoleBinding needed for creation and management of Apache Spark clusters. Look [here](https://radanalytics.io/openshift/README.md) for instructions on how to use components from a specific Oshinko release.
+This creates the latest versions of the Oshinko S2I (source-to-image) templates and the Oshinko Web UI application, as well as a ServiceAccount and RoleBinding needed for creation and management of Apache Spark clusters. Look [here](openshift/README.md) for instructions on how to use components from a specific Oshinko release.
 
 Second, start the Oshinko Web UI application -
 
