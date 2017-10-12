@@ -15,7 +15,7 @@ to *oc create*, or you can use shell commands like this:
 
 ```bash
 # The url of the resources.yaml you wish to use
-RESOURCES_URL=https://radanalytics.io/openshift/resources.yaml
+RESOURCES_URL=https://radanalytics.io/resources.yaml
 
 # The default tag that file uses for Oshinko images (listed below)
 DEFAULT_TAG=stable
@@ -28,8 +28,8 @@ wget $RESOURCES_URL -qO - \
 | sed -r -e "s@(radanalyticsio/.*:)($DEFAULT_TAG)@\1$NEW_TAG@" | oc create -f -
 ```
   
-https://radanalytics.io/openshift/resources.yaml  
-This is a copy of the latest resources file from the *Getting Started* instructions.  
+https://radanalytics.io/resources.yaml  
+This is the latest resources file from [radanalytics.io](https://radanalytics.io)  
 DEFAULT_TAG=stable  
 NEW_TAG may be any version newer than v0.3.1
   
