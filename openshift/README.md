@@ -1,7 +1,7 @@
 # Archived resources.yaml versions
 
 This is a list of resource files that
-can be used to install templates for particular Oshinko releases.
+can be used to install templates for specific Oshinko releases.
 Each file is listed below with the Oshinko release it
 installs by default and other releases which it supports.
 
@@ -36,12 +36,12 @@ NEW_TAG may be any version newer than v0.3.1
 https://radanalytics.io/openshift/resources-v0.3.yaml  
 This file supports versions v0.2.x and v0.3.x of Oshinko  
 DEFAUT_TAG=v0.3.1  
-NEW_TAG may be an version from v0.2.6 to v0.3.1 inclusive
+NEW_TAG may be any version from v0.2.6 to v0.3.1 inclusive
 
 https://radanalytics.io/openshift/resources-2017-4-0.yaml  
-This file installs a specifc demo release from April of 2017 and is
+This file installs a demo release from April of 2017 and is
 not valid for any other version.
 
 https://radanalytics.io/openshift/resources-2017-6-0.yaml  
-This file installs a particular demo release from June of 2017 and is
+This file installs a demo release from June of 2017 and is
 not valid for any other version
