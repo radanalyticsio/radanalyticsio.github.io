@@ -55,8 +55,9 @@ The following diagram shows the overall architecture of the Ophicleide suite.
 
 pass:[<img src="/assets/ophicleide/architecture.svg" alt="Ophicleide Architecture" class="img-responsive">]
 
-*Please note that the number of Spark containers is to demonstrate the use of a
-processing cluster and not an exact number.*
+_Please note that the number of Spark containers and text data presented here
+is for demonstration purposes, the actual numbers will differ depending on
+your usage._
 
 [[installation]]
 == Installation
