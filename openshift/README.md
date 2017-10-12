@@ -35,7 +35,7 @@ NEW_TAG may be any version newer than v0.3.1
   
 https://radanalytics.io/openshift/resources-v0.3.yaml  
 This file supports versions v0.2.x and v0.3.x of Oshinko  
-DEFAUT_TAG=v0.3.1  
+DEFAULT_TAG=v0.3.1  
 NEW_TAG may be any version from v0.2.6 to v0.3.1 inclusive
 
 https://radanalytics.io/openshift/resources-2017-4-0.yaml  
