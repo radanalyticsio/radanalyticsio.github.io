@@ -64,7 +64,7 @@ First, install all the Oshinko resources into your project -
 oc create -f https://radanalytics.io/resources.yaml
 ```
 
-This creates the latest versions of the Oshinko S2I (source-to-image) templates and the Oshinko Web UI application, as well as a ServiceAccount and RoleBinding needed for creation and management of Apache Spark clusters. Follow [this alternative](#alternative) to use components from a specific Oshinko release.
+This creates the latest versions of the Oshinko S2I (source-to-image) templates and the Oshinko Web UI application, as well as a ServiceAccount and RoleBinding needed for creation and management of Apache Spark clusters. Look [here](https://radanalytics.io/openshift/README.md) to use components from a specific Oshinko release.
 
 Second, start the Oshinko Web UI application -
 
@@ -93,21 +93,3 @@ With Oshinko now installed and running in your OpenShift project, we recommend c
 the tutorial applications that the radanalytics.io community have created.
 These tutorials will you show how to deploy and utilize an insightful
 data-driven application with Oshinko and OpenShift.
-
-## 4. <a name="alternative"></a>Alternative commands to run a specific Oshinko release
-
-You can use `resources.yaml` to install Oshinko components from a specific release beginning with v0.2.6.
-First set `OSHINKO_VERSION` to the release version, for example:
-
-```bash
-OSHINKO_VERSION="v0.2.6"
-```
-
-Then run this command to generate and process a modified resources.yaml:
-
-```
-wget https://radanalytics.io/resources.yaml -qO - \
-| sed -r -e "s@(radanalyticsio/radanalytics.*spark)(:stable)@\1:$OSHINKO_VERSION@" \
-| sed -r -e "s@(radanalyticsio/oshinko-webui)(:stable)@\1:$OSHINKO_VERSION@" \
-| oc create -f -
-```
