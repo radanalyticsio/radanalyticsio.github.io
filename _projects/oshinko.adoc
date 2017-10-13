@@ -1,6 +1,7 @@
 = Oshinko
 :page-labels: Infrastructure
 :page-weight: 100
+:page-liquid:
 
 Oshinko is a top level namespace that covers several individual projects
 which are focused on delivering Apache Spark clusters inside OpenShift. The
@@ -9,28 +10,28 @@ interaction with an OpenShift deployment.
 
 The individual components of Oshinko are:
 
-* https://github.com/radanalyticsio/oshinko-cli[oshinko-cli]
-+++<iframe src="https://ghbtns.com/github-btn.html?user=radanalyticsio&repo=oshinko-cli&type=star&count=true" frameborder="0" scrolling="0" width="80px" height="20px"></iframe>+++,
-  the cli repository contains a command line tool for managing clusters, it
-  also contains a Go language library encompassing the business logic of
-  managing clusters, and a REST server which uses that library
+* https://github.com/radanalyticsio/oshinko-cli[oshinko-cli] {% include gh_star.html name='oshinko-cli' %}
++
+The cli repository contains a command line tool for managing clusters, it
+also contains a Go language library encompassing the business logic of
+managing clusters, and a REST server which uses that library
 
-* https://github.com/radanalyticsio/oshinko-console[oshinko-console]
-+++<iframe src="https://ghbtns.com/github-btn.html?user=radanalyticsio&repo=oshinko-console&type=star&count=true" frameborder="0" scrolling="0" width="80px" height="20px"></iframe>+++,
-  an extension to the OpenShift console which enables integrated support for
-  managing clusters
+* https://github.com/radanalyticsio/oshinko-console[oshinko-console] {% include gh_star.html name='oshinko-console' %}
++
+An extension to the OpenShift console which enables integrated support for
+managing clusters
 
-* https://github.com/radanalyticsio/oshinko-s2i[oshinko-s2i]
-+++<iframe src="https://ghbtns.com/github-btn.html?user=radanalyticsio&repo=oshinko-s2i&type=star&count=true" frameborder="0" scrolling="0" width="80px" height="20px"></iframe>+++,
-  source-to-image tooling for creating Spark applications with the ability to
-  deploy transient per-application clusters
+* https://github.com/radanalyticsio/oshinko-s2i[oshinko-s2i] {% include gh_star.html name='oshinko-s2i' %}
++
+Source-to-image tooling for creating Spark applications with the ability to
+deploy transient per-application clusters
 
-* https://github.com/radanalyticsio/oshinko-specs[oshinko-specs]
-+++<iframe src="https://ghbtns.com/github-btn.html?user=radanalyticsio&repo=oshinko-specs&type=star&count=true" frameborder="0" scrolling="0" width="80px" height="20px"></iframe>+++,
-  documents containing feature proposals for implementation in the Oshinko
-  namespace
+* https://github.com/radanalyticsio/oshinko-specs[oshinko-specs] {% include gh_star.html name='oshinko-specs' %}
++
+Documents containing feature proposals for implementation in the Oshinko
+namespace
 
-* https://github.com/radanalyticsio/oshinko-webui[oshinko-webui]
-+++<iframe src="https://ghbtns.com/github-btn.html?user=radanalyticsio&repo=oshinko-webui&type=star&count=true" frameborder="0" scrolling="0" width="80px" height="20px"></iframe>+++,
-  an HTML server which provides a container based browser interface for cluster
-  management
+* https://github.com/radanalyticsio/oshinko-webui[oshinko-webui] {% include gh_star.html name='oshinko-webui' %}
++
+An HTML server which provides a container based browser interface for cluster
+management
