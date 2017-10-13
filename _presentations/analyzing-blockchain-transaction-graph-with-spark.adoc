@@ -1,0 +1,21 @@
+= Analyzing Blockchain transaction graph with Spark
+:page-presentor: Jirka Kremser
+:page-date: 2017-10-06
+:page-media-url: https://www.youtube.com/watch?v=vpm9GyxUqLQ
+:page-slides-url: http://bit.ly/blkSpark
+
+Cryptocurrencies attract various groups of people. Among other it could be investors,
+people from retail, tech enthusiasts, crypto-anarchists, etc. We are not going to
+focus on anything else than the raw technology behind the Blockchain, leaving aside all
+the ideology and hype that comes with the Bitcoin.
+
+In this presentation we will show how the graph data can be processed in Spark. Blockchain binary
+data is transformed into large graph of transactions so that we can work with the graph from Spark
+using https://spark.apache.org/graphx/[GraphX] and https://graphframes.github.io/[GraphFrames] libraries.
+The demo shows two notebooks with multiple examples of calculating interesting features
+of the transaction graph.
+
+The GraphX based notebook uses the https://github.com/spark-notebook/spark-notebook[spark-notebook]
+as the notebook technology, while the second one uses GraphFrames and
+https://github.com/jupyter/notebook[Jupyter] notebook. Also the second notebook
+connects to an existing spark cluster that was created by Oshinko tools.
