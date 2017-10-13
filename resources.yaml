@@ -9,7 +9,7 @@ items:
     metadata:
       name: oshinko
       annotations:
-        serviceaccounts.openshift.io/oauth-redirectreference.primary: '{"kind":"OAuthRedirectReference","apiVersion":"v1","reference":{"kind":"Route","name":"proxy"}}'
+        serviceaccounts.openshift.io/oauth-redirectreference.first: '{"kind":"OAuthRedirectReference","apiVersion":"v1","reference":{"kind":"Route","name":"oshinko-web-oaproxy"}}'
 
   - apiVersion: v1
     kind: RoleBinding
@@ -577,9 +577,9 @@ items:
       - kind: Service
         apiVersion: v1
         metadata:
-          name: ${OSHINKO_WEB_NAME}-proxy
+          name: ${OSHINKO_WEB_NAME}-ocproxy
           labels:
-            name: ${OSHINKO_WEB_NAME}-proxy
+            name: ${OSHINKO_WEB_NAME}-ocproxy
             appName: ${OSHINKO_WEB_NAME}
         spec:
           ports:
@@ -607,22 +607,22 @@ items:
       - kind: Route
         apiVersion: route.openshift.io/v1
         metadata:
-          name: proxy
+          name: ${OSHINKO_WEB_NAME}-oaproxy
         spec:
           path: /webui
           to:
-            name: proxy
+            name: ${OSHINKO_WEB_NAME}-oaproxy
           tls:
             termination: Reencrypt
       - kind: Service
         apiVersion: v1
         metadata:
-          name: proxy
+          name: ${OSHINKO_WEB_NAME}-oaproxy
           annotations:
             service.alpha.openshift.io/serving-cert-secret-name: proxy-tls
         spec:
           ports:
-          - name: ${OSHINKO_WEB_NAME}-oaproxy
+          - name: oaproxy-port
             port: 443
             targetPort: 8443
           selector:
@@ -650,7 +650,7 @@ items:
             spec:
               containers:
                 - name: oauth-proxy
-                  image: docker.io/openshift/oauth-proxy:v1.0.0
+                  image: openshift/oauth-proxy:v1.0.0
                   imagePullPolicy: IfNotPresent
                   ports:
                   - containerPort: 8443
@@ -664,7 +664,7 @@ items:
                     - --tls-key=/etc/tls/private/tls.key
                     - --cookie-secret=SECRET
                     - -openshift-sar={"namespace":"$(CURRENT_NAMESPACE)","resource":"services","name":"${OSHINKO_WEB_NAME}","verb":"get"}
-                    - -proxy-prefix=/webui
+                    - --proxy-prefix=/webui
                     - -cookie-expire=24h0m0s
                   volumeMounts:
                   - mountPath: /etc/tls/private
@@ -688,6 +688,8 @@ items:
                       value: ${OSHINKO_REFRESH_INTERVAL}
                     - name: WEB_ROUTE_NAME
                       value: ${OSHINKO_WEB_NAME}
+                    - name: INSECURE_WEBUI
+                      value: "false"
                     - name: CURRENT_NAMESPACE
                       valueFrom:
                         fieldRef:
@@ -727,26 +729,10 @@ items:
                       containerPort: 8001
                       protocol: TCP
               volumes:
-                - name: test-volume
-                  emptyDir: {}
                 - name: proxy-tls
                   secret:
                     secretName: proxy-tls
               serviceAccount: oshinko
-      - kind: Route
-        apiVersion: v1
-        metadata:
-          name: ${OSHINKO_WEB_NAME}
-          labels:
-            appName: ${OSHINKO_WEB_NAME}
-        spec:
-          host: ${OSHINKO_WEB_ROUTE_HOSTNAME}
-          to:
-            kind: Service
-            name: ${OSHINKO_WEB_NAME}
-          alternateBackends:
-            -  kind: Service
-               name: ${OSHINKO_WEB_NAME}
     parameters:
       - name: SPARK_DEFAULT
         description: Full name of the spark image to use when creating clusters
@@ -757,7 +743,7 @@ items:
       - name: OSHINKO_WEB_IMAGE
         description: Full name of the oshinko web image
         required: true
-        value: radanalyticsio/oshinko-webui:stable
+        value: docker.io/crobby/oshinko-webui:oauth-proxy-launch
       - name: OSHINKO_WEB_ROUTE_HOSTNAME
         description: The hostname used to create the external route for the webui
       - name: OSHINKO_REFRESH_INTERVAL
@@ -772,9 +758,9 @@ items:
       - kind: Service
         apiVersion: v1
         metadata:
-          name: ${PROXY_SERVICE_NAME}
+          name: ${OSHINKO_WEB_NAME}-proxy
           labels:
-            name: ${PROXY_SERVICE_NAME}
+            name: ${OSHINKO_WEB_NAME}-proxy
         spec:
           ports:
           - name: oc-proxy-port
@@ -807,13 +793,10 @@ items:
           to:
             kind: Service
             name: ${OSHINKO_WEB_NAME}
-          alternateBackends:
-            - kind: Service
-              name: ${OSHINKO_WEB_NAME}
       - kind: DeploymentConfig
         apiVersion: v1
         metadata:
-          name: ${OSHINKO_DEPLOYMENT_NAME}
+          name: ${OSHINKO_WEB_NAME}
         spec:
           strategy:
             type: Rolling
@@ -843,7 +826,7 @@ items:
                     - name: WEB_ROUTE_NAME
                       value: ${OSHINKO_WEB_NAME}
                     - name: INSECURE_WEBUI
-                      value: ${INSECURE_WEBUI}
+                      value: "true"
                     - name: CURRENT_NAMESPACE
                       valueFrom:
                         fieldRef:
@@ -900,7 +883,4 @@ items:
       - name: OSHINKO_REFRESH_INTERVAL
         value: "5"
         description: Refresh interval for updating cluster list in seconds
-      - name: INSECURE_WEBUI
-        value: "true"
-        description: Run the webui without oauth in front
 
