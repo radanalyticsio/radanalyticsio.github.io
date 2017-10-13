@@ -1,9 +1,10 @@
 = Scorpion Stare
 :page-labels: Spark, Extension
 :page-weight: 100
+:page-liquid:
 
 This project provides Apache Spark backend plugin-ins for awareness of
 Kubernetes, OpenShift, Oshinko and the like. With this scheduler your Spark
 applications can utilize elastic scale capabilities.
 
-* https://github.com/radanalyticsio/scorpion-stare[scorpion-stare] +++<iframe src="https://ghbtns.com/github-btn.html?user=radanalyticsio&repo=scorpion-stare&type=star&count=true" frameborder="0" scrolling="0" width="80px" height="20px"></iframe>+++
+* https://github.com/radanalyticsio/scorpion-stare[scorpion-stare] {% include gh_star.html name='scorpion-stare' %}
