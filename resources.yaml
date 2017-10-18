@@ -664,7 +664,7 @@ items:
                     timeoutSeconds: 1
                     initialDelaySeconds: 20
                 - name: oc-proxy
-                  image: docker.io/radanalyticsio/oc-proxy:stable
+                  image: radanalyticsio/oc-proxy:stable
                   imagePullPolicy: IfNotPresent
                   args:
                     - proxy
