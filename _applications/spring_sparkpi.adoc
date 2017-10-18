@@ -6,7 +6,7 @@
 :page-menu_template: menu_tutorial_application.html
 :page-menu_items: lightning
 :page-description: This source-to-image Java application combines the Apache Spark Pi estimation example with the popular Spring Boot framework. It provides an HTTP microservice which will calculate the value of Pi on demand.
-:page-project_links: ["https://github.com/radanalyticsio/spring-sparkpi"]
+:page-project_links: ["https://github.com/radanalyticsio/tutorial-sparkpi-java-spring"]
 
 [[introduction]]
 == Introduction
@@ -47,7 +47,7 @@ instructions:
 
    oc new-app --template oshinko-java-spark-build-dc \
        -p APPLICATION_NAME=spring-sparkpi \
-       -p GIT_URI=https://github.com/radanalyticsio/spring-sparkpi \
+       -p GIT_URI=https://github.com/radanalyticsio/tutorial-sparkpi-java-spring \
        -p APP_FILE=SparkPiBoot-0.0.1-SNAPSHOT.jar
 
 3. Expose an external route
