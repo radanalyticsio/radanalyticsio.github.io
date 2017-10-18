@@ -54,7 +54,7 @@ directly from a source repository.
 
 Download the [oc command](https://github.com/openshift/origin/releases) and login to an existing cluster with `oc login https://...`. Alternatively, [setup your own cluster](https://www.openshift.org/#try) with `oc cluster up` or the
 [Minishift](https://www.openshift.org/minishift) tool(Windows and Mac users
-may find this option easiest to start). We strongly recommend using origin version 3.6.0 or newer.
+may find this option easiest to start). Oshinko version 0.4.0 and newer require origin 3.6.0.
 
 ## 2. Install and setup Oshinko
 
