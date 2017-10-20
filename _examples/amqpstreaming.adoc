@@ -70,4 +70,4 @@ the stream of temperature values.
 [[videos]]
 == Videos
 
-No videos are avialble for this application.
+No videos are available for this application.
