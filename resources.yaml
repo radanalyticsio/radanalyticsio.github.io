@@ -614,6 +614,9 @@ items:
             name: ${OSHINKO_WEB_NAME}-oaproxy
           tls:
             termination: Reencrypt
+          alternateBackends:
+            - kind: Service
+              name: ${OSHINKO_WEB_NAME}-oaproxy
       - kind: Service
         apiVersion: v1
         metadata:
