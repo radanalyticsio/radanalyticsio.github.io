@@ -1,0 +1,6 @@
+= One-Pass Data Science in Apache Spark with Generative T-Digests
+:page-presentor: Erik Erlandson
+:page-date: 2017-10-26
+:page-media-url: https://youtu.be/uKx5mTX4v3s
+
+The T-Digest has earned a reputation as a highly efficient and versatile sketching data structure; however, its applications as a fast generative model are less appreciated. Several common algorithms from machine learning use randomization of feature columns as a building block. Column randomization is an awkward and expensive operation when performed directly, but when implemented with generative T-Digests, it can be accomplished elegantly in a single pass that also parallelizes across Spark data partitions. In this talk Erik will review the principles of T-Digest sketching, and how T-Digests can be applied as generative models. He will explain how generative T-Digests can be used to implement fast randomization of columnar data, and conclude with demonstrations of T-Digest randomization applied to Variable Importance, Random Forest Clustering and Feature Reduction. Attendees will leave this talk with an understanding of T-Digest sketching, how T-Digests can be used as generative models, and insights into applying generative T-Digests to accelerate their own data science projects.
