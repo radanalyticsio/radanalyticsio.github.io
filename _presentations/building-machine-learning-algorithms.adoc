@@ -2,5 +2,6 @@
 :page-presentor: William Benton
 :page-date: 2017-10-25
 :page-media-url: https://youtu.be/DtKBGwedap0
+:page-slides-url:  https://www.slideshare.net/SparkSummit/building-machine-learning-algorithms-on-apache-spark-with-william-benton
 
 There are many reasons why you might want to implement your own machine learning algorithms on Spark: you might want to experiment with a new idea, try and reproduce results from a recent research paper, or simply to use an existing technique that isn’t implemented in MLlib. In this talk, we’ll walk through the process of developing a new machine learning model for Spark. We’ll start with the basics, by considering how we’d design a parallel implementation of a particular unsupervised learning technique. The bulk of the talk will focus on the details you need to know to turn an algorithm design into an efficient parallel implementation on Spark: we’ll start by reviewing a simple RDD-based implementation, show some improvements, point out some pitfalls to avoid, and iteratively extend our implementation to support contemporary Spark features like ML Pipelines and structured query processing. You’ll leave this talk with everything you need to build a new machine learning technique that runs on Spark.
