@@ -1,0 +1,8 @@
+= From notebooks to cloud native: a modern path for data driven applications
+:page-presentor: Michael McCune
+:page-date: 2017-09-28
+:page-media-url: https://vimeo.com/240742127
+
+The world of application development and deployment is changing rapidly with the advent of container-based orchestration platforms. Adjusting to these changes takes an open mind and a willingness to explore new techniques and methodologies. Notebook interfaces like Apache Zeppelin and Project Jupyter are excellent starting points for sketching out ideas and exploring data-driven algorithms, but where does the process lead after the notebook work has been completed? Combining the power and flexibility of notebooks with that of containers presents new opportunities to increase your productivity, such as creating processing clusters on demand, increased repeatability, and using continuous delivery techniques.
+
+Michael McCune explains how to use notebook interfaces to create insightful data-driven demonstrations, which can then be ported directly into cloud-native applications, as he walks you through evolving an Apache Spark financial services application from a notebook to a microservice to a packaged container before finally deploying it through continuous delivery to a Kubernetes-backed platform. Along the way, Michael discusses the benefits and challenges that exist when migrating Apache Spark-based applications into containerized orchestration platforms.
