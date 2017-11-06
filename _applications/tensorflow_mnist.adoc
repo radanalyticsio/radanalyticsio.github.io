@@ -20,8 +20,10 @@ Input data is taken from the http://yann.lecun.com/exdb/mnist/[MNIST site].
 The system is composed of 3 pods:
 
 - A front-end application: Which has a canvas where user can draw a digit and then the image is sent to 2 prediction endpoints.
-- A Prediction Endpoint (regression): The tensorflow serving endpoint which serves a https://github.com/radanalyticsio/tensorflow-serving-s2i/tree/master/models/regression/1[regression model].
-- A Prediction Endpoint (cnn): The tensorflow serving endpoint which serves a https://github.com/radanalyticsio/tensorflow-serving-s2i/tree/master/models/cnn/1[CNN model].
+- A Prediction Endpoint (regression): The tensorflow serving endpoint which serves a https://github.com/sub-mod/mnist-models/tree/master/regression/1[regression model].
+- A Prediction Endpoint (cnn): The tensorflow serving endpoint which serves a https://github.com/sub-mod/mnist-models/tree/master/cnn/1[CNN model].
+
+Notebooks are available here https://github.com/sub-mod/mnist-models/blob/master/reg.ipynb[regression] and https://github.com/sub-mod/mnist-models/blob/master/cnn.ipynb[cnn].
 
 [[installation]]
 == Installation
