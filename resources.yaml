@@ -67,7 +67,7 @@ items:
               forcePull: true
               from:
                 kind: DockerImage
-                name: radanalyticsio/radanalytics-pyspark:stable
+                name: crobby/radanalytics-pyspark
           triggers:
             - type: ConfigChange
             - type: ImageChange
@@ -878,14 +878,13 @@ items:
       - name: SPARK_DEFAULT
         description: Full name of the spark image to use when creating clusters
         required: false
-        value: radanalyticsio/openshift-spark
       - name: OSHINKO_WEB_NAME
         description: Name of the oshinko web service
         value: "oshinko-web"
       - name: OSHINKO_WEB_IMAGE
         description: Full name of the oshinko web image
         required: true
-        value: radanalyticsio/oshinko-webui:stable
+        value: 172.30.1.1:5000/myproject/oshinko-webui
       - name: OSHINKO_WEB_ROUTE_HOSTNAME
         description: The hostname used to create the external route for the webui
       - name: OSHINKO_REFRESH_INTERVAL
