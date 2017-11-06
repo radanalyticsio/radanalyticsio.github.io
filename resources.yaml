@@ -67,7 +67,7 @@ items:
               forcePull: true
               from:
                 kind: DockerImage
-                name: crobby/radanalytics-pyspark
+                name: radanalyticsio/radanalytics-pyspark:stable
           triggers:
             - type: ConfigChange
             - type: ImageChange
@@ -884,7 +884,7 @@ items:
       - name: OSHINKO_WEB_IMAGE
         description: Full name of the oshinko web image
         required: true
-        value: 172.30.1.1:5000/myproject/oshinko-webui
+        value: radanalyticsio/oshinko-webui:stable
       - name: OSHINKO_WEB_ROUTE_HOSTNAME
         description: The hostname used to create the external route for the webui
       - name: OSHINKO_REFRESH_INTERVAL
