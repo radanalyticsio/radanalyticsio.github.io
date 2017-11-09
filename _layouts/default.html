@@ -49,5 +49,15 @@
     <!-- PatternFly -->
     <script src="/bower_components/patternfly/dist/js/patternfly.min.js"></script>
 
+    <!-- Clipboard -->
+    <script src="/bower_components/clipboard/dist/clipboard.min.js"></script>
+    <script type="text/javascript">
+      $(".clipboard-pair").each(function(index) {
+        $($(this).children()[0]).attr('id', 'clipboard-id-' + index);
+        $($(this).children()[1]).attr('data-clipboard-target', '#clipboard-id-' + index);
+      });
+      new Clipboard('.copy-button');
+    </script>
+
   </body>
 </html>
