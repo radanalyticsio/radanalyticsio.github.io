@@ -67,6 +67,8 @@ that itself downloads the whole Blockchain (~150 GB). However, it works also wit
 a partially downloaded Blockchain.
 
 * Jupyter Notebook (GraphFrames and NetworkX)
+This notebook is shipped by the `bitcoin-notebook` container and it is called `blockchain.ipynb`. It is the only
+notebook that is present in the docker image.
 +
 Interacting with the Jupyter notebook is very simple. If you select a cell with
 Python code you can 1) edit it or 2) execute it by pressing the "run cell" button
@@ -79,11 +81,16 @@ and compares with older Blockchain data. It also visualizes sub-graphs using the
 with the https://networkx.github.io/[NetworkX] python library.
 
 * Spark Notebook (GraphX and PageRank)
+This notebook is called `blockchain.snb.ipynb` and is shipped by the container called `bitcoin-spark-notebook`.
 +
 While the previous notebook was looking at the graph as a whole, finding
 some common properties and comparing some statistics about how they developed over time,
 this one demonstrates the famous PageRank algorithms and finds outliers in the graph and
 sorts them by the significance.
++
+It uses the Scala kernel, so while the `blockchain.ipynb` used Python as the programming language,
+this one uses Scala. This is because the GraphX can be used only from Scala, while for GraphFrames there
+is the Spark package available.
 
 [[expansion]]
 == Expansion
