@@ -69,10 +69,17 @@ This creates the latest versions of the Oshinko S2I (source-to-image) templates 
 Second, start the Oshinko Web UI application -
 
 {% include copy_button.html lang='bash' text='
-oc new-app oshinko-webui
+oc new-app --template=oshinko-webui
 '%}
 
 This creates the Oshinko Web UI, which can be used to manually create and manage Apache Spark clusters.
+
+Alternatively, if you would prefer to secure your oshinko-webui, you can run the following.
+It will use the Openshift oauth service to authenticate users to oshinko-webui.
+
+{% include copy_button.html lang='bash' text='
+oc new-app --template=oshinko-webui-secure
+'%}
 
 At this point you can go to your
 [OpenShift Console](https://docs.openshift.com/container-platform/latest/architecture/infrastructure_components/web_console.html)
