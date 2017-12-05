@@ -1,0 +1,10 @@
+= Containerizing TensorFlow Applications on OpenShift
+:page-presentor: Subin Modeel
+:page-date: 2017-12-01
+:page-media-url: https://www.youtube.com/watch?v=ebuyKUPzFaY
+:page-slides-url: https://blog.openshift.com/wp-content/uploads/Containerizing_tensorflow_on_openshift.pdf
+
+Deep learning and GPU have become hot topics in recent times. TensorFlow has become a popular open source project for deep learning applications. But how can we use OpenShift for TensorFlow application development?
+In this presentation you will learn how to create custom container images with TensorFlow binaries, use Project Jupyter for TensorFlow model development, and deployment of those models in OpenShift. You will also learn how to use continuous integration for TensorFlow applications on Openshift.
+Learn all of this through examples with MNIST handwriting recognition, application of the Inception model, a neural style transfer with GPUs and transfer learning for celebrity detection.
+
