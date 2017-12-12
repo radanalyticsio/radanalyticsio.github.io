@@ -32,6 +32,7 @@ exclude:
   - README.md
   - CONTRIBUTING.md
   - Dockerfile
+  - Dockerfile.base
   - Gemfile
   - Gemfile.lock
   - bower.json
