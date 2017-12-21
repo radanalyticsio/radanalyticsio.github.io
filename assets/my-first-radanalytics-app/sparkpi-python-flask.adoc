@@ -311,6 +311,6 @@ Let's break this down a little. These first few lines are actually being generat
 
 On the last two lines you see the `spark-submit` command which will run the application and the output from Flask informing us that it is listening on the host and port we specified.
 
-With your application now running on OpenShift please return to the link:/applications/my-first-radanalytics-app#user[My First RADanalytics Application page] to learn how to interact with this new microservice.
+With your application now running on OpenShift please return to the link:/my-first-radanalytics-app.html#user[My First RADanalytics Application page] to learn how to interact with this new microservice.
 
 You can find a reference implementation of this application in the RADanalytics GitHub organization at https://github.com/radanalyticsio/tutorial-sparkpi-python-flask
