@@ -42,7 +42,7 @@ public class SparkPiBootApplication {
     @PostConstruct
     public void init() {
         log.info("SparkPi submit jar is: "+properties.getJarFile());
-        if (!SparkContextProvider.init(properties)) {
+        if (!SparkPiContextProvider.init(properties)) {
             // masterURL probably not set,
             // meaning this was likely run outside of oshinko
             System.exit(1);
@@ -92,17 +92,17 @@ import org.apache.spark.api.java.JavaSparkContext;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.*;
 
-public class SparkContextProvider {
+public class SparkPiContextProvider {
 
-    private static SparkContextProvider INSTANCE = null;
+    private static SparkPiContextProvider INSTANCE = null;
 
     private SparkConf sparkConf;
     private JavaSparkContext sparkContext;
 
-    private SparkContextProvider() {
+    private SparkPiContextProvider() {
     }
 
-    private SparkContextProvider(SparkPiProperties props) {
+    private SparkPiContextProvider(SparkPiProperties props) {
         this.sparkConf = new SparkConf().setAppName("JavaSparkPi");
         this.sparkConf.setJars(new String[]{props.getJarFile()});
         this.sparkContext = new JavaSparkContext(sparkConf);
@@ -111,7 +111,7 @@ public class SparkContextProvider {
     public static boolean init(SparkPiProperties props) {
         try {
             if (INSTANCE == null) {
-                INSTANCE = new SparkContextProvider(props);
+                INSTANCE = new SparkPiContextProvider(props);
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -169,7 +169,7 @@ import org.apache.spark.api.java.JavaSparkContext;
 
 public class SparkPiProducer implements Serializable {
     public String GetPi(int scale) {
-        JavaSparkContext jsc = SparkContextProvider.getContext();
+        JavaSparkContext jsc = SparkPiContextProvider.getContext();
 
         int n = 100000 * scale;
         List<Integer> l = new ArrayList<Integer>(n);
@@ -244,7 +244,7 @@ In the next function, we declare how our application should be initialized. We l
 @PostConstruct
 public void init() {
     log.info("SparkPi submit jar is: "+properties.getJarFile());
-    if (!SparkContextProvider.init(properties)) {
+    if (!SparkPiContextProvider.init(properties)) {
         // masterURL probably not set,
         // meaning this was likely run outside of oshinko
         System.exit(1);
@@ -312,9 +312,9 @@ import org.springframework.stereotype.*;
 Next we declare our provider class and set up a few internal variables. The static `INSTANCE` will provide our concrete singular instantiation of this class which defines our singleton. The `sparkConf` and `sparkContext` variables are the actual connections to our Spark cluster.
 
 ....
-public class SparkContextProvider {
+public class SparkPiContextProvider {
 
-    private static SparkContextProvider INSTANCE = null;
+    private static SparkPiContextProvider INSTANCE = null;
 
     private SparkConf sparkConf;
     private JavaSparkContext sparkContext;
@@ -323,10 +323,10 @@ public class SparkContextProvider {
 Since this class will implement the singleton pattern, we make its constructors private to ensure that it will only be instantiated by the `init` method. The second contructor function is the primary method here, it accepts the properties object and instantiates the internal private variables. The `setJars` function will instruct Spark to associate our application Jar with the https://spark.apache.org/docs/latest/api/java/org/apache/spark/SparkConf.html[SparkConf] object, and subsequently the Spark context.
 
 ....
-    private SparkContextProvider() {
+    private SparkPiContextProvider() {
     }
 
-    private SparkContextProvider(SparkPiProperties props) {
+    private SparkPiContextProvider(SparkPiProperties props) {
         this.sparkConf = new SparkConf().setAppName("JavaSparkPi");
         this.sparkConf.setJars(new String[]{props.getJarFile()});
         this.sparkContext = new JavaSparkContext(sparkConf);
@@ -339,7 +339,7 @@ The `init` function is the main entry point for constructing the context provide
     public static boolean init(SparkPiProperties props) {
         try {
             if (INSTANCE == null) {
-                INSTANCE = new SparkContextProvider(props);
+                INSTANCE = new SparkPiContextProvider(props);
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -426,7 +426,7 @@ $ ls
 src
 
 $ find src -type f
-src/main/java/io/radanalytics/SparkContextProvider.java
+src/main/java/io/radanalytics/SparkPiContextProvider.java
 src/main/java/io/radanalytics/SparkPiProperties.java
 src/main/java/io/radanalytics/SparkPiProducer.java
 src/main/java/io/radanalytics/SparkPiController.java
