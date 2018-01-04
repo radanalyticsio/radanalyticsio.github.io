@@ -1,0 +1,121 @@
+= Wine Map
+:page-link: wine-map
+:page-weight: 100
+:page-labels: [Python, S2I, Spark, PostgreSQL]
+:page-layout: application
+:page-menu_template: menu_tutorial_application.html
+:page-description: This is an application which brings together 3 microservices to explain how to use a PostgreSQL database to analysis data within a spark cluster.
+:page-project_links: ["https://github.com/radanalyticsio/winemap/", "https://github.com/radanalyticsio/winemap-data-loader"]
+
+[[introduction]]
+== Introduction
+
+Welcome to the wine map application.
+This documentation is intended to display how to use an s2i workflow to create a python application, which connects to a PostgreSQL database.
+The application uses wine review data to display a heat map of different wines. The data is ingested by a PostgreSQL database and then loaded into a spark cluster which calculates the ratings.
+The map is then displayed using a python flask server.
+
+[[architecture]]
+== Architecture
+
+The wine map application is made of three microservices, a PostgreSQL database, a data loader (Kubernetes job) and a flask application server (wine map application), the architecture is shown in the following diagram.
+The PostgreSQL database is held within an OpenShift container and can be deployed with one simple command, which will be shown later.
+The data loader is a Kubernetes job and runs once if no failures occur, if a failure occurs the job will be ran again (https://kubernetes.io/docs/concepts/workloads/controllers/jobs-run-to-completion/) until it completes.
+The job executes a python script which loads the wine data into the database. Once the data is loaded a container is deployed using the source to image workflow, which accesses the data and displays in on a webpage as a heat map.
+The data taken from the PostgreSQL database is processed using a spark cluster. The spark cluster is created and deployed using the pyspark template from oshinko.
+The spark cluster takes the wine review data and calculates the average number of points each country has scored (this is calculated using different wines from the same country).
+
+pass:[<img src="/assets/wine-map/wine-map-architecture.png" alt="Wine Map Architecture" class="img-responsive" width="400" height="600">]
+
+
+[[installation]]
+== Installation
+
+First, you must download the oc client tools this will enable you to start up your own OpenShift cluster. These can be downloaded at: https://www.OpenShift.org/download.html. There is also documentation about how to use the oc tools here: https://docs.OpenShift.org/latest/cli_reference/get_started_cli.html.
+Now, lets start putting the application together you need to start up your own OpenShift cluster, the following command will allow you to do this:
+
+....
+oc cluster up
+....
+
+The next step is to create a project for the wine map application to reside in, here is a link to some documentation on OpenShift projects: https://docs.OpenShift.com/container-platform/3.7/dev_guide/projects.html
+Type in the following command to create your project:
+
+....
+oc new-project winemap-namespace
+....
+
+After you have created an OpenShift cluster and a project to deploy containers into the next step is to deploy a PostgreSQL database.
+This can be done easily using the PostgreSQL template provided by OpenShift with parameters stating the username, password and database name.
+For this example just copy the command below:
+
+....
+oc new-app --template=PostgreSQL-persistent -p PostgreSQL_USER=username -p PostgreSQL_PASSWORD=password -p PostgreSQL_DATABASE=wineDb
+....
+
+The next step is to load the data into the database, for this you will need to clone this repository https://github.com/radanalyticsio/winemap-data-loader.
+We will then create the template for the Kubernetes job (here is a link to explain how templates work in more detail: https://docs.OpenShift.org/latest/dev_guide/templates.html).
+The template references an image which executes a python script to load the data. The command you need to use is:
+....
+oc create -f wine-data-loader.yaml
+....
+
+We then need to set up a secret to pass the database the username, password and database name.
+Secrets are used in OpenShift to allow a more secure means of passing important data,
+as the data is encrypted in the secret file (https://docs.OpenShift.com/container-platform/3.5/dev_guide/secrets.html). Here is the command used to create the secret file in the project:
+
+....
+oc create -f secret.yaml
+....
+
+We then create the Kubenettes job to load the data with the following command:
+
+....
+oc new-app --template=wine-data-loader
+....
+
+The next half of the instructions describes how to create the flask server and spark cluster for processing and displaying the map.
+First of all you must create the oshinko resources in your OpenShift cluster with the following command:
+
+....
+oc create -f https://radanalytics.io/resources.yaml
+....
+
+Then you create the wine map application with the command below.
+The command below uses a pyspark image this sets up your pod environment so that you can execute python scripts and use spark.
+The PostgreSQL driver and details are passed through as parameters and environment variables respectively.
+
+....
+oc new-app --template=oshinko-pyspark-build-dc -p APPLICATION_NAME=winemap -p GIT_URI=https://github.com/radanalyticsio/winemap.git -p SPARK_OPTIONS='--packages org.PostgreSQL:PostgreSQL:42.1.4' -e SERVER=PostgreSQL -e DBNAME=wineDb -e PASSWORD=password -e USER=username
+....
+
+You must then expose the application so that you can view the results,
+this can be done by clicking create route in the console and following the url
+or by using the below command and going to the route specified in the console.
+
+....
+oc expose svc/winemap
+....
+You have now created and exposed the microservices you need for the wine map application.
+
+[[usage]]
+== Usage
+
+Now that the application is up and running you can go to the OpenShift console and log in,
+from there you will be able to access the application from the route that you created.
+After clicking through to the link you should see a heat map like the one shown below:
+
+pass:[<img src="/assets/wine-map/winemap.png" alt="Wine Map" class="img-responsive" width="800" height="400">]
+
+[[expansion]]
+== Expansion
+
+This is a very simplistic calculation for the heat map. To expand the work you could think of different ways to manipulate the data within the spark cluster by modifying the “app.py” script.
+This could be by changing the way in which you display the data by using, for example, a chart instead.
+
+[[videos]]
+== Videos
+
+Demonstration of how to set up and use the application.
+
+pass:[<iframe src="https://player.vimeo.com/video/249643956" width="640" height="400" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>]
