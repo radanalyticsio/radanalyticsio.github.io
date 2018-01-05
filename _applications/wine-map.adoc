@@ -93,12 +93,11 @@ oc expose svc/winemap
 You can use the browser to follow the route through the console or by using the following command:
 
 ....
-oc describe route winemap
+$ oc get route
+NAME                      HOST/PORT                                      PATH      SERVICES            PORT       TERMINATION   WILDCARD
+winemap                   winemap-winemap-namespace.127.0.0.1.nip.io               winemap           8080-tcp                     None
 ....
 
-If you look at the following screenshot you can see that the route is shown by the attribute "Requested Host", copy this into your browser and the map should be displayed.
-
-pass:[<img src="/assets/wine-map/route.png" alt="Route" class="img-responsive" width="700" height="400">]
 
 You have now created and exposed the microservices you need for the wine map application.
 
