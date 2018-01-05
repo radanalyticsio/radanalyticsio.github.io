@@ -1,0 +1,49 @@
+kind: Template
+apiVersion: v1
+template: wine-data-loader
+metadata:
+  name: wine-data-loader
+objects:
+
+- kind: Job
+  apiVersion: batch/v1
+  metadata:
+    name: ${JOB_NAME}
+  spec:
+    parallelism: 1
+    completions: 1
+    template:
+      metadata:
+        name: ${JOB_NAME}
+      spec:
+        containers:
+          - name: wine-data-loader
+            image: docker.io/radanalyticsio/winemap-data-loader
+            env:
+              - name: SERVER
+                valueFrom:
+                  secretKeyRef:
+                    name: winemap-secret
+                    key: server
+              - name: DBNAME
+                valueFrom:
+                  secretKeyRef:
+                    name: winemap-secret
+                    key: dbname
+              - name: USER
+                valueFrom:
+                  secretKeyRef:
+                    name: winemap-secret
+                    key: username
+              - name: PASSWORD
+                valueFrom:
+                  secretKeyRef:
+                    name: winemap-secret
+                    key: password
+        restartPolicy: OnFailure
+
+parameters:
+  - name: JOB_NAME
+    from: "jdsl-[a-z0-9]{4}"
+    generate: expression
+    description: unique name for this job run
