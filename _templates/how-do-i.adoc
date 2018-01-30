@@ -1,0 +1,6 @@
+= This is the title, it should not include "how do i"
+
+Your instructions should go here. This is an AsciiDoc document and as such
+you may use the available markup syntax. If you need to add graphics or
+other assets, please add them to the `assets/how-do-i` directory.
+

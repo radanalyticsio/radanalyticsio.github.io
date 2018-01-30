@@ -7,6 +7,8 @@ radanalyticsio:
     url: /my-first-radanalytics-app.html
   - title: Tutorials
     url: /tutorials
+  - title: How Do I?
+    url: /how-do-i
   - title: Community
     url: /community
   - title: Projects

@@ -91,6 +91,19 @@ simply do the following:
 1. Commit the new file to your feature branch and propose a pull request when
    you are ready.
 
+## Adding a new "How do I" entry
+
+The "How do I?" page is generated from the collection of
+documents stored in the `_howdoi` directory. To add a new question/answer pair,
+simply do the following:
+
+1. Copy the `_templates/how-do-i.adoc` file to the `_howdoi` directory, and
+   rename it to suite reflect your question.
+1. Edit the contents of the new file to contain your question, the title of
+   the document will get converted to be used in the "How do I" page.
+1. Commit the new file to your feature branch and propose a pull request when
+   you are ready.
+
 ## Adding a new presentation
 
 The community page contains a list of presentations given by and about
