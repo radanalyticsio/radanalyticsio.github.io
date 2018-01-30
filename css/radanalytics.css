@@ -88,3 +88,8 @@ a.fp-link:hover {
 div.literalblock {
     margin-bottom: 2em;
 }
+
+div.flex-center {
+    display: flex;
+    align-items: center;
+}
