@@ -1,0 +1,81 @@
+= Apache Zeppelin  Example
+:page-link: apache-zeppelin-example
+:page-weight: 100
+:page-labels: [Notebook, Zeppelin, Spark, R, Pyspark, Scala, Java]
+:page-layout: application
+:page-menu_template: menu_tutorial_application.html
+:page-description: This is an example of how to use Apache Zeppelin
+:page-project_links: ["https://github.com/rimolive/zeppelin-openshift", "https://github.com/rimolive/zeppelin-notebooks"]
+
+[[introduction]]
+== Introduction
+
+Apache Zeppelin is an alternative to project http://jupyter.org/[Jupyter] to provide 
+a notebook to run analysis over a data and plot graphs in order to show to end users
+an orverview about the data.
+
+This example shows how to use the Zeppelin openShift template created to run on top of
+OpenShift, as well as provide 
+
+[[architecture]]
+== Architecture
+
+The central piece is the Apache Zeppelin, used to create notebooks. From zeppelin we will
+connect to the Spark cluster and run some analysis.
+
+[[installation]]
+== Installation
+
+Installing this notebook is straightforward; you simply need to
+create an OpenShift project, deploy a Spark cluster in that project, and
+install and run the notebook image.
+
+=== Prerequisites
+
+Follow the link:/get-started[Get Started] instructions
+to create an OpenShift project with the Oshinko web interface running.
+
+=== Setting up a cluster
+
+From the OpenShift developer console, visit the Oshinko web interface. Use the
+interface to create a new cluster, and take note of what you've called this
+cluster.
+
+=== Setting up the Zeppelin template
+
+In the same project, add the zeppelin template with the following command:
+
+....
+    $ oc create -f https://raw.githubusercontent.com/rimolive/zeppelin-openshift/master/zeppelin-openshift.yaml
+....
+
+After adding the template, create the zeppelin application with the following command:
+
+....
+    $ oc new-app apache-zeppelin --template=apache-zeppelin-openshift --param=APPLICATION_NAME=apache-zeppelin --param=GIT_UTI=https://github.com/rimolive/zeppelin-notebooks.git --param=ZEPPELIN_INTERPRETERS=md
+....
+
+After running the command above, a build will be triggered to add the notebooks hosted 
+in the Github repo, as well as copy the configuration files and install the md interpreter.
+The md interpreter is used to write Markdown blocks in zeppelin.
+
+When the build finishes, it will deploy the newly built zeppelin image. Click on the hostname
+defined in the apache-zeppelin app. Click on the `Untitles Note 1` notebook and click on the
+`Run all paragraphs` button.
+
+[[usage]]
+== Usage
+
+Apache Zeppelin can create powerful dashboards, as well notebooks like Jupyter to run 
+Exploratory Analysis from the data you want to handle.
+
+[[expansion]]
+== Expansion
+
+To make the example better, the notebook can add some plots to show the data, as
+well as use forms to make the plots interactive.
+
+[[videos]]
+== Videos
+
+There is no video for this application at this time
