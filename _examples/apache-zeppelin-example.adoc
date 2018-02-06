@@ -1,7 +1,7 @@
 = Apache Zeppelin  Example
 :page-link: apache-zeppelin-example
 :page-weight: 100
-:page-labels: [Notebook, Zeppelin, Spark, R, Pyspark, Scala, Java]
+:page-labels: [Notebook, Zeppelin, Spark, R, Python, Scala, Java]
 :page-layout: application
 :page-menu_template: menu_tutorial_application.html
 :page-description: This is an example of how to use Apache Zeppelin
@@ -10,18 +10,21 @@
 [[introduction]]
 == Introduction
 
-Apache Zeppelin is an alternative to project http://jupyter.org/[Jupyter] to provide 
-a notebook to run analysis over a data and plot graphs in order to show to end users
-an orverview about the data.
+http://zeppelin.apache.org/[Apache Zeppelin] is an alternative to project http://jupyter.org/[Jupyter] 
+to provide a notebook to run analysis over data and plot graphs in order 
+to show to end users an overview about the data or even doing some exploratory
+analysis and plot some graphs using the data.
 
 This example shows how to use the Zeppelin openShift template created to run on top of
-OpenShift, as well as provide 
+OpenShift, as well as provide an example notebook to run on top of your OpenShift cluster.
 
 [[architecture]]
 == Architecture
 
-The central piece is the Apache Zeppelin, used to create notebooks. From zeppelin we will
-connect to the Spark cluster and run some analysis.
+The central piece is the Apache Zeppelin, used to create notebooks. From zeppelin we 
+will connect to the Spark cluster managed by RADAnalytics.io and run some analysis. This
+example will use a pod for the Zeppelin instance and two other pods for the Apache cluster
+(1 master and 1 worker).
 
 [[installation]]
 == Installation
@@ -46,13 +49,16 @@ cluster.
 In the same project, add the zeppelin template with the following command:
 
 ....
-    $ oc create -f https://raw.githubusercontent.com/rimolive/zeppelin-openshift/master/zeppelin-openshift.yaml
+    oc create -f https://radanalytics.io/assets/zeppelin-example/zeppelin-openshift.yaml
 ....
 
 After adding the template, create the zeppelin application with the following command:
 
 ....
-    $ oc new-app apache-zeppelin --template=apache-zeppelin-openshift --param=APPLICATION_NAME=apache-zeppelin --param=GIT_UTI=https://github.com/rimolive/zeppelin-notebooks.git --param=ZEPPELIN_INTERPRETERS=md
+    oc new-app --template=$namespace/apache-zeppelin-openshift \
+        --param=APPLICATION_NAME=apache-zeppelin \
+        --param=GIT_URI=https://github.com/rimolive/zeppelin-notebooks.git \
+        --param=ZEPPELIN_INTERPRETERS=md
 ....
 
 After running the command above, a build will be triggered to add the notebooks hosted 
@@ -60,14 +66,29 @@ in the Github repo, as well as copy the configuration files and install the md i
 The md interpreter is used to write Markdown blocks in zeppelin.
 
 When the build finishes, it will deploy the newly built zeppelin image. Click on the hostname
-defined in the apache-zeppelin app. Click on the `Untitles Note 1` notebook and click on the
-`Run all paragraphs` button.
+defined in the apache-zeppelin app. In case you don't see a URL for zeppelin, check if a route
+is create with the command:
+
+....
+    oc get route
+....
+
+pass:[<img src="/assets/zeppelin-example/zeppelin1.png" class="img-responsive">]
+
+Click on the `Untitled Note 1` notebook:
+
+pass:[<img src="/assets/zeppelin-example/zeppelin2.png" class="img-responsive">]
+
+Click on the `Run all paragraphs` button:
+
+pass:[<img src="/assets/zeppelin-example/zeppelin3.png" class="img-responsive">]
 
 [[usage]]
 == Usage
 
-Apache Zeppelin can create powerful dashboards, as well notebooks like Jupyter to run 
-Exploratory Analysis from the data you want to handle.
+Apache Zeppelin can create powerful notebooks to run Exploratory Analysis from 
+the data you want to handle, as well as design dashboards to monitor the quality
+of your data or measurements that will drive a decision based on what is analyzed.
 
 [[expansion]]
 == Expansion
