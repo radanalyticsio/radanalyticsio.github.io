@@ -3,4 +3,4 @@ _site
 .jekyll-metadata
 *.exe
 .idea
-
+bower_components
