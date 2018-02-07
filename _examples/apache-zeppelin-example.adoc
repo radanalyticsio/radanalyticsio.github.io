@@ -1,7 +1,7 @@
 = Apache Zeppelin  Example
 :page-link: apache-zeppelin-example
 :page-weight: 100
-:page-labels: [Notebook, Zeppelin, Spark, R, Python, Scala, Java]
+:page-labels: [Zeppelin, Spark, R, Python, Scala, Java]
 :page-layout: application
 :page-menu_template: menu_tutorial_application.html
 :page-description: This is an example of how to use Apache Zeppelin
@@ -15,16 +15,16 @@ to provide a notebook to run analysis over data and plot graphs in order
 to show to end users an overview about the data or even doing some exploratory
 analysis and plot some graphs using the data.
 
-This example shows how to use the Zeppelin openShift template created to run on top of
+This example shows how to use the Zeppelin OpenShift template created to run on top of
 OpenShift, as well as provide an example notebook to run on top of your OpenShift cluster.
 
 [[architecture]]
 == Architecture
 
-The central piece is the Apache Zeppelin, used to create notebooks. From zeppelin we 
-will connect to the Spark cluster managed by RADAnalytics.io and run some analysis. This
-example will use a pod for the Zeppelin instance and two other pods for the Apache cluster
-(1 master and 1 worker).
+The central piece is the Apache Zeppelin pod, used to create notebooks. From Zeppelin we 
+will connect to the Spark cluster managed by the ochinko project and run some analysis. This
+example will use a pod for the Zeppelin instance and two other pods for the Apache Spark 
+cluster (1 master and 1 worker).
 
 [[installation]]
 == Installation
@@ -62,8 +62,9 @@ After adding the template, create the zeppelin application with the following co
 ....
 
 After running the command above, a build will be triggered to add the notebooks hosted 
-in the Github repo, as well as copy the configuration files and install the md interpreter.
-The md interpreter is used to write Markdown blocks in zeppelin.
+in the Git repository specified in the GIT_URI parameter, as well as copy the configuration
+files and install the md interpreter. The md interpreter is used to write Markdown blocks
+in zeppelin.
 
 When the build finishes, it will deploy the newly built zeppelin image. Click on the hostname
 defined in the apache-zeppelin app. In case you don't see a URL for zeppelin, check if a route
@@ -75,20 +76,28 @@ is create with the command:
 
 pass:[<img src="/assets/zeppelin-example/zeppelin1.png" class="img-responsive">]
 
-Click on the `Untitled Note 1` notebook:
-
-pass:[<img src="/assets/zeppelin-example/zeppelin2.png" class="img-responsive">]
-
-Click on the `Run all paragraphs` button:
-
-pass:[<img src="/assets/zeppelin-example/zeppelin3.png" class="img-responsive">]
-
 [[usage]]
 == Usage
 
 Apache Zeppelin can create powerful notebooks to run Exploratory Analysis from 
 the data you want to handle, as well as design dashboards to monitor the quality
 of your data or measurements that will drive a decision based on what is analyzed.
+
+When you access the Zeppelin app, you will see a `Untitled Note 1` notebook. This is
+the example notebook from the GitHub repo specified in the GIT_URI parameter:
+
+pass:[<img src="/assets/zeppelin-example/zeppelin2.png" class="img-responsive">]
+
+When you open the notebook, you will see some paragraphs (some are Markdown and others
+are pyspark). You can run individually each paragraphs or you can click on the `Run all 
+paragraphs` button to run the whole notebook. Just for learning purpose, I'd suggest
+run all paragraphs and see the result:
+
+pass:[<img src="/assets/zeppelin-example/zeppelin3.png" class="img-responsive">]
+
+This notebook will connect to the Apache Spark cluster, create an RDD based on data(in
+the example notebook, the Apache Zeppelin README.md file) and run a simple word count. All
+processing will be run on the Spark cluster.
 
 [[expansion]]
 == Expansion
