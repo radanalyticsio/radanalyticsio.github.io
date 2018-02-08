@@ -1,0 +1,11 @@
+= Building Streaming Recommendation Engines on Spark
+:page-presentor: Rui Vieira
+:page-date: 2018-01-27
+:page-media-url: https://www.youtube.com/watch?v=oUv9MhVaMA8
+:page-slides-url: https://github.com/ruivieira/presentations/blob/master/building_streaming_recommendation_engines_on_spark.pdf
+
+Collaborative filtering is a well known method to implement recommendation engines. Although modern techniques, such as Alternating Least Squares (ALS), allow us to perform rating predictions with large amounts of observations, typically ALS is implemented as a distributed batch algorithm where retraining must be performed with the entirety of the data. However, when dealing with large amounts of data as a stream, batch retraining might be problematic.
+
+In this talk Rui will guide us in building a streaming ALS implementation using Apache Spark and based on Stochastic Gradient Descent, where training can be performed using observations as they arrive.
+
+The advantages of real-time streaming collaborative filtering will be discussed as well as the scenarios where batch ALS might be preferable.

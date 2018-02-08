@@ -1,0 +1,11 @@
+= Collaborative Filtering Microservices on Spark
+:page-presentor: Rui Vieira, Sophie Watson
+:page-date: 2018-01-26
+:page-media-url: https://www.youtube.com/watch?v=tgQg1fQbaLM
+:page-slides-url: https://github.com/ruivieira/presentations/blob/master/collaborative_filtering_microservices_on_spark.pdf
+
+The Alternating Least Squares (ALS) algorithm is still deemed the industry standard in collaborative filtering. In this talk we will focus on Apache Spark’s ALS implementation and discuss the steps we took to build a distributed recommendation engine, focusing on continuous model training and model management.
+
+We show that, by splitting the recommendation engine into microservices, we were able to reduce the system’s complexity and produce a robust collaborative filtering platform with support for continuous model training.
+
+At the end of this talk, you should be equipped with enough tools and ideas to implement your own collaborative algorithm and avoid some common pitfalls.
