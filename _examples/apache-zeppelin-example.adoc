@@ -22,7 +22,7 @@ OpenShift, as well as provide an example notebook to run on top of your OpenShif
 == Architecture
 
 The central piece is the Apache Zeppelin pod, used to create notebooks. From Zeppelin we 
-will connect to the Spark cluster managed by the ochinko project and run some analysis. This
+will connect to the Spark cluster managed by the Oshinko project and run some analysis. This
 example will use a pod for the Zeppelin instance and two other pods for the Apache Spark 
 cluster (1 master and 1 worker).
 
@@ -46,13 +46,13 @@ cluster.
 
 === Setting up the Zeppelin template
 
-In the same project, add the zeppelin template with the following command:
+In the same project, add the Zeppelin template with the following command:
 
 ....
     oc create -f https://radanalytics.io/assets/zeppelin-example/zeppelin-openshift.yaml
 ....
 
-After adding the template, create the zeppelin application with the following command:
+After adding the template, create the Zeppelin application with the following command:
 
 ....
     oc new-app --template=$namespace/apache-zeppelin-openshift \
@@ -66,8 +66,8 @@ in the Git repository specified in the GIT_URI parameter, as well as copy the co
 files and install the md interpreter. The md interpreter is used to write Markdown blocks
 in zeppelin.
 
-When the build finishes, it will deploy the newly built zeppelin image. Click on the hostname
-defined in the apache-zeppelin app. In case you don't see a URL for zeppelin, check if a route
+When the build finishes, it will deploy the newly built Zeppelin image. Click on the hostname
+defined in the apache-zeppelin app. In case you don't see a URL for Zeppelin, check if a route
 is create with the command:
 
 ....
@@ -89,7 +89,7 @@ the example notebook from the GitHub repo specified in the GIT_URI parameter:
 pass:[<img src="/assets/zeppelin-example/zeppelin2.png" class="img-responsive">]
 
 When you open the notebook, you will see some paragraphs (some are Markdown and others
-are pyspark). You can run individually each paragraphs or you can click on the `Run all 
+are Python). You can run individually each paragraphs or you can click on the `Run all 
 paragraphs` button to run the whole notebook. Just for learning purpose, I'd suggest
 run all paragraphs and see the result:
 
