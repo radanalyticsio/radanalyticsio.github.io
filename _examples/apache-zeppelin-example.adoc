@@ -79,7 +79,7 @@ pass:[<img src="/assets/zeppelin-example/zeppelin1.png" class="img-responsive">]
 [[usage]]
 == Usage
 
-Apache Zeppelin can create powerful notebooks to run Exploratory Analysis from 
+Apache Zeppelin can create powerful notebooks to run exploratory analysis from 
 the data you want to handle, as well as design dashboards to monitor the quality
 of your data or measurements that will drive a decision based on what is analyzed.
 
