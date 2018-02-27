@@ -79,7 +79,7 @@ The command below uses a special source-to-image builder to set up the pod envir
 The PostgreSQL driver and details are passed through as parameters and environment variables respectively.
 
 ....
-oc new-app --template=oshinko-pyspark-build-dc -p APPLICATION_NAME=winemap -p GIT_URI=https://github.com/radanalyticsio/winemap.git -p SPARK_OPTIONS='--packages org.postgresql:postgresql:42.1.4' -e SERVER=postgresql -e DBNAME=wineDb -e PASSWORD=password -e USER=username
+oc new-app --template=oshinko-python-build-dc -p APPLICATION_NAME=winemap -p GIT_URI=https://github.com/radanalyticsio/winemap.git -p SPARK_OPTIONS='--packages org.postgresql:postgresql:42.1.4' -e SERVER=postgresql -e DBNAME=wineDb -e PASSWORD=password -e USER=username
 ....
 
 You must then expose the application so that you can view the results,
