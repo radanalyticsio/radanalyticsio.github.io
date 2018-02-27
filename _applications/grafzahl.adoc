@@ -88,7 +88,7 @@ Forth, launch Graf Zahl himself, using the Oshinko pyspark S2I
 builder.
 
 ....
-oc new-app --template=oshinko-pyspark-build-dc \
+oc new-app --template=oshinko-python-build-dc \
            -p APPLICATION_NAME=grafzahl \
            -p GIT_URI=https://github.com/radanalyticsio/grafzahl \
            -p APP_ARGS=--servers=apache-kafka:9092 \

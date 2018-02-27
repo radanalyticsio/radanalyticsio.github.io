@@ -6,4 +6,4 @@ example, to start a new application with these options you could run the
 following:
 
 [source,bash]
-$ oc new-app --template=oshinko-pyspark-build-dc -p GIT_URI=[your source repo] -e SPARK_OPTIONS='--packages org.apache.spark:spark-sql-kafka-0-10_2.11:2.1.0'
+$ oc new-app --template=oshinko-python-build-dc -p GIT_URI=[your source repo] -e SPARK_OPTIONS='--packages org.apache.spark:spark-sql-kafka-0-10_2.11:2.1.0'
