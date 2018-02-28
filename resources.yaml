@@ -101,7 +101,7 @@ items:
               - name: OSHINKO_DEL_CLUSTER
                 value: ${OSHINKO_DEL_CLUSTER}
               - name: APP_EXIT
-                value: ${APP_EXIT}
+                value: "true"
               - name: OSHINKO_NAMED_CONFIG
                 value: ${OSHINKO_NAMED_CONFIG}
               - name: OSHINKO_SPARK_DRIVER_CONFIG
@@ -181,10 +181,6 @@ items:
       name: OSHINKO_DEL_CLUSTER
       required: true
       value: 'true'
-    - description: Setting this value to 'false' prevents the application from being re-deployed if/when it completes
-      name: APP_EXIT
-      required: true
-      value: 'false'
 
   - apiVersion: v1
     kind: Template
@@ -270,7 +266,7 @@ items:
               - name: OSHINKO_DEL_CLUSTER
                 value: ${OSHINKO_DEL_CLUSTER}
               - name: APP_EXIT
-                value: ${APP_EXIT}
+                value: "true"
               - name: OSHINKO_NAMED_CONFIG
                 value: ${OSHINKO_NAMED_CONFIG}
               - name: OSHINKO_SPARK_DRIVER_CONFIG
@@ -351,10 +347,6 @@ items:
       name: OSHINKO_DEL_CLUSTER
       required: true
       value: "true"
-    - description: Setting this value to 'false' prevents the application from being re-deployed if/when it completes
-      name: APP_EXIT
-      required: true
-      value: "false"
 
   - apiVersion: v1
     kind: Template
@@ -444,7 +436,7 @@ items:
               - name: OSHINKO_DEL_CLUSTER
                 value: ${OSHINKO_DEL_CLUSTER}
               - name: APP_EXIT
-                value: ${APP_EXIT}
+                value: "true"
               - name: OSHINKO_NAMED_CONFIG
                 value: ${OSHINKO_NAMED_CONFIG}
               - name: OSHINKO_SPARK_DRIVER_CONFIG
@@ -529,10 +521,6 @@ items:
       name: SBT_ARGS
     - description: Additional sbt arguments, useful for adding task arguments to sbt like `publish makePom`
       name: SBT_ARGS_APPEND
-    - description: Setting this value to 'false' prevents the application from being re-deployed if/when it completes
-      name: APP_EXIT
-      required: true
-      value: 'false'
 
   - apiVersion: v1
     kind: Template
