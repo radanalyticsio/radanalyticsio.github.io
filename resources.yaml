@@ -63,7 +63,7 @@ items:
             forcePull: true
             from:
               kind: DockerImage
-              name: radanalyticsio/radanalytics-pyspark
+              name: radanalyticsio/radanalytics-pyspark:stable
           type: Source
         triggers:
         - imageChange: {}
@@ -228,7 +228,7 @@ items:
             forcePull: true
             from:
               kind: DockerImage
-              name: radanalyticsio/radanalytics-java-spark
+              name: radanalyticsio/radanalytics-java-spark:stable
           type: Source
         triggers:
         - imageChange: {}
@@ -402,7 +402,7 @@ items:
             forcePull: true
             from:
               kind: DockerImage
-              name: radanalyticsio/radanalytics-scala-spark
+              name: radanalyticsio/radanalytics-scala-spark:stable
           type: Source
         triggers:
         - imageChange: {}
