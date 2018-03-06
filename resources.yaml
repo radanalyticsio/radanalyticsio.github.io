@@ -36,6 +36,8 @@ items:
       kind: ImageStream
       metadata:
         name: ${APPLICATION_NAME}
+        labels:
+          app: ${APPLICATION_NAME}
       spec:
         dockerImageRepository: ${APPLICATION_NAME}
         tags:
@@ -44,6 +46,8 @@ items:
       kind: BuildConfig
       metadata:
         name: ${APPLICATION_NAME}
+        labels:
+          app: ${APPLICATION_NAME}
       spec:
         output:
           to:
@@ -79,6 +83,9 @@ items:
       kind: DeploymentConfig
       metadata:
         name: ${APPLICATION_NAME}
+        labels:
+          deploymentConfig: ${APPLICATION_NAME}
+          app: ${APPLICATION_NAME}
       spec:
         replicas: 1
         selector:
@@ -89,6 +96,7 @@ items:
           metadata:
             labels:
               deploymentConfig: ${APPLICATION_NAME}
+              app: ${APPLICATION_NAME}
           spec:
             containers:
             - env:
@@ -143,6 +151,8 @@ items:
       kind: Service
       metadata:
         name: ${APPLICATION_NAME}
+        labels:
+          app: ${APPLICATION_NAME}
       spec:
         ports:
         - name: 8080-tcp
@@ -197,6 +207,8 @@ items:
       kind: ImageStream
       metadata:
         name: ${APPLICATION_NAME}
+        labels:
+          app: ${APPLICATION_NAME}
       spec:
         dockerImageRepository: ${APPLICATION_NAME}
         tags:
@@ -205,6 +217,8 @@ items:
       kind: BuildConfig
       metadata:
         name: ${APPLICATION_NAME}
+        labels:
+          app: ${APPLICATION_NAME}
       spec:
         output:
           to:
@@ -239,9 +253,10 @@ items:
     - apiVersion: v1
       kind: DeploymentConfig
       metadata:
+        name: ${APPLICATION_NAME}
         labels:
           deploymentConfig: ${APPLICATION_NAME}
-        name: ${APPLICATION_NAME}
+          app: ${APPLICATION_NAME}
       spec:
         replicas: 1
         selector:
@@ -252,6 +267,7 @@ items:
           metadata:
             labels:
               deploymentConfig: ${APPLICATION_NAME}
+              app: ${APPLICATION_NAME}
           spec:
             containers:
             - env:
@@ -308,6 +324,8 @@ items:
       kind: Service
       metadata:
         name: ${APPLICATION_NAME}
+        labels:
+          app: ${APPLICATION_NAME}
       spec:
         ports:
         - name: 8080-tcp
@@ -363,6 +381,8 @@ items:
       kind: ImageStream
       metadata:
         name: ${APPLICATION_NAME}
+        labels:
+          app: ${APPLICATION_NAME}
       spec:
         dockerImageRepository: ${APPLICATION_NAME}
         tags:
@@ -371,6 +391,8 @@ items:
       kind: BuildConfig
       metadata:
         name: ${APPLICATION_NAME}
+        labels:
+          app: ${APPLICATION_NAME}
       spec:
         output:
           to:
@@ -409,9 +431,10 @@ items:
     - apiVersion: v1
       kind: DeploymentConfig
       metadata:
+        name: ${APPLICATION_NAME}
         labels:
           deploymentConfig: ${APPLICATION_NAME}
-        name: ${APPLICATION_NAME}
+          app: ${APPLICATION_NAME}
       spec:
         replicas: 1
         selector:
@@ -422,6 +445,7 @@ items:
           metadata:
             labels:
               deploymentConfig: ${APPLICATION_NAME}
+              app: ${APPLICATION_NAME}
           spec:
             containers:
             - env:
@@ -478,6 +502,8 @@ items:
       kind: Service
       metadata:
         name: ${APPLICATION_NAME}
+        labels:
+          app: ${APPLICATION_NAME}
       spec:
         ports:
         - name: 8080-tcp
