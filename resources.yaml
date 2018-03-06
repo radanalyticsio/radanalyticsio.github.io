@@ -82,13 +82,13 @@ items:
       spec:
         replicas: 1
         selector:
-          deploymentconfig: ${APPLICATION_NAME}
+          deploymentConfig: ${APPLICATION_NAME}
         strategy:
           type: Rolling
         template:
           metadata:
             labels:
-              deploymentconfig: ${APPLICATION_NAME}
+              deploymentConfig: ${APPLICATION_NAME}
           spec:
             containers:
             - env:
