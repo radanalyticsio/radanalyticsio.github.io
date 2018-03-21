@@ -4,7 +4,7 @@
 :page-labels: [Python, Java, S2I, MongoDB, PostgreSQL]
 :page-layout: application
 :page-menu_template: menu_tutorial_application.html
-:page-menu_items:
+:page-menu_items: lightning
 :page-description: Project Jiminy is an implementation of a recommendation system based around collaborative filtering. It is a demonstration of how to build machine learning application pipelines that are composed of several microservices. The application contains a web server, model training service, REST based prediction service and a few data storage services.
 :page-project_links: ["https://github.com/radanalyticsio/jiminy-html-server", "https://github.com/radanalyticsio/jiminy-modeler", "https://github.com/radanalyticsio/jiminy-predictor", "https://github.com/radanalyticsio/jiminy-tools"]
 
