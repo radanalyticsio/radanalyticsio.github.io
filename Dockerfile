@@ -7,7 +7,8 @@ WORKDIR /srv/site
 USER root
 
 RUN bower --allow-root install && \
-    bundler install
+    bundler install && \
+    chown -R 1001:1001 /srv
 
 USER 1001
 
