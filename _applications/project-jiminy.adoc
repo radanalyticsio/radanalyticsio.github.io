@@ -200,7 +200,7 @@ and launch the modeler using the source-to-image workflow run the following
 command:
 
 ....
-oc new-app --template oshinko-python-build-dc \
+oc new-app --template oshinko-python-spark-build-dc \
    -p GIT_URI=https://github.com/radanalyticsio/jiminy-modeler \
    -e MONGO_URI=mongodb://mongo:mongo@mongodb/models \
    -e DB_HOST=postgresql \
@@ -234,7 +234,7 @@ for the HTML Server. To build and launch the predictor using the
 source-to-image workflow run the following command:
 
 ....
-oc new-app --template oshinko-python-build-dc \
+oc new-app --template oshinko-python-spark-build-dc \
    -p GIT_URI=https://github.com/radanalyticsio/jiminy-predictor \
    -e MODEL_STORE_URI=mongodb://mongo:mongo@mongodb/models \
    -p APP_FILE=app.py \
