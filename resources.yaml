@@ -332,7 +332,7 @@ items:
           port: 8080
           protocol: TCP
           targetPort: 8080
-          selector:
+        selector:
           deploymentConfig: ${APPLICATION_NAME}
     parameters:
     - description: 'The name to use for the buildconfig, imagestream and deployment objects'
