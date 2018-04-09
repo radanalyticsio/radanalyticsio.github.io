@@ -45,7 +45,10 @@ This can be done easily using the PostgreSQL template provided by OpenShift with
 For this example just copy the command below:
 
 ....
-oc new-app --template=postgresql-persistent -p POSTGRESQL_USER=username -p POSTGRESQL_PASSWORD=password -p POSTGRESQL_DATABASE=wineDb
+oc new-app --template=postgresql-persistent \
+  -p POSTGRESQL_USER=username \
+  -p POSTGRESQL_PASSWORD=password \
+  -p POSTGRESQL_DATABASE=wineDb
 ....
 
 The next step is to load the data into the database, for this you will need to clone this https://github.com/radanalyticsio/winemap-data-loader[repository] or alternatively use these
@@ -79,7 +82,14 @@ The command below uses a special source-to-image builder to set up the pod envir
 The PostgreSQL driver and details are passed through as parameters and environment variables respectively.
 
 ....
-oc new-app --template=oshinko-python-spark-build-dc -p APPLICATION_NAME=winemap -p GIT_URI=https://github.com/radanalyticsio/winemap.git -p SPARK_OPTIONS='--packages org.postgresql:postgresql:42.1.4' -e SERVER=postgresql -e DBNAME=wineDb -e PASSWORD=password -e USER=username
+oc new-app --template=oshinko-python-spark-build-dc \
+  -p APPLICATION_NAME=winemap \
+  -p GIT_URI=https://github.com/radanalyticsio/winemap.git \
+  -p SPARK_OPTIONS='--packages org.postgresql:postgresql:42.1.4' \
+  -e SERVER=postgresql \
+  -e DBNAME=wineDb \
+  -e PASSWORD=password \
+  -e USER=username
 ....
 
 You must then expose the application so that you can view the results,
