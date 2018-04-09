@@ -43,7 +43,7 @@ this methodology run the following:
 
 ```
 $ cd radanalytics.github.io
-$ chmod go+rX -R .
+$ chmod -R go+rX .
 $ docker build -t radanalytics.io .
 $ docker run --rm -it -p 4000:4000 radanalytics.io
 ```
