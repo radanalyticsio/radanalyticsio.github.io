@@ -2,6 +2,7 @@
 :page-presentor: Michael McCune
 :page-date: 2017-09-28
 :page-media-url: https://vimeo.com/240742127
+:page-slides-url: https://github.com/elmiko/slidedecks/tree/2017/strata-notebook-to-native
 
 The world of application development and deployment is changing rapidly with the advent of container-based orchestration platforms. Adjusting to these changes takes an open mind and a willingness to explore new techniques and methodologies. Notebook interfaces like Apache Zeppelin and Project Jupyter are excellent starting points for sketching out ideas and exploring data-driven algorithms, but where does the process lead after the notebook work has been completed? Combining the power and flexibility of notebooks with that of containers presents new opportunities to increase your productivity, such as creating processing clusters on demand, increased repeatability, and using continuous delivery techniques.
 
