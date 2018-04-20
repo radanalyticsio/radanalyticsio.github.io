@@ -23,6 +23,9 @@ $ oc create configmap clusterconfig --from-literal=sparkworkerconfig=mysparkconf
 				    --from-literal=workercount=4
 $ oc create mycluster --storedconfig=clusterconfig
 
+Also note that the `Advanced` tab for cluster creation on the oshinko web UI allows
+the names of configmaps to be entered for worker, master, or cluster configuration.
+
 To use a cluster configuration on a Spark cluster created from an S2I workflow, specify
 the configmap using the `OSHINKO_NAMED_CONFIG` parameter when creating the app:
 
