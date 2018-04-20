@@ -21,12 +21,12 @@ worker configurations and then use it to create a cluster:
 $ oc create configmap clusterconfig --from-literal=sparkworkerconfig=mysparkconfig \
                                     --from-literal=sparkmasterconfig=mysparkconfig \
 				    --from-literal=workercount=4
-				  
 $ oc create mycluster --storedconfig=clusterconfig
 
 To use a cluster configuration on a Spark cluster created from an S2I workflow, specify
 the configmap using the `OSHINKO_NAMED_CONFIG` parameter when creating the app:
 
+[source,bash]
 $ oc new-app --template=oshinko-python-spark-build-dc -p OSHINKO_NAMED_CONFIG=clusterconfig ...
 
 To use a Spark configuration on the driver pod created by an S2I workflow, specify
