@@ -1,0 +1,38 @@
+= use custom Spark configuration files with my cluster?
+
+Create custom versions of Spark configuration files like `spark-defaults.conf`
+and put them together in a subdirectory, then create a configmap from those
+files:
+
+[source,bash]
+$ oc create configmap mysparkconfig --from-file=spark_config_dir
+
+To use the Spark configuration on the master and/or worker nodes of a cluster
+created with the oshinko CLI, specify the configmap using flags:
+
+[source,bash]
+$ oshinko create mycluster --workerconfig=mysparkconfig --masterconfig=mysparkconfig
+
+To group Spark configurations for the master and workers together with things like the number of
+workers to create, create a cluster configuration configmap that references the master and/or
+worker configurations and then use it to create a cluster:
+
+[source,bash]
+$ oc create configmap clusterconfig --from-literal=sparkworkerconfig=mysparkconfig \
+                                    --from-literal=sparkmasterconfig=mysparkconfig \
+				    --from-literal=workercount=4
+				  
+$ oc create mycluster --storedconfig=clusterconfig
+
+To use a cluster configuration on a Spark cluster created from an S2I workflow, specify
+the configmap using the `OSHINKO_NAMED_CONFIG` parameter when creating the app:
+
+$ oc new-app --template=oshinko-python-spark-build-dc -p OSHINKO_NAMED_CONFIG=clusterconfig ...
+
+To use a Spark configuration on the driver pod created by an S2I workflow, specify
+a configmap using the `OSHINKO_SPARK_DRIVER_CONFIG` parameter when creating the app:
+
+[source,bash]
+oc new-app --template=oshinko-python-spark-build-dc -p OSHINKO_SPARK_DRIVER_CONFIG=mysparkconfig ...
+
+
