@@ -1,11 +1,17 @@
 = use custom Spark configuration files with my cluster?
 
-Create custom versions of Spark configuration files like `spark-defaults.conf`
-and put them together in a subdirectory, then create a configmap from those
-files:
+Create custom versions of standard Spark configuration files such as `spark-defaults.conf`
+and put them together in a subdirectory, then create a configmap from those files:
+
+[source,bash]
+ls spark_config_dir
+log4j.properties  metrics.properties  spark-defaults.conf
 
 [source,bash]
 oc create configmap mysparkconfig --from-file=spark_config_dir
+
+Those files will ultimately be written to the Spark configuration directory of cluster
+nodes, so their names must match valid Spark configuration file names.
 
 To use the Spark configuration on the master and/or worker nodes of a cluster
 created with the oshinko CLI, specify the configmap using flags:
