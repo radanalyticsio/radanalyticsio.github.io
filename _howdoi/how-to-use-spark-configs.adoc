@@ -1,11 +1,12 @@
 = use custom Spark configuration files with my cluster?
 
 Create custom versions of standard Spark configuration files such as `spark-defaults.conf`
-and put them together in a subdirectory, then create a configmap from those files:
+or `spark-env.sh` and put them together in a subdirectory, then create a configmap
+from those files:
 
 [source,bash]
 ls spark_config_dir
-log4j.properties  metrics.properties  spark-defaults.conf
+log4j.properties  metrics.properties  spark-defaults.conf spark-env.sh
 
 [source,bash]
 oc create configmap mysparkconfig --from-file=spark_config_dir
