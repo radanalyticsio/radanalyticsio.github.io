@@ -100,6 +100,8 @@ items:
           spec:
             containers:
             - env:
+              - name: DRIVER_HOST
+                value: ${APPLICATION_NAME}-headless
               - name: OSHINKO_CLUSTER_NAME
                 value: ${OSHINKO_CLUSTER_NAME}
               - name: APP_ARGS
@@ -159,6 +161,25 @@ items:
           port: 8080
           protocol: TCP
           targetPort: 8080
+        selector:
+          deploymentConfig: ${APPLICATION_NAME}
+    - apiVersion: v1
+      kind: Service
+      metadata:
+        name: ${APPLICATION_NAME}-headless
+        labels:
+          app: ${APPLICATION_NAME}
+      spec:
+        clusterIP: None
+        ports:
+        - name: driver-rpc-port
+          port: 7078
+          protocol: TCP
+          targetPort: 7078
+        - name: blockmanager
+          port: 7079
+          protocol: TCP
+          targetPort: 7079
         selector:
           deploymentConfig: ${APPLICATION_NAME}
     parameters:
@@ -271,6 +292,8 @@ items:
           spec:
             containers:
             - env:
+              - name: DRIVER_HOST
+                value: ${APPLICATION_NAME}-headless
               - name: OSHINKO_CLUSTER_NAME
                 value: ${OSHINKO_CLUSTER_NAME}
               - name: APP_ARGS
@@ -332,6 +355,25 @@ items:
           port: 8080
           protocol: TCP
           targetPort: 8080
+        selector:
+          deploymentConfig: ${APPLICATION_NAME}
+    - apiVersion: v1
+      kind: Service
+      metadata:
+        name: ${APPLICATION_NAME}-headless
+        labels:
+          app: ${APPLICATION_NAME}
+      spec:
+        clusterIP: None
+        ports:
+        - name: driver-rpc-port
+          port: 7078
+          protocol: TCP
+          targetPort: 7078
+        - name: blockmanager
+          port: 7079
+          protocol: TCP
+          targetPort: 7079
         selector:
           deploymentConfig: ${APPLICATION_NAME}
     parameters:
@@ -449,6 +491,8 @@ items:
           spec:
             containers:
             - env:
+              - name: DRIVER_HOST
+                value: ${APPLICATION_NAME}-headless
               - name: OSHINKO_CLUSTER_NAME
                 value: ${OSHINKO_CLUSTER_NAME}
               - name: APP_ARGS
@@ -510,6 +554,25 @@ items:
           port: 8080
           protocol: TCP
           targetPort: 8080
+        selector:
+          deploymentConfig: ${APPLICATION_NAME}
+    - apiVersion: v1
+      kind: Service
+      metadata:
+        name: ${APPLICATION_NAME}-headless
+        labels:
+          app: ${APPLICATION_NAME}
+      spec:
+        clusterIP: None
+        ports:
+        - name: driver-rpc-port
+          port: 7078
+          protocol: TCP
+          targetPort: 7078
+        - name: blockmanager
+          port: 7079
+          protocol: TCP
+          targetPort: 7079
         selector:
           deploymentConfig: ${APPLICATION_NAME}
     parameters:
