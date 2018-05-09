@@ -53,7 +53,6 @@ Welcome to
     _\ \/ _ \/ _ `/ __/  '_/
    /___/ .__/\_,_/_/ /_/\_\   version 2.2.1
       /_/
-                        
 Using Scala version 2.11.8, OpenJDK 64-Bit Server VM, 1.8.0_161
 Branch 
 Compiled by user felixcheung on 2017-11-24T23:19:45Z
