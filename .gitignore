@@ -4,3 +4,5 @@ _site
 *.exe
 .idea
 bower_components
+.bundle
+.vendor
