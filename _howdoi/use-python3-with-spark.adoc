@@ -1,0 +1,72 @@
+= use Python 3 with Apache Spark
+
+To use Python 3 with your OpenShift-based Apache Spark applications you will
+need to deploy a different base image for the Spark driver, master and workers.
+Depending on how your application is deployed this can take multiple forms.
+
+At the most basic level, to deploy a cluster with Python 3 you will need to
+change the base image that Oshinko uses. There are severl methods for doing
+this:
+
+== Deploying Python 3 images with Oshinko webui
+
+To use the Oshinko webui, you will need to access the
+"Advanced cluster configuration" link from the "Deploy cluster" dialog. It
+will look like this.
+
+pass:[<img src="/assets/howdoi/python3-oshinko-webui-1.png" alt="Oshinko deploy" class="img-responsive">]
+
+After clicking on that link, you will be presented with several new entry
+forms to customize your deployment. Scroll down through the dialog until you
+find a form entry labelled "Apache Spark image", and enter a reference for the
+Python 3 image. In this picture we are using
+`radanalyticsio/openshift-spark-py36:2.3-latest`, the tag may change depending
+on the version of radanalytics.io you are using.
+
+pass:[<img src="/assets/howdoi/python3-oshinko-webui-2.png" alt="Oshinko cluster create" class="img-responsive">]
+
+After this simply click "Deploy" to spawn your cluster.
+
+== Deploying Python 3 images with the Oshinko cli tool
+
+The Oshinko command line interface tool includes an option to specify the
+image you would like to use for your cluster. Following the example above,
+this command would create a cluster using the same
+`radanalyticsio/openshift-spark-py36:2.3-latest` image:
+
+....
+oshinko create my-cluster --workers=1 --image=radanalyticsio/openshift-spark-py36:2.3-latest
+....
+
+== Deploying Python 3 images with the source-to-image template
+
+If you have a source-to-image ready repository, you can use the Python 3
+template to deploy your application and the Apache Spark cluster directly
+from your source repository. There are two methods to achieve this: through
+the OpenShift console, and using the `oc` command line interface tool.
+
+=== From the console
+
+Through the console, select the Python 3 template from your "Add to project"
+dialog, it should look similar to this:
+
+pass:[<img src="/assets/howdoi/python3-oshinko-s2i-1.png" alt="Oshinko s2i" class="img-responsive">]
+
+After selecting the template, simply fill in the form entries as you would for
+any other source-to-image application.
+
+=== From the command line
+
+Alternatively, you may use the `oc new-app` command with the name of the
+Python 3 template, for example to launch the
+https://radanalytics.io/assets/my-first-radanalytics-app/sparkpi-python-flask.html[SparkPi tutorial]
+you would use the following:
+
+....
+oc new-app --template oshinko-python36-spark-build-dc  \
+    -p APPLICATION_NAME=sparkpi \
+    -p GIT_URI=https://github.com/radanalyticsio/tutorial-sparkpi-python-flask
+....
+
+This will build and launch the application with an ephemeral Spark cluster
+bound to the application lifecycle.
