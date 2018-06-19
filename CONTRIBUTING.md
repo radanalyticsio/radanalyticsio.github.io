@@ -104,6 +104,8 @@ simply do the following:
    rename it to suite reflect your question.
 1. Edit the contents of the new file to contain your question, the title of
    the document will get converted to be used in the "How do I" page.
+1. If you need to add media files for your entry, add them to the
+   `assets/howdoi` directory.
 1. Commit the new file to your feature branch and propose a pull request when
    you are ready.
 
