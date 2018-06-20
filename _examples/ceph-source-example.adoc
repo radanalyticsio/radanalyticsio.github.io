@@ -28,37 +28,42 @@ https://github.com/ceph/cn[Ceph Ansible playbooks]
 [[prerequisites]]
 == Prerequisites
 
-In case you need to configure your own Ceph environment, follow the
-steps below:
+In case you need to configure your own Ceph environment, follow the steps below:
 
 1. Download `ceph-nano` in your computer:
 
   ...
-  curl -L https://github.com/ceph/cn/releases/download/v1.6.1/cn-v1.6.1-b900468-linux-amd64 -o cn && chmod +x cn && mv cn /usr/local/bin
+  curl -L https://github.com/ceph/cn/releases/download/v1.6.1/cn-v1.6.1-b900468-linux-amd64 -o cn \
+  && chmod +x cn
   ...
 
 2. Create the Ceph cluster:
 
   ...
-  cn cluster start ceph-source -d /tmp
+  ./cn cluster start ceph-source -d /tmp
   ...
 
-3. After `cn cluster start` finish, you will receive the URL to access your newly created
-Ceph cluster ans your S3 credentials.
+3. After `cn cluster start` finish, you will receive the URL to access your newly created Ceph cluster and your S3 credentials.
 
 4. Access the Ceph Nano Web Console with address `http://<your-ip-address>:5000`. The figure below shows the Web console page:
 pass:[<img src="/assets/ceph-source-example/ceph-source-1.png" class="img-responsive">]
 
-5. We need to create a bucket and add a file so RADAnalytics can access. Let's first create a bucket: Click on the `Create Bucket` button and type `ceph-source` in the `Bucket Name` field:
+5. We need to create a bucket and add a file so that the Jupyter notebook can access it. Let's first create a bucket: Click on the `Create Bucket` button and type `ceph-source` in the `Bucket Name` field:
 pass:[<img src="/assets/ceph-source-example/ceph-source-2.png" class="img-responsive">]
 
 6. Now we have a bucket, and we need to upload a file. Click on the `ceph-source` we just created. The page below is shown:
 pass:[<img src="/assets/ceph-source-example/ceph-source-3.png" class="img-responsive">]
 
-7. Click on `Upload` button and select the `README.md` file in the Spark distribution you have. *Note:* This file is just an example, you can upload whatever text file you want, but expect different results from this tutorial.
+7. Click on `Upload` button and select the https://raw.githubusercontent.com/apache/spark/master/README.md[README.md] file from the Spark distribution. *Note:* This file is just an example, you can upload whatever text file you want, but expect different results from this tutorial.
 
-8. After selecting the file, the `Upload Status` dialog will show the upload progress until the `Uploaded` status is presented. Now we can continue with preparing the environment to access from RADAnalytics.
+8. After selecting the file, the `Upload Status` dialog will show the upload progress until the `Uploaded` status is presented. Now we can continue with preparing the environment to access from the Jupyter notebook.
 pass:[<img src="/assets/ceph-source-example/ceph-source-4.png" class="img-responsive">]
+
+If you want to stop the ceph-nano cluster, type the following command:
+
+  ...
+  ./cn cluster stop ceph-source
+  ...
 
 [[architecture]]
 == Architecture
@@ -73,16 +78,14 @@ No architecture, this is a connectivity example.
 
 2. Start a Jupyter notebook with the commands:
 
-  oc new-app radanalyticsio/base-notebook \
+  oc new-app rimolive/base-notebook \
     -e JUPYTER_NOTEBOOK_PASSWORD=supersecret \
-    -e JUPYTER_NOTEBOOK_X_INCLUDE=https://radanalytics.io/assets/s3-source-example/s3-source-example.ipynb
+    -e JUPYTER_NOTEBOOK_X_INCLUDE=https://radanalytics.io/assets/ceph-source-example/ceph-source-example.ipynb
   oc expose svc/base-notebook
 
-3. After the notebook pod shows `Ready` status, find in the logs the connection URL with the command:
+3. Open the Jupyter URL created by OpenShift and type the password you set in the previous command.
 
-  $ oc logs dc/base-notebook | grep localhost | sed "s/localhost:8888/$(oc get routes/base-notebook --template='{{.spec.host}}')/"
-
-4. Download link:/assets/ceph-source-example/ceph-example.ipynb[the notebook], upload into jupyter and follow the notebook instructions. Make sure in the line where the notebook connects to the spark cluster you changed with the cluster name you used in step 1 and in the line where you set up the Ceph connection you change with the IP where you Ceph instance is running.
+4. Look for the notebook named `s3-source-example.ipynb`, open it and follow the instructions. Make sure in the line where the notebook connects to the spark cluster you changed with the cluster name you used in step 1 and in the line where you set up the Ceph connection you change with the IP where you Ceph instance is running.
 
 pass:[<img src="/assets/ceph-source-example/ceph-source-5.png" class="img-responsive">]
 
