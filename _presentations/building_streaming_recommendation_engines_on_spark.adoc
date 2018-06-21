@@ -1,6 +1,6 @@
 = Building Streaming Recommendation Engines on Spark
 :page-presentor: Rui Vieira
-:page-date: 2018-01-27
+:page-date: 2018-06-11
 :page-media-url: https://youtu.be/-bR3d5h9SWc
 :page-slides-url: https://github.com/ruivieira/presentations/blob/master/streaming-als/2018-06-11-berlin-buzzwords-streaming-als.pdf
 
