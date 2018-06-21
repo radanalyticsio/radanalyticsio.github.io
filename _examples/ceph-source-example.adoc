@@ -20,7 +20,7 @@ and a running Spark cluster in your OpenShift project.
 Optionally, you can run in your own computer using `ceph-nano`
 (check the <<prerequisites>> section if you need to deploy a local instance of Ceph).
 
-https://github.com/radanalyticsio/radanalyticsio.github.io/blob/master/assets/ceph-source-example/ceph-example.ipynb[Ceph Source Example]
+https://github.com/radanalyticsio/radanalyticsio.github.io/blob/master/assets/ceph-source-example/ceph-source-example.ipynb[Ceph Source Example]
 
 https://github.com/ceph/cn[Ceph Ansible playbooks]
 
@@ -32,16 +32,12 @@ In case you need to configure your own Ceph environment, follow the steps below:
 
 1. Download `ceph-nano` in your computer:
 
-  ...
   curl -L https://github.com/ceph/cn/releases/download/v1.6.1/cn-v1.6.1-b900468-linux-amd64 -o cn \
   && chmod +x cn
-  ...
 
 2. Create the Ceph cluster:
 
-  ...
   ./cn cluster start ceph-source -d /tmp
-  ...
 
 3. After `cn cluster start` finish, you will receive the URL to access your newly created Ceph cluster and your S3 credentials.
 
@@ -61,9 +57,7 @@ pass:[<img src="/assets/ceph-source-example/ceph-source-4.png" class="img-respon
 
 If you want to stop the ceph-nano cluster, type the following command:
 
-  ...
   ./cn cluster stop ceph-source
-  ...
 
 [[architecture]]
 == Architecture
@@ -85,7 +79,7 @@ No architecture, this is a connectivity example.
 
 3. Open the Jupyter URL created by OpenShift and type the password you set in the previous command.
 
-4. Look for the notebook named `s3-source-example.ipynb`, open it and follow the instructions. Make sure in the line where the notebook connects to the spark cluster you changed with the cluster name you used in step 1 and in the line where you set up the Ceph connection you change with the IP where you Ceph instance is running.
+4. Look for the notebook named `ceph-source-example.ipynb`, open it and follow the instructions. Make sure in the line where the notebook connects to the spark cluster you changed with the cluster name you used in step 1 and in the line where you set up the Ceph connection you change with the IP where you Ceph instance is running.
 
 pass:[<img src="/assets/ceph-source-example/ceph-source-5.png" class="img-responsive">]
 
