@@ -1,0 +1,47 @@
+---
+layout: default
+title: How do I?
+menu_entry: How do I?
+---
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-lg-10 col-lg-offset-1">
+      <h1>How do I ...</h1>
+    </div>
+  </div>
+
+  <div class="col-lg-10 col-lg-offset-1">
+    <div class="list-group list-view-pf list-view-pf-view">
+
+      {% for doc in site.howdoi %}
+      <div class="list-group-item">
+        <div class="list-group-item-header flex-center">
+          <div class="list-view-pf-expand">
+            <span class="fa fa-angle-right"></span>
+          </div>
+          <div class="list-view-pf-main-info">
+            <div class="list-view-pf-body">
+              <div class="list-view-pf-description">
+                <div class="list-group-item-heading">
+                  <h2>{{ doc.title }}</h2>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="list-group-item-container container-fluid hidden">
+          <div class="close">
+            <span class="pficon pficon-close"></span>
+          </div>
+          <div>
+            {{ doc.content }}
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+
+    </div>
+  </div>
+
+</div>

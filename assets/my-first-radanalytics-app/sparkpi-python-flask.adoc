@@ -208,10 +208,10 @@ Make sure to note the location of your remote repository as you will need it in 
 
 == Build and run the application
 
-Now that all your files have been created, checked in and pushed to your online repository you are ready to command OpenShift to build and run your application. The following command will start the process, you can see that we are telling OpenShift to use the `oshinko-pyspark-build-dc` template for our application. This template contains the necessary components to invoke the Oshinko source-to-image builder. We also give our application a name and tell the builder where to find our source code. Issue the following command, making sure to enter your repository location for the `GIT_URI` parameter:
+Now that all your files have been created, checked in and pushed to your online repository you are ready to command OpenShift to build and run your application. The following command will start the process, you can see that we are telling OpenShift to use the `oshinko-python-spark-build-dc` template for our application. This template contains the necessary components to invoke the Oshinko source-to-image builder. We also give our application a name and tell the builder where to find our source code. Issue the following command, making sure to enter your repository location for the `GIT_URI` parameter:
 
 ....
-oc new-app --template oshinko-pyspark-build-dc  \
+oc new-app --template oshinko-python-spark-build-dc  \
     -p APPLICATION_NAME=sparkpi \
     -p GIT_URI=${YOUR_REPOSITORY_URI_HERE}
 ....
@@ -219,10 +219,10 @@ oc new-app --template oshinko-pyspark-build-dc  \
 Running this command should look something like this:
 
 ....
-$ oc new-app --template oshinko-pyspark-build-dc  \
+$ oc new-app --template oshinko-python-spark-build-dc  \
 >     -p APPLICATION_NAME=sparkpi \
 >     -p GIT_URI=https://github.com/radanalyticsio/tutorial-sparkpi-python-flask.git
---> Deploying template "pi/oshinko-pyspark-build-dc" to project pi
+--> Deploying template "pi/oshinko-python-spark-build-dc" to project pi
 
      PySpark
      ---------
@@ -311,6 +311,6 @@ Let's break this down a little. These first few lines are actually being generat
 
 On the last two lines you see the `spark-submit` command which will run the application and the output from Flask informing us that it is listening on the host and port we specified.
 
-With your application now running on OpenShift please return to the link:/applications/my-first-radanalytics-app#user[My First RADanalytics Application page] to learn how to interact with this new microservice.
+With your application now running on OpenShift please return to the link:/my-first-radanalytics-app.html#user[My First RADanalytics Application page] to learn how to interact with this new microservice.
 
 You can find a reference implementation of this application in the RADanalytics GitHub organization at https://github.com/radanalyticsio/tutorial-sparkpi-python-flask

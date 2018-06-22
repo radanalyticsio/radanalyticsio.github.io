@@ -1,0 +1,85 @@
+---
+layout: default
+title: Community
+menu_entry: Community
+---
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-lg-10 col-lg-offset-1">
+      <h1>Development</h1>
+      <p>
+The radanalytics.io community has several ongoing projects with frequent
+releases. These are all collected in our GitHub organization. Each project
+addresses a specific concern within the OpenShift realm and provide solid
+solutions for your own data driven applications.
+      </p>
+      <h4>
+        <a href="https://github.com/radanalyticsio" target="blank">
+          <i class="fa fa-github fa-lg" aria-hidden="true"></i> GitHub Organization
+        </a>
+      </h4>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-10 col-lg-offset-1">
+      <h1>Presentations</h1>
+      <p>
+The following presentations are about the technologies involved in, or
+related to the radanalytics.io projects. We love our community and the
+passion they have for this technology, if you have a presentation, or know of
+one that would fit in here, please open a
+<a href="https://github.com/radanalyticsio/radanalyticsio.github.io/pulls">pull request</a>
+and add it to the list!
+      </p>
+
+      <!-- to add presentatations, see the _data/presentations.yaml file -->
+
+    </div>
+  </div>
+
+  <div class="col-lg-10 col-lg-offset-1">
+    <div class="list-group list-view-pf list-view-pf-view">
+      {% assign sorted_presentations = site.presentations | sort: 'date' | reverse %}
+      {% for pres in sorted_presentations %}
+
+      <div class="list-group-item">
+        <div class="list-group-item-header flex-center">
+          <div class="list-view-pf-expand">
+            <span class="fa fa-angle-right"></span>
+          </div>
+          <div class="list-view-pf-main-info">
+            <div class="list-view-pf-body">
+              <div class="list-view-pf-description">
+                <div class="list-group-item-heading">
+                  <h2> {{ pres.title }}</h2>
+                  <em>{{ pres.presentor }}</em>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="list-group-item-container container-fluid hidden">
+          <div>
+            {{ pres.content }}
+
+            <a href="{{ pres.media-url }}">
+              <i class="fa fa-video-camera" aria-hidden="true"></i>
+              &nbsp; Presentation media</a>
+
+            {% if pres.slides-url %}
+            <a href="{{ pres.slides-url }}">
+              <i class="fa fa-picture-o" aria-hiddent="true"></i>
+              &nbsp; Slide deck</a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+
+      {% endfor %}
+
+    </div>
+  </div>
+
+</div>

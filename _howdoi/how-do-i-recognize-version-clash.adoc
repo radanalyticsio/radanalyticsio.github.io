@@ -1,0 +1,72 @@
+= recognize Spark version mismatch between driver, master and/or workers?
+
+It's important that the Spark version running on your driver, master, and
+worker pods all match. Although some versions _might actually_ interoperate,
+there is no guarantee and care should be taken to never mix versions.
+
+If you find that you do have a version mismatch, you should check any templates
+that you're using for errors or lack of specificity on an image that could
+lead to a mismatch (for example radanalyticsio/radanalytics-pyspark instead of
+radanalyticsio/radanalytics-pyspark:stable). Also check that you do not have
+cached versions of older images in your docker daemons.
+
+You can check the version of Spark running on pods created with radanalytics
+tooling by looking in the logs. The driver pods launched in an S2I workflow
+will have log lines identifying the oshinko version and the default Spark
+image that will be used to create a cluster (if it's not overridden):
+
+[source,bash]
+oc log -f my-driver-pod
+...
+oshinko v0.4.6
+Default spark image: radanalyticsio/openshift-spark:2.2-latest
+
+Additionally, when the Spark driver starts running, the precise version
+will be logged:
+
+[source,bash]
+oc log -f my-driver-pod
+...
+18/05/09 19:30:06 INFO SparkContext: Running Spark version 2.2.1
+
+The Spark master will have a similar log line:
+
+[source,bash]
+oc log -f my-spark-master-pod
+18/05/09 19:31:23 INFO Master: Running Spark version 2.2.1
+
+as will the Spark workers:
+
+[source,bash]
+oc log -f my-spark-worker-pod
+18/05/09 19:33:03 INFO Worker: Running Spark version 2.2.1
+
+You can also log in to any of these pods and check the Spark
+version from the command line:
+
+[source,bash]
+oc rsh my-spark-driver-pod
+(app-root)sh-4.2$ spark-submit --version
+Welcome to
+      ____              __
+     / __/__  ___ _____/ /__
+    _\ \/ _ \/ _ `/ __/  '_/
+   /___/ .__/\_,_/_/ /_/\_\   version 2.2.1
+      /_/
+Using Scala version 2.11.8, OpenJDK 64-Bit Server VM, 1.8.0_161
+Branch 
+Compiled by user felixcheung on 2017-11-24T23:19:45Z
+Revision 
+Url 
+Type --help for more information.
+(app-root)sh-4.2$ 
+
+Finally, here are a couple of tell-tale errors that typically
+indicate a Spark version mismatch between components:
+
+[source,bash]
+java.lang.IllegalArgumentException: requirement failed: Can only call getServletHandlers on a running MetricsSystem
+
+[source,bash]
+8/05/08 13:52:43 ERROR TransportRequestHandler: Error while invoking RpcHandler#receive() for one-way message.
+java.io.InvalidClassException: org.apache.spark.rpc.RpcEndpointRef; local class incompatible: stream classdesc serialVersionUID = -1329125091869941550, local class serialVersionUID = 1835832137613908542
