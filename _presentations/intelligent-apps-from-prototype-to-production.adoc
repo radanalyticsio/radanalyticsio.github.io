@@ -1,0 +1,16 @@
+= Intelligent applications from prototype to production
+:page-presentor: Rebecca Simmonds and Michael McCune
+:page-date: 2018-05-10
+:page-media-url: https://www.youtube.com/watch?v=ofm9cv18geo&t=1s
+
+Today’s users demand tailored, dynamic, and constantly refined experiences. They expect intelligent applications that will learn from data and improve with longevity and popularity. Application intelligence takes many forms, including anomaly and fraud detection, product recommendations, natural-language understanding, even speech and image recognition. All of these capabilities will need to be put into production and managed alongside conventional application components.
+
+In this session, you'll:
+
+- See how developers can integrate intelligent features into their products without involving data scientists or machine learning engineers.
+
+- Understand how application intelligence is created and refined by cross-functional teams and how using OpenShift can accelerate this process.
+
+- Watch us demonstrate architectures for creating, sharing, deploying, and reusing intelligent application components as containerized microservices.
+
+- Leave inspired to take your applications to the next level with intelligent features and concrete suggestions on how to get started with OpenShift.
