@@ -30,10 +30,10 @@ i.e. a database or in-memory data grid.
 For Graf Zahl to have anything to do he needs some data to
 consume. To help him out here we also provide two other pods.
 
-1. Apache Kafka running entirely in one pod. This is not
-   production-ready because it does nothing to provide replication,
-   durability or scalability of the topic used by Graf Zahl. What it
-   does provide is just enough Kafka to demonstrate stream processing.
+1. Apache Kafka is provided by https://github.com/strimzi/strimzi-kafka-operator[Strimzi].
+   Basic instructions for setting up Strimzi 0.1 are provided in this 
+   document. To experiment with the latest Strimzi version please
+   refer to the http://strimzi.io/documentation/[official documentation].
 
 2. A source of some data to count. For this we provide a word
    fountain, generating words to the topic that Graf Zahl will
@@ -67,31 +67,31 @@ Second, load the Apache Kafka infrastructure components into your
 project and start them.
 
 ....
-oc create -f https://raw.githubusercontent.com/mattf/openshift-kafka/master/resources.yaml
-oc new-app apache-kafka
+oc create -f https://raw.githubusercontent.com/strimzi/strimzi.github.io/master/docs/0.1.0/kafka-statefulsets/resources/openshift-template.yaml
+oc new-app strimzi
 ....
 
 Third, launch the word fountain, so Graf Zahl will have something to
 count. The word fountain uses the `SERVERS` environment variable to
 find the Apache Kafka deployment to use. In the second step, when you
-created `apache-kafka` you created a service with the same name on
+created `strimzi` you created a service with the name `kafka` on
 port 9092. Note: The first time this step and the next run you'll have
 to wait for the builder images to be pulled down from the internet, so
 if you're on a thin pipe you may want to start both at the same time
 and grab a drink.
 
 ....
-oc new-app openshift/python-27-centos7~https://github.com/radanalyticsio/word-fountain -e SERVERS=apache-kafka:9092
+oc new-app openshift/python-27-centos7~https://github.com/radanalyticsio/word-fountain -e SERVERS=kafka:9092
 ....
 
-Forth, launch Graf Zahl himself, using the Oshinko pyspark S2I
+Fourth, launch Graf Zahl himself, using the Oshinko pyspark S2I
 builder.
 
 ....
 oc new-app --template=oshinko-python-spark-build-dc \
            -p APPLICATION_NAME=grafzahl \
            -p GIT_URI=https://github.com/radanalyticsio/grafzahl \
-           -p APP_ARGS=--servers=apache-kafka:9092 \
+           -p APP_ARGS=--servers=kafka:9092 \
            -p SPARK_OPTIONS='--packages org.apache.spark:spark-sql-kafka-0-10_2.11:2.3.0'
 ....
 
