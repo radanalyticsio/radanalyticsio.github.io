@@ -30,12 +30,12 @@ A production-ready application would separate the processor from the web UI
 by an operational data store, i.e. a database or in-memory data grid.
 
 For jGraf Zahl to have anything to do she needs some data to
-consume. To help her out here we also provide two other pods.
+consume. To help her out here we also provide the following services.
 
-1. Apache Kafka running entirely in one pod. This is not
-   production-ready because it does nothing to provide replication,
-   durability or scalability of the topic used by jGraf Zahl. What it
-   does provide is just enough Kafka to demonstrate stream processing.
+1. Apache Kafka is provided by https://github.com/strimzi/strimzi-kafka-operator[Strimzi].
+   Basic instructions for setting up Strimzi 0.1 are provided in this 
+   document. To experiment with the latest Strimzi version please
+   refer to the http://strimzi.io/documentation/[official documentation].
 
 2. A source of some data to count. For this we provide a word
    fountain, generating words to the topic that jGraf Zahl will
@@ -69,21 +69,21 @@ Second, load the Apache Kafka infrastructure components into your
 project and start them.
 
 ....
-oc create -f https://raw.githubusercontent.com/mattf/openshift-kafka/master/resources.yaml
-oc new-app apache-kafka
+oc create -f https://raw.githubusercontent.com/strimzi/strimzi.github.io/master/docs/0.1.0/kafka-statefulsets/resources/openshift-template.yaml
+oc new-app strimzi
 ....
 
 Third, launch the word fountain, so jGraf Zahl will have something to
 count. The word fountain uses the `SERVERS` environment variable to
 find the Apache Kafka deployment to use. In the second step, when you
-created `apache-kafka` you created a service with the same name on
+created `strimzi` you created a service named `kafka` on
 port 9092. Note: The first time this step and the next run you'll have
 to wait for the builder images to be pulled down from the internet, so
 if you're on a thin pipe you may want to start both at the same time
 and grab a drink.
 
 ....
-oc new-app openshift/python-27-centos7~https://github.com/mattf/word-fountain -e SERVERS=apache-kafka:9092
+oc new-app openshift/python-27-centos7~https://github.com/mattf/word-fountain -e SERVERS=kafka:9092
 ....
 
 Fourth, launch jGraf Zahl herself, using the Oshinko java S2I
@@ -94,7 +94,7 @@ oc new-app --template=oshinko-java-spark-build-dc \
            -p APPLICATION_NAME=jgrafzahl \
            -p GIT_URI=https://github.com/radanalyticsio/jgrafzahl \
            -p APP_MAIN_CLASS=io.radanalytics.jgrafzahl.App \
-           -p APP_ARGS='apache-kafka:9092 word-fountain' \
+           -p APP_ARGS='kafka:9092 word-fountain' \
            -p SPARK_OPTIONS='--packages org.apache.spark:spark-sql-kafka-0-10_2.11:2.3.0,com.sparkjava:spark-core:2.5.5,org.glassfish:javax.json:1.0.4  --conf spark.jars.ivy=/tmp/.ivy2'
 ....
 
