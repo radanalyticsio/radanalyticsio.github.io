@@ -32,7 +32,7 @@ by an operational data store, i.e. a database or in-memory data grid.
 For jGraf Zahl to have anything to do she needs some data to
 consume. To help her out here we also provide the following services.
 
-1. Apache Kafka is provided by https://github.com/strimzi/strimzi-kafka-operator[Strimzi].
+1. Apache Kafka is provided by http://strimzi.io/[Strimzi].
    Basic instructions for setting up Strimzi 0.1 are provided in this 
    document. To experiment with the latest Strimzi version please
    refer to the http://strimzi.io/documentation/[official documentation].
@@ -66,7 +66,9 @@ a project with Oshinko installed. See link:/get-started[Get Started] if
 you need help.
 
 Second, load the Apache Kafka infrastructure components into your
-project and start them.
+project and start them. Since the following command will initialize
+both the Kafka and Zookeeper servers, you might want to wait a moment
+before proceeding to the next step.
 
 ....
 oc create -f https://raw.githubusercontent.com/strimzi/strimzi.github.io/master/docs/0.1.0/kafka-statefulsets/resources/openshift-template.yaml
