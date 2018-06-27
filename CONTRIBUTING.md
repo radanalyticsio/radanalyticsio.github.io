@@ -12,13 +12,16 @@ documents.
 ## Testing out your changes locally
 
 To test this site locally, you will need to have Ruby installed as well as the
-[Bundler](https://bundler.io) gem. This will make installing and
-running the site much simpler. Provided that you have Ruby and the `gem`
-command installed, a quickstart to running the site will be:
+[Bundler](https://bundler.io) gem and the [Bower](https://bower.io/)
+application. This will make installing and running the site much simpler.
+With all the required development software installed, you should be able to
+run the site locally as follows:
 
 ```
 $ gem install bundler
 $ cd radanalyticsio.github.io
+$ bundle install --path .vendor
+$ bower install
 $ bundle exec jekyll serve
 ```
 
