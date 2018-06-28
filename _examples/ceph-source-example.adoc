@@ -74,9 +74,9 @@ No architecture, this is a connectivity example.
     -e JUPYTER_NOTEBOOK_X_INCLUDE=https://radanalytics.io/assets/ceph-source-example/ceph-source-example.ipynb
   oc expose svc/base-notebook
 
-3. Open the Jupyter URL created by OpenShift and type the password you set in the previous command.
+2. Open the Jupyter URL created by OpenShift and type the password you set in the previous command.
 
-4. Look for the notebook named `ceph-source-example.ipynb`, open it and follow the instructions. Make sure in the line where the notebook connects to the spark cluster you changed with the cluster name you used in step 1 and in the line where you set up the Ceph connection you change with the IP where you Ceph instance is running.
+3. Look for the notebook named `ceph-source-example.ipynb`, open it and follow the instructions. Make sure in the line where the notebook connects to the spark cluster you changed with the cluster name you used in step 1 and in the line where you set up the Ceph connection you change with the IP where you Ceph instance is running.
 
 pass:[<img src="/assets/ceph-source-example/ceph-source-5.png" class="img-responsive">]
 
