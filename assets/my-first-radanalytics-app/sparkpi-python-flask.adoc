@@ -8,7 +8,7 @@
 
 These instructions will help you to create a SparkPi microservice using the https://www.python.org[Python language] and the http://flask.pocoo.org[Flask framework].
 
-You should already have the necessary prerequisites installed and configured, but if not please review the link:/applications/my-first-radanalytics-app[instructions].
+You should already have the necessary prerequisites installed and configured, but if not please review the link:/my-first-radanalytics-app.html[instructions].
 
 == Create the application source file
 
