@@ -67,10 +67,7 @@ No architecture, this is a connectivity example.
 [[installation]]
 == Installation
 
-1. From the OpenShift developer console, visit the Oshinko web interface. Use the 
-   interface to create a new cluster, and take note of what you’ve called this cluster.
-
-2. Start a Jupyter notebook with the commands:
+1. Start a Jupyter notebook with the commands:
 
   oc new-app rimolive/base-notebook \
     -e JUPYTER_NOTEBOOK_PASSWORD=supersecret \
