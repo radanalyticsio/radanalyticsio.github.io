@@ -1,0 +1,15 @@
+= Apache Spark from notebook to cloud native application
+:page-presentor: Rebecca Simmonds
+:page-date: 2018-06-05
+:page-media-url: https://databricks.com/session/apache-spark-from-notebook-to-cloud-native-application
+
+Data engineering teams love Apache Spark because it’s powerful and easy to manage, but managing a shared resource for experimental analyses and queries is very different from developing production applications in contemporary cloud environments: the gap between understanding Spark and being able to deploy and manage it in production can be vast.
+
+This session will cover a developer’s journey learning Spark and using it to develop a containerized, cloud native application with analysis and visualization components. More specifically, these topics will be covered:
+
+• Exploratory analysis in a Jupyter notebook running against an ephemeral Spark cluster
+• Using PySpark for loading and analyzing data from external data sources like PostgreSQL
+• Transforming your notebook into a cloud-native application deploying your application in containers on Kubernetes
+• PySpark API functionality that you didn’t know you needed.
+
+So, whether you’re an application developer or a Spark expert this session is for you. If you’re a developer wanting to deploy a spark cluster into production, this session will help guide you through techniques to make this transition easier and quicker. However, if you’re an expert, then this talk should give you some insight into how application developers work and help you to coordinate with the development team.
