@@ -8,7 +8,7 @@
 
 These instructions will help you to create a SparkPi microservice using the https://www.oracle.com/java[Java language] and the https://spring.io/[Spring framework].
 
-You should already have the necessary prerequisites installed and configured, but if not please review the link:/applications/my-first-radanalytics-app[instructions].
+You should already have the necessary prerequisites installed and configured, but if not please review the link:/my-first-radanalytics-app.html[instructions].
 
 == Create the application source files
 
@@ -42,7 +42,7 @@ public class SparkPiBootApplication {
     @PostConstruct
     public void init() {
         log.info("SparkPi submit jar is: "+properties.getJarFile());
-        if (!SparkPiContextProvider.init(properties)) {
+        if (!SparkContextProvider.init(properties)) {
             // masterURL probably not set,
             // meaning this was likely run outside of oshinko
             System.exit(1);
@@ -81,7 +81,7 @@ public class SparkPiController {
 }
 ....
 
-The next file you will create is named `SparkPiContextProvider.java`. This file contains a helper class for creating the connection to the Apache Spark cluster. It should contain these contents:
+The next file you will create is named `SparkContextProvider.java`. This file contains a helper class for creating the connection to the Apache Spark cluster. It should contain these contents:
 
 ....
 package io.radanalytics;
@@ -92,17 +92,17 @@ import org.apache.spark.api.java.JavaSparkContext;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.*;
 
-public class SparkPiContextProvider {
+public class SparkContextProvider {
 
-    private static SparkPiContextProvider INSTANCE = null;
+    private static SparkContextProvider INSTANCE = null;
 
     private SparkConf sparkConf;
     private JavaSparkContext sparkContext;
 
-    private SparkPiContextProvider() {
+    private SparkContextProvider() {
     }
 
-    private SparkPiContextProvider(SparkPiProperties props) {
+    private SparkContextProvider(SparkPiProperties props) {
         this.sparkConf = new SparkConf().setAppName("JavaSparkPi");
         this.sparkConf.setJars(new String[]{props.getJarFile()});
         this.sparkContext = new JavaSparkContext(sparkConf);
@@ -111,7 +111,7 @@ public class SparkPiContextProvider {
     public static boolean init(SparkPiProperties props) {
         try {
             if (INSTANCE == null) {
-                INSTANCE = new SparkPiContextProvider(props);
+                INSTANCE = new SparkContextProvider(props);
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -169,7 +169,7 @@ import org.apache.spark.api.java.JavaSparkContext;
 
 public class SparkPiProducer implements Serializable {
     public String GetPi(int scale) {
-        JavaSparkContext jsc = SparkPiContextProvider.getContext();
+        JavaSparkContext jsc = SparkContextProvider.getContext();
 
         int n = 100000 * scale;
         List<Integer> l = new ArrayList<Integer>(n);
@@ -203,7 +203,7 @@ src/main/java/io/radanalytics/SparkPiBootApplication.java
 src/main/java/io/radanalytics/SparkPiProducer.java
 src/main/java/io/radanalytics/SparkPiController.java
 src/main/java/io/radanalytics/SparkPiProperties.java
-src/main/java/io/radanalytics/SparkPiContextProvider.java
+src/main/java/io/radanalytics/SparkContextProvider.java
 ....
 
 == Analysis of the source code
@@ -244,7 +244,7 @@ In the next function, we declare how our application should be initialized. We l
 @PostConstruct
 public void init() {
     log.info("SparkPi submit jar is: "+properties.getJarFile());
-    if (!SparkPiContextProvider.init(properties)) {
+    if (!SparkContextProvider.init(properties)) {
         // masterURL probably not set,
         // meaning this was likely run outside of oshinko
         System.exit(1);
@@ -297,7 +297,7 @@ The second endpoint we define, `/sparkpi`,  is for our Pi calculation. We use Sp
 }
 ....
 
-The next file we will examine is `SparkPiContextProvider.java`, which will create a https://spark.apache.org/docs/latest/api/java/org/apache/spark/api/java/JavaSparkContext.html[SparkContext] using the https://en.wikipedia.org/wiki/Singleton_pattern[singleton pattern]. The reasoning for this usage is to avoid threading conflicts with the Spring framework by having a singular connection to the Spark cluster. As usual, at the beginning of the file we declare the package namespace for this file and include several classes and packages for usage.
+The next file we will examine is `SparkContextProvider.java`, which will create a https://spark.apache.org/docs/latest/api/java/org/apache/spark/api/java/JavaSparkContext.html[SparkContext] using the https://en.wikipedia.org/wiki/Singleton_pattern[singleton pattern]. The reasoning for this usage is to avoid threading conflicts with the Spring framework by having a singular connection to the Spark cluster. As usual, at the beginning of the file we declare the package namespace for this file and include several classes and packages for usage.
 
 ....
 package io.radanalytics;
@@ -312,9 +312,9 @@ import org.springframework.stereotype.*;
 Next we declare our provider class and set up a few internal variables. The static `INSTANCE` will provide our concrete singular instantiation of this class which defines our singleton. The `sparkConf` and `sparkContext` variables are the actual connections to our Spark cluster.
 
 ....
-public class SparkPiContextProvider {
+public class SparkContextProvider {
 
-    private static SparkPiContextProvider INSTANCE = null;
+    private static SparkContextProvider INSTANCE = null;
 
     private SparkConf sparkConf;
     private JavaSparkContext sparkContext;
@@ -323,10 +323,10 @@ public class SparkPiContextProvider {
 Since this class will implement the singleton pattern, we make its constructors private to ensure that it will only be instantiated by the `init` method. The second contructor function is the primary method here, it accepts the properties object and instantiates the internal private variables. The `setJars` function will instruct Spark to associate our application Jar with the https://spark.apache.org/docs/latest/api/java/org/apache/spark/SparkConf.html[SparkConf] object, and subsequently the Spark context.
 
 ....
-    private SparkPiContextProvider() {
+    private SparkContextProvider() {
     }
 
-    private SparkPiContextProvider(SparkPiProperties props) {
+    private SparkContextProvider(SparkPiProperties props) {
         this.sparkConf = new SparkConf().setAppName("JavaSparkPi");
         this.sparkConf.setJars(new String[]{props.getJarFile()});
         this.sparkContext = new JavaSparkContext(sparkConf);
@@ -339,7 +339,7 @@ The `init` function is the main entry point for constructing the context provide
     public static boolean init(SparkPiProperties props) {
         try {
             if (INSTANCE == null) {
-                INSTANCE = new SparkPiContextProvider(props);
+                INSTANCE = new SparkContextProvider(props);
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -426,7 +426,7 @@ $ ls
 src
 
 $ find src -type f
-src/main/java/io/radanalytics/SparkPiContextProvider.java
+src/main/java/io/radanalytics/SparkContextProvider.java
 src/main/java/io/radanalytics/SparkPiProperties.java
 src/main/java/io/radanalytics/SparkPiProducer.java
 src/main/java/io/radanalytics/SparkPiController.java
