@@ -37,7 +37,7 @@ The next step is to create a https://docs.openshift.com/container-platform/lates
 Type in the following command to create your project:
 
 ....
-oc new-project winemap-namespace
+oc new-project winemap
 ....
 
 After you have created an OpenShift cluster and a project to deploy containers into the next step is to deploy a PostgreSQL database.
@@ -45,27 +45,16 @@ This can be done easily using the PostgreSQL template provided by OpenShift with
 For this example just copy the command below:
 
 ....
-oc new-app --template=postgresql-persistent \
+oc new-app --template=postgresql-ephemeral \
   -p POSTGRESQL_USER=username \
   -p POSTGRESQL_PASSWORD=password \
   -p POSTGRESQL_DATABASE=wineDb
 ....
 
-The next step is to load the data into the database, for this you will need to clone this https://github.com/radanalyticsio/winemap-data-loader[repository] or alternatively use these
-template files: link:/assets/wine-map/wine-data-loader.yaml[wine-data-loader] and link:/assets/wine-map/secret.yaml[secret].
-We will then create the https://docs.OpenShift.org/latest/dev_guide/templates.html[template] for the Kubernetes job.
-The template references an image which executes a Python script to load the data. The link:/assets/wine-map/wine-data-loader.yaml[wine-data-loader.yaml] is contained in the repository mentioned. The command you need to use is:
+The next step is to load the data into the database. We will create a https://docs.OpenShift.org/latest/dev_guide/templates.html[template] for the Kubernetes job.
+The template references an image which executes a Python script to load the data. The command you need to use is:
 ....
-oc create -f wine-data-loader.yaml
-....
-
-We then need to set up a secret to pass the database the username, password and database name.
-https://docs.openshift.com/container-platform/latest/dev_guide/secrets.html[Secrets] use the OpenShift/Kubernetes access control methods to limit their use.
-The link:/assets/wine-map/secret.yaml[secret.yaml] is contained in the repository mentioned above.
-Here is the command used to create the secret file in the project:
-
-....
-oc create -f secret.yaml
+oc create -f https://raw.githubusercontent.com/radanalyticsio/winemap-data-loader/master/wine-data-loader.yaml
 ....
 
 We then create the job to load the data with the following command:
@@ -86,6 +75,7 @@ oc new-app --template=oshinko-python-spark-build-dc \
   -p APPLICATION_NAME=winemap \
   -p GIT_URI=https://github.com/radanalyticsio/winemap.git \
   -p SPARK_OPTIONS='--packages org.postgresql:postgresql:42.1.4' \
+  -p OSHINKO_CLUSTER_NAME=<oshinko_cluster_name> \
   -e SERVER=postgresql \
   -e DBNAME=wineDb \
   -e PASSWORD=password \
