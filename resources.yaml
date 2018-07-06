@@ -798,6 +798,7 @@ items:
       - name: OSHINKO_REFRESH_INTERVAL
         value: "5"
         description: Refresh interval for updating cluster list in seconds
+
   - apiVersion: v1
     kind: Template
     template: oshinko-webui
@@ -934,3 +935,105 @@ items:
       - name: OSHINKO_REFRESH_INTERVAL
         value: "5"
         description: Refresh interval for updating cluster list in seconds
+
+  - apiVersion: v1
+    kind: Template
+    labels:
+      application: radanalytics-jupyter-notebook
+      createdBy: template-radanalytics-jupyter-notebook
+    metadata:
+      annotations:
+        description: Launch a Jupyter notebook
+        openshift.io/display-name: Jupyter Notebook
+      name: radanalytics-jupyter-notebook
+    objects:
+      - kind: Service
+        metadata:
+          name: ${NAME}
+          labels:
+            app: ${NAME}
+        apiVersion: v1
+        spec:
+          ports:
+          - name: http-port
+            protocol: TCP
+            port: 8888
+            targetPort: 8888
+          selector:
+            deploymentConfig: ${NAME}
+      - kind: Route
+        metadata:
+          name: ${NAME}
+          labels:
+            app: ${NAME}
+        apiVersion: v1
+        spec:
+          path: /
+          to:
+            name: ${NAME}
+            kind: Service
+      - kind: DeploymentConfig
+        metadata:
+          name: ${NAME}
+          labels:
+            app: ${NAME}
+            deploymentConfig: ${NAME}
+        apiVersion: v1
+        spec:
+          selector:
+            deploymentConfig: ${NAME}
+          strategy:
+            type: Rolling
+          triggers:
+            - type: ConfigChange
+          replicas: 1
+          template:
+            metadata:
+              labels:
+                app: ${NAME}
+                deploymentConfig: ${NAME}
+            spec:
+              containers:
+                - name: ${NAME}
+                  image: radanalyticsio/base-notebook
+                  imagePullPolicy: IfNotPresent
+                  ports:
+                    - name: http-port
+                      containerPort: 8888
+                      protocol: TCP
+                  env:
+                    - name: JUPYTER_NOTEBOOK_PASSWORD
+                      value: ${JUPYTER_NOTEBOOK_PASSWORD}
+                    - name: JUPYTER_NOTEBOOK_X_INCLUDE
+                      value: ${JUPYTER_NOTEBOOK_X_INCLUDE}
+                  readinessProbe:
+                    failureThreshold: 3
+                    httpGet:
+                      path: /
+                      port: 8888
+                      scheme: HTTP
+                    periodSeconds: 10
+                    successThreshold: 1
+                    timeoutSeconds: 1
+                    initialDelaySeconds: 20
+                  livenessProbe:
+                    failureThreshold: 3
+                    httpGet:
+                      path: /
+                      port: 8888
+                      scheme: HTTP
+                    periodSeconds: 10
+                    successThreshold: 1
+                    timeoutSeconds: 1
+                    initialDelaySeconds: 20
+    parameters:
+      - name: NAME
+        description: A name for this notebook instance
+        generate: expression
+        from: 'jupyter-[a-z0-9]{4}'
+      - name: JUPYTER_NOTEBOOK_PASSWORD
+        description: A password for the notebook interface
+        required: true
+      - name: JUPYTER_NOTEBOOK_X_INCLUDE
+        description: A URI to a single notebook file that will be downloaded into the container, must be a network accessable location.
+        required: false
