@@ -1,0 +1,432 @@
+= SparkPi Java Vert.x
+:page-layout: markdown
+:page-menu_template: menu_tutorial_application.html
+:page-menu_backurl: /my-first-radanalytics-app.html
+:page-menu_backtext: Back to My First RADanalytics Application
+
+== Building SparkPi in Java with Vert.x
+
+These instructions will help you to create a SparkPi microservice using the https://www.oracle.com/java[Java language]
+and the https://vertx.io/[Vert.x framework].
+
+You should already have the necessary prerequisites installed and configured, but if not please review 
+the link:/my-first-radanalytics-app.html[instructions].
+
+== Create the application source files
+
+Although this application is relatively small overall, it is organized into three source files. 
+If you are familiar with the structure of Java programs, you will know that the source files must be placed in the
+proper directories.
+To begin creating your source files, you will first need to create the directory structure for them.
+In the root of the new directory that you made for this tutorial, run the following command to make that structure:
+
+....
+mkdir -p src/main/java/io/radanalytics/examples/vertx
+....
+
+The first file to create is named `SparkPiVerticle.java` and it will contain the starting point for your application.
+This file also contains the code to create the Vert.x based HTTP routes and handlers. It should contain these contents:
+
+....
+package io.radanalytics.examples.vertx;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
+
+import org.apache.log4j.*;
+
+import io.vertx.core.AbstractVerticle;
+import io.vertx.core.Future;
+import io.vertx.core.http.HttpServerResponse;
+import io.vertx.core.http.HttpServerRequest;
+import io.vertx.core.json.Json;
+import io.vertx.core.json.JsonObject;
+import io.vertx.core.Vertx;
+import io.vertx.ext.web.Router;
+import io.vertx.ext.web.RoutingContext;
+import io.vertx.ext.web.handler.BodyHandler;
+import io.vertx.ext.web.handler.StaticHandler;
+
+public class SparkPiVerticle extends AbstractVerticle {
+
+  private static final Logger log = Logger.getRootLogger();
+  private Properties prop = null;
+
+  private String loadJarProperty() {
+    if (null==prop) {
+     prop = new Properties();
+    }
+    String jarFile = "";
+    try {
+      InputStream inputStream = getClass().getClassLoader()
+                   .getResourceAsStream("sparkpi.properties");
+      prop.load(inputStream);
+      jarFile = prop.getProperty("sparkpi.jarfile");
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+    return jarFile;
+  }
+
+  @Override
+  public void start(Future<Void> fut) {
+    // Create a router object.
+    Router router = Router.router(vertx);
+    Runtime.getRuntime().addShutdownHook(new Thread() {
+      public void run() {
+        vertx.close();
+      }
+    });
+
+    String jarFile = this.loadJarProperty();
+    log.info("SparkPi submit jar is: "+jarFile);
+
+    // init our Spark context
+    if (!SparkContextProvider.init(jarFile)) {
+        // masterURL probably not set
+        log.error("This application is intended to be run as an oshinko S2I.");
+        vertx.close();
+        System.exit(1);
+    }
+    SparkPiProducer pi = new SparkPiProducer();
+
+    router.route("/").handler(routingContext -> {
+      HttpServerResponse response = routingContext.response();
+      response
+          .putHeader("content-type", "text/html")
+          .end("Java Vert.x SparkPi server running. Add the 'sparkpi' route to this URL to invoke the app.");
+    });
+
+    router.route("/sparkpi").handler(routingContext -> {
+      HttpServerResponse response = routingContext.response();
+      HttpServerRequest request = routingContext.request();
+      int scale = 2;
+      if (request.params().get("scale") != null) {
+          scale = Integer.parseInt(request.params().get("scale"));
+      }
+      response
+          .putHeader("content-type", "text/html")
+          .end(pi.GetPi(scale));
+    });
+
+    vertx
+        .createHttpServer()
+        .requestHandler(router::accept)
+        .listen(
+            // here developers can make use of vertx-config if they like
+            this.config().getInteger("http.port", 8080),
+            result -> {
+              if (result.succeeded()) {
+                fut.complete();
+              } else {
+                fut.fail(result.cause());
+              }
+            }
+        );
+  }
+}
+....
+
+The next file you will create is named `SparkContextProvider.java`.
+This file contains a helper class for creating the connection to the Apache Spark cluster.
+It should contain these contents:
+
+....
+package io.radanalytics.examples.vertx;
+
+import javax.validation.constraints.NotNull;
+
+import org.apache.spark.SparkConf;
+import org.apache.spark.SparkException;
+import org.apache.spark.api.java.JavaSparkContext;
+
+public class SparkContextProvider {
+
+    private static SparkContextProvider INSTANCE = null;
+
+    private SparkConf sparkConf;
+    private JavaSparkContext sparkContext;
+    private String jarFile;
+
+    private SparkContextProvider() {}
+
+    private SparkContextProvider(String jarFile) {
+        this.sparkConf = new SparkConf().setAppName("JavaSparkPi");
+        this.sparkConf.setJars(new String[]{jarFile});
+        this.sparkContext = new JavaSparkContext(sparkConf);
+    }
+
+    public static boolean init(String jarFile) {
+        try {
+            if (INSTANCE == null) {
+                INSTANCE = new SparkContextProvider(jarFile);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
+        return true;
+    }
+
+    @NotNull
+    public static JavaSparkContext getContext() {
+        return INSTANCE.sparkContext;
+    }
+
+}
+....
+
+The last source file should be named `SparkPiProducer.java` and it contains a class that will perform the Pi calculations.
+It should contain these contents:
+
+....
+package io.radanalytics.examples.vertx;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import org.apache.spark.api.java.function.Function;
+import org.apache.spark.api.java.function.Function2;
+import org.apache.spark.api.java.JavaRDD;
+import org.apache.spark.api.java.JavaSparkContext;
+
+public class SparkPiProducer implements Serializable {
+    public String GetPi(int scale) {
+        JavaSparkContext jsc = SparkContextProvider.getContext();
+
+        int slices = scale;
+        int n = 100000 * slices;
+        List<Integer> l = new ArrayList<Integer>(n);
+        for (int i = 0; i < n; i++) {
+            l.add(i);
+        }
+
+        JavaRDD<Integer> dataSet = jsc.parallelize(l, slices);
+
+        int count = dataSet.map(integer -> {
+            double x = Math.random() * 2 - 1;
+            double y = Math.random() * 2 - 1;
+            return (x * x + y * y < 1) ? 1 : 0;
+        }).reduce((integer, integer2) -> integer + integer2);
+
+        String ret = "Pi is rouuuughly " + 4.0 * count / n;
+
+        return ret;
+    }
+}
+....
+
+With all the source files created your project directory should now look like this:
+
+....
+$ ls
+src
+
+$ find src -type f
+src/main/java/io/radanalytics/examples/vertx/SparkPiProducer.java
+src/main/java/io/radanalytics/examples/vertx/SparkPiVerticle.java
+src/main/java/io/radanalytics/examples/vertx/SparkContextProvider.java
+....
+
+== Analysis of the source code
+
+Let us now take a look at the individual statements of the source files and break down what each component is doing.
+
+To begin with we will start with the `SparkPiVerticle.java` file.
+This file defines the main entry class for our application, at the beginning of the file we define the namespace for 
+this source and include several classes and packages that will be needed:
+
+....
+package io.radanalytics.examples.vertx;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
+
+import org.apache.log4j.*;
+
+import io.vertx.core.AbstractVerticle;
+import io.vertx.core.Future;
+import io.vertx.core.http.HttpServerResponse;
+import io.vertx.core.http.HttpServerRequest;
+import io.vertx.core.json.Json;
+import io.vertx.core.json.JsonObject;
+import io.vertx.core.Vertx;
+import io.vertx.ext.web.Router;
+import io.vertx.ext.web.RoutingContext;
+import io.vertx.ext.web.handler.BodyHandler;
+import io.vertx.ext.web.handler.StaticHandler;
+....
+
+The next lines set up the class that will serve as our application's entry point.
+https://vertx.io/docs/vertx-core/java/#_verticles[Verticles] represent the components we wish to deploy in a Vert.x instance.
+To create our `Verticle` we simply extend the `AbstractVerticle` class and write our concrete implementation.
+
+....
+public class SparkPiVerticle extends AbstractVerticle {
+....
+
+We then implement the `start` method which defines the behaviour of the `Verticle` when it is deployed.
+
+....
+ @Override
+  public void start(Future<Void> fut) {
+....
+
+We instantiate the Vert.x router so that we are able to declare routes by writing
+
+....
+Router router = Router.router(vertx);
+....
+
+And we also instantiate the Pi calculation class
+
+....
+SparkPiProducer pi = new SparkPiProducer();
+....
+
+The main route (or HTTP endpoint) to be defined is `/sparkpi`. The is will return the Pi estimate computed by the `pi` instance.
+
+....
+router.route("/sparkpi").handler(routingContext -> {
+      HttpServerResponse response = routingContext.response();
+      HttpServerRequest request = routingContext.request();
+      int scale = 2;
+      if (request.params().get("scale") != null) {
+          scale = Integer.parseInt(request.params().get("scale"));
+      }
+      response
+          .putHeader("content-type", "text/html")
+          .end(pi.GetPi(scale));
+    });
+....
+
+Having defined the most important part of the `Verticle` we can then start the Vert.x server by calling
+
+....
+ vertx
+        .createHttpServer()
+        .requestHandler(router::accept)
+        .listen(
+            // here developers can make use of vertx-config if they like
+            this.config().getInteger("http.port", 8080),
+            result -> {
+              if (result.succeeded()) {
+                fut.complete();
+              } else {
+                fut.fail(result.cause());
+              }
+            }
+        );
+....
+
+The next file we will examine is `SparkContextProvider.java`, which will create a https://spark.apache.org/docs/latest/api/java/org/apache/spark/api/java/JavaSparkContext.html[SparkContext] using the https://en.wikipedia.org/wiki/Singleton_pattern[singleton pattern].
+The reasoning for this usage is to avoid threading conflicts with the Vert.x framework by having a singular connection to the Spark cluster.
+As usual, at the beginning of the file we declare the package namespace for this file and include several classes and packages for usage.
+
+....
+package io.radanalytics.examples.vertx;
+
+import javax.validation.constraints.NotNull;
+
+import org.apache.spark.SparkConf;
+import org.apache.spark.SparkException;
+import org.apache.spark.api.java.JavaSparkContext;
+....
+
+Next we declare our provider class and set up a few internal variables. The static `INSTANCE` will provide our concrete singular instantiation of this class which defines our singleton. The `sparkConf` and `sparkContext` variables are the actual connections to our Spark cluster.
+
+....
+public class SparkContextProvider {
+
+    private static SparkContextProvider INSTANCE = null;
+
+    private SparkConf sparkConf;
+    private JavaSparkContext sparkContext;
+    private String jarFile;
+....
+
+Since this class will implement the singleton pattern, we make its constructors private to ensure that it will only be instantiated by the `init` method. The second contructor function is the primary method here, it accepts the properties object and instantiates the internal private variables. The `setJars` function will instruct Spark to associate our application Jar with the https://spark.apache.org/docs/latest/api/java/org/apache/spark/SparkConf.html[SparkConf] object, and subsequently the Spark context.
+
+....
+    private SparkContextProvider() {
+    }
+
+    private SparkContextProvider(SparkPiProperties props) {
+        this.sparkConf = new SparkConf().setAppName("JavaSparkPi");
+        this.sparkConf.setJars(new String[]{props.getJarFile()});
+        this.sparkContext = new JavaSparkContext(sparkConf);
+    }
+....
+
+The `init` function is the main entry point for constructing the context provider. This function will simply check to determine if an instance has been created, and if not it will create that instance. As there is always the possibility of failure, this function will also catch any errors that result from spawning the new instance.
+
+....
+    public static boolean init(SparkPiProperties props) {
+        try {
+            if (INSTANCE == null) {
+                INSTANCE = new SparkContextProvider(props);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
+        return true;
+    }
+....
+
+The last function in this class is the primary means of interacting with the context. This function provides a convenient method for any other class to gain the Spark contenxt.
+
+....
+    public static JavaSparkContext getContext() {
+        return INSTANCE.sparkContext;
+    }
+....
+
+== Create the application resource files
+
+In addition to the source files we also need a few resource files to set default properties and configurations for our application. To begin creating your resource files you will first need to make a directory for them by running the following command from the root of your project:
+
+....
+mkdir -p src/main/resources
+....
+
+The first file you will create in that directory is named `application.properties` and it should contain the following contents:
+
+....
+sparkpi.jarfile=/opt/app-root/src/@project.name@-@project.version@.jar
+....
+
+This line may look familiar as we create a variable in the `SparkPiProperties` class that will hold its value.
+This will simply allow our build process to record the location of the Jar file for our application to utilize.
+
+The next file you will create in the resources directory is named `log4j.properties` and will define some options to the logging system used by our application. It should contain the following content:
+
+....
+log4j.rootLogger=INFO, stdout
+log4j.appender.stdout=org.apache.log4j.ConsoleAppender
+log4j.appender.stdout.Target=System.out
+log4j.appender.stdout.layout=org.apache.log4j.PatternLayout
+log4j.appender.stdout.layout.ConversionPattern=%d{yyyy-MM-dd HH:mm:ss} %-5p - %m%n
+....
+
+These configuration values will define the operation of the log4j logging system, for an extended explanation of their settings please see the https://logging.apache.org/log4j/1.2/manual.html[Short introduction to log4j] from the upstream documentation.
+
+At this point your project directory should look like this:
+
+....
+$ ls
+src
+
+$ find src -type f
+src/main/java/io/radanalytics/examples/vertx/SparkContextProvider.java
+src/main/java/io/radanalytics/examples/vertx/SparkPiProducer.java
+src/main/java/io/radanalytics/examples/vertx/SparkController.java
+src/main/resources/log4j.properties
+src/main/resources/application.properties
+....
