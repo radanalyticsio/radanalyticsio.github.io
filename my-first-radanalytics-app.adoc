@@ -67,6 +67,7 @@ This tutorial has been developed for multiple languages and HTTP frameworks. Fun
 Each of these language specific tutorials provide instructions on how to structure your repository and what files to create. You will also learn how each microservice works and the commands necessary to build and launch them in OpenShift. Because the source-to-image templates that you will use are language specific, you must choose a single implementation to exist in your repository. When you are finished, return here to learn about interacting with your microservice and exposing it outside of OpenShift. Please choose one of the following language and framework options:
 
 * link:/assets/my-first-radanalytics-app/sparkpi-java-spring.html[Java with Spring]
+* link:/assets/my-first-radanalytics-app/sparkpi-java-vertx.html[Java with Vert.x]
 * link:/assets/my-first-radanalytics-app/sparkpi-python-flask.html[Python with Flask]
 
 [[user]]
