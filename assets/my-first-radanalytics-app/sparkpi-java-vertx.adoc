@@ -290,7 +290,22 @@ And we also instantiate the Pi calculation class
 SparkPiProducer pi = new SparkPiProducer();
 ....
 
-The main route (or HTTP endpoint) to be defined is `/sparkpi`. The is will return the Pi estimate computed by the `pi` instance.
+The first route function will register the root `/` endpoint to simply return a string that we would like to display for our users.
+This endpoint will allow us to confirm that the server is running without needing to invoke Spark.
+
+....
+router.route("/").handler(routingContext -> {
+      HttpServerResponse response = routingContext.response();
+      response
+          .putHeader("content-type", "text/html")
+          .end("Java Vert.x SparkPi server running. Add the 'sparkpi' route to this URL to invoke the app.");
+    });
+....
+
+The main route (or HTTP endpoint) to be defined is `/sparkpi`. 
+This is will return the Pi estimate computed by the `pi` instance.
+We use Vert.x's routing context to retrieve the scale parameter (if present) from the HTTP request.
+The SparkPiProducer class does the actual work of calculating Pi and we pass it the requested scale value, defaulting to 2.
 
 ....
 router.route("/sparkpi").handler(routingContext -> {
@@ -430,3 +445,302 @@ src/main/java/io/radanalytics/examples/vertx/SparkController.java
 src/main/resources/log4j.properties
 src/main/resources/application.properties
 ....
+
+== Create the application build file
+
+The last piece of our project is the build file.
+If you are familiar with Java and the https://en.wikipedia.org/wiki/Apache_Maven[Maven] build system then this file will look familiar.
+Create a file name `pom.xml` in the root of your project and add these contents to it:
+
+....
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                      http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>io.radanalytics.examples.vertx</groupId>
+  <artifactId>sparkpi-app</artifactId>
+  <version>1.0-SNAPSHOT</version>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <!-- Be careful modifying these due to joint netty dependencies -->
+    <vertx.version>3.2.1</vertx.version>
+    <spark.version>2.2.0</spark.version>
+    <doc.skip>true</doc.skip>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>io.vertx</groupId>
+      <artifactId>vertx-core</artifactId>
+      <version>${vertx.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.vertx</groupId>
+      <artifactId>vertx-web</artifactId>
+      <version>${vertx.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.spark</groupId>
+      <artifactId>spark-sql_2.11</artifactId>
+      <version>${spark.version}</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.3</version>
+        <configuration>
+          <source>1.8</source>
+          <target>1.8</target>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>2.3</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <configuration>
+               <shadedArtifactAttached>true</shadedArtifactAttached>
+               <shadedClassifierName>stand-alone</shadedClassifierName>
+               <filters>
+                  <filter>
+                     <!-- Exclude files that sign a jar
+                          (one or multiple of the dependencies),
+                          SecurityException otherwise.
+                     -->
+                     <artifact>*:*</artifact>
+                        <excludes>
+                           <exclude>META-INF/*.SF</exclude>
+                           <exclude>META-INF/*.RSA</exclude>
+                           <exclude>META-INF/*.INF</exclude>
+                        </excludes>
+                  </filter>
+               </filters>
+              <transformers>
+                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                  <manifestEntries>
+                    <Main-Class>io.vertx.core.Launcher</Main-Class>
+                    <Main-Verticle>io.radanalytics.examples.vertx.SparkPiVerticle</Main-Verticle>
+                  </manifestEntries>
+                </transformer>
+              </transformers>
+              <artifactSet/>
+              <outputFile>${project.build.directory}/${project.artifactId}-${project.version}-vertx.jar</outputFile>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+         <filtering>true</filtering>
+      </resource>
+    </resources>
+  </build>
+
+</project>
+....
+
+This file is quite verbose and an in-depth explanation of its working is out of scope for this tutorial.
+If you are interested in learning more about how the Maven build system works, this https://maven.apache.org/guides/getting-started/maven-in-five-minutes.html[Maven in 5 minutes] tutorial is a good starting point.
+
+The root of your project should now look like this:
+
+....
+$ ls
+pom.xml  src
+....
+
+== Commit your code
+
+The last step before we can build and run our application is to check in the files and push them to your repository.
+If you have followed the setup instructions and cloned your repository from an upstream of your creation, this should be as simple as running the following commands:
+
+....
+git add .
+git commit -m "add initial files"
+git push
+....
+
+Make sure to note the location of your remote repository as you will need it in the next step.
+
+== Build and run the application
+
+Now that all your files have been created, checked in and pushed to your online repository you are ready to command OpenShift to build and run your application.
+The following command will start the process, you can see that we are telling OpenShift to use the `oshinko-java-spark-build-dc` template for our application.
+This template contains the necessary components to invoke the Oshinko source-to-image builder.
+We also give our application a name, tell the builder where to find our source code and the name of the Jar file that will be produced.
+Issue the following command, making sure to enter your repository location for the `GIT_URI` parameter:
+
+....
+oc new-app --template oshinko-java-spark-build-dc \
+    -p APPLICATION_NAME=vertx-sparkpi \
+    -p GIT_URI=https://github.com/radanalyticsio/tutorial-sparkpi-java-vertx \
+    -p APP_FILE=sparkpi-app-1.0-SNAPSHOT-vertx.jar \
+    -p SPARK_OPTIONS='--driver-java-options="-Dvertx.cacheDirBase=/tmp/vertx-cache"'
+....
+
+Running this command should look something like this:
+
+....
+$ oc new-app --template oshinko-java-spark-build-dc \
+    -p APPLICATION_NAME=vertx-sparkpi \
+    -p GIT_URI=https://github.com/radanalyticsio/tutorial-sparkpi-java-vertx \
+    -p APP_FILE=sparkpi-app-1.0-SNAPSHOT-vertx.jar \
+    -p SPARK_OPTIONS='--driver-java-options="-Dvertx.cacheDirBase=/tmp/vertx-cache"'
+--> Deploying template "myproject/oshinko-java-spark-build-dc" to project myproject
+
+     Apache Spark Java
+     ---------
+     Create a buildconfig, imagestream and deploymentconfig using source-to-image and Java Spark source files hosted in git'
+
+     * With parameters:
+        * APPLICATION_NAME=vertx-sparkpi
+        * GIT_URI=https://github.com/radanalyticsio/tutorial-sparkpi-java-vertx
+        * GIT_REF=master
+        * CONTEXT_DIR=
+        * APP_FILE=sparkpi-app-1.0-SNAPSHOT-vertx.jar
+        * APP_ARGS=
+        * APP_MAIN_CLASS=
+        * SPARK_OPTIONS=--driver-java-options="-Dvertx.cacheDirBase=/tmp/vertx-cache"
+        * OSHINKO_CLUSTER_NAME=
+        * OSHINKO_NAMED_CONFIG=
+        * OSHINKO_SPARK_DRIVER_CONFIG=
+        * OSHINKO_DEL_CLUSTER=true
+
+--> Creating resources ...
+    imagestream "vertx-sparkpi" created
+    buildconfig "vertx-sparkpi" created
+    deploymentconfig "vertx-sparkpi" created
+    service "vertx-sparkpi" created
+--> Success
+    Build scheduled, use 'oc logs -f bc/vertx-sparkpi' to track its progress.
+    Application is not exposed. You can expose services to the outside world by executing one or more of the commands below:
+     'oc expose svc/vertx-sparkpi'
+    Run 'oc status' to view your app.
+....
+
+Your application is now being built on OpenShift!
+
+A common task when building and running applications on OpenShift is to monitor the logs.
+You can even see a suggestion at the bottom of the `oc new-app` command output that suggests we run `oc logs -f bc/vertx-sparkpi`.
+Running this command will follow(`-f`) the BuildConfig(`bc`) for your application `sparkpi`.
+When you run that command you should see something that begins like this:
+
+....
+Cloning "https://github.com/radanalyticsio/tutorial-sparkpi-java-vertx" ...
+	Commit:	3dd2d911b86cc8c9a89b030a5cfa68b01bf28e7d (add scale query param)
+	Author:	Michael McCune <msm@redhat.com>
+	Date:	Thu Oct 19 17:12:59 2017 -0400
+Pulling image "radanalyticsio/radanalytics-java-spark:stable" ...
++ [[ /bin/sh -c tar -C /tmp -xf - && /usr/local/s2i/assemble == *\/\u\s\r\/\l\o\c\a\l\/\s\2\i* ]]
++ exec /bin/sh -c 'tar -C /tmp -xf - && /usr/local/s2i/assemble'
+==================================================================
+Starting S2I Java Build .....
+S2I source build for Maven detected
+Found pom.xml ...
+Running 'mvn -Dmaven.repo.local=/tmp/artifacts/m2 package -DskipTests -Dmaven.javadoc.skip=true -Dmaven.site.skip=true -Dmaven.source.skip=true -Djacoco.skip=true -Dcheckstyle.skip=true -Dfindbugs.skip=true -Dpmd.skip=true -Dfabric8.skip=true -e -B '
+Apache Maven 3.3.3 (7994120775791599e205a5524ec3e0dfe41d4a06; 2015-04-22T11:57:37+00:00)
+Maven home: /opt/maven
+Java version: 1.8.0_161, vendor: Oracle Corporation
+Java home: /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.161-0.b14.el7_4.x86_64/jre
+Default locale: en_US, platform encoding: ANSI_X3.4-1968
+OS name: "linux", version: "4.4.41-boot2docker", arch: "amd64", family: "unix"
+[INFO] Error stacktraces are turned on.
+[INFO] Scanning for projects...
+[INFO]
+[INFO] ------------------------------------------------------------------------
+[INFO] Building sparkpi-app 1.0-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+...
+....
+
+The output from this call may be quite long depending on the steps required to build the application, but at the end you should see the source-to-image builder pushing the newly created image into OpenShift.
+You may or may not see all the "Pushed" status lines due to output buffer logging, but at the end you should see "Push successful", like this:
+
+....
+Pushing image 172.30.1.1:5000/myproject/vertx-sparkpi:latest ...
+Pushed 0/33 layers, 0% complete
+Pushed 1/33 layers, 3% complete
+Pushed 2/33 layers, 6% complete
+...
+Push successful
+....
+
+To follow the progress further you will need to see the logs from the DeploymentConfig(`dc`) for your application.
+This can be done by changing the object type in your logs command like this `oc logs -f dc/vertx-sparkpi`.
+If you are quick, you might catch the log messages from OpenShift deploying your application:
+
+....
+$ oc logs -f dc/vertx-sparkpi
+--> Scaling vertx-sparkpi-1 to 1
+--> Waiting up to 10m0s for pods in rc vertx-sparkpi-1 to become ready
+--> Success
+....
+
+If you see this output, it just means that you have caught the logs before the DeploymentConfig has generated anything from your application.
+Run the command again and you should start to see the output from the application, which should be similar to this:
+
+....
+$ oc logs -f dc/vertx-sparkpi
++ [[ /usr/local/s2i/run == *\/\u\s\r\/\l\o\c\a\l\/\s\2\i* ]]
++ exec /usr/local/s2i/run
+oshinko v0.5.3
+Default spark image: radanalyticsio/openshift-spark:2.3-latest
+Didn't find cluster cluster-b38445, creating ephemeral cluster
+Using ephemeral cluster cluster-b38445
+Waiting for spark master http://cluster-b38445-ui:8080  to be available ...
+Waiting for spark master http://cluster-b38445-ui:8080  to be available ...
+Waiting for spark master http://cluster-b38445-ui:8080  to be available ...
+Waiting for spark master http://cluster-b38445-ui:8080  to be available ...
+All spark workers alive
+Cluster configuration is
+[
+  {
+    "namespace": "myproject",
+    "name": "cluster-b38445",
+    "href": "/clusters/cluster-b38445",
+    "image": "radanalyticsio/openshift-spark:2.3-latest",
+    "masterUrl": "spark://cluster-b38445:7077",
+    "masterWebUrl": "http://cluster-b38445-ui:8080 ",
+    "masterWebRoute": "cluster-b38445-ui-route-myproject.192.168.64.3.nip.io",
+    "status": "Running",
+    "workerCount": 1,
+    "masterCount": 1,
+    "Config": {
+      "MasterCount": 1,
+      "WorkerCount": 1,
+      "Name": "",
+      "SparkMasterConfig": "",
+      "SparkWorkerConfig": "",
+      "SparkImage": "radanalyticsio/openshift-spark:2.3-latest",
+      "ExposeWebUI": "true",
+      "Metrics": "false"
+    },
+    "ephemeral": "vertx-sparkpi-1"
+  }
+]
+spark-submit --class io.vertx.core.Launcher --master spark://cluster-b38445:7077 --driver-java-options="-Dvertx.cacheDirBase=/tmp/vertx-cache" /opt/app-root/src/sparkpi-app-1.0-SNAPSHOT-vertx.jar
+....
+
+Let's break this down a little.
+These first few lines are actually being generated by the Oshinko source-to-image tooling.
+They show that no Apache Spark cluster has been specified for the application, and as such it must create an ephemeral cluster.
+It then waits for the cluster to become fully active before launching the application.
+
+The line beginning with `spark-submit` shows us the command which will run the application and the output afterwards is coming from Vert.x informing us that the application is starting.
+
+With your application now running on OpenShift please return to the link:/my-first-radanalytics-app.html#user[My First RADanalytics Application page] to learn how to interact with this new microservice.
+
+You can find a reference implementation of this application in the RADanalytics GitHub organization at https://github.com/radanalyticsio/tutorial-sparkpi-java-vertx
