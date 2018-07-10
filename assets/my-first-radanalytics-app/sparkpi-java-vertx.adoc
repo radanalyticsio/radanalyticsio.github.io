@@ -411,7 +411,7 @@ In addition to the source files we also need a few resource files to set default
 mkdir -p src/main/resources
 ....
 
-The first file you will create in that directory is named `application.properties` and it should contain the following contents:
+The first file you will create in that directory is named `sparkpi.properties` and it should contain the following contents:
 
 ....
 sparkpi.jarfile=/opt/app-root/src/@project.name@-@project.version@.jar
@@ -443,7 +443,7 @@ src/main/java/io/radanalytics/examples/vertx/SparkContextProvider.java
 src/main/java/io/radanalytics/examples/vertx/SparkPiProducer.java
 src/main/java/io/radanalytics/examples/vertx/SparkController.java
 src/main/resources/log4j.properties
-src/main/resources/application.properties
+src/main/resources/sparkpi.properties
 ....
 
 == Create the application build file
