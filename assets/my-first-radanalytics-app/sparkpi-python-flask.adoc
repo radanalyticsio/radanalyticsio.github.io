@@ -213,7 +213,7 @@ Now that all your files have been created, checked in and pushed to your online 
 ....
 oc new-app --template oshinko-python-spark-build-dc  \
     -p APPLICATION_NAME=sparkpi \
-    -p GIT_URI=${YOUR_REPOSITORY_URI_HERE}
+    -p GIT_URI=https://github.com/radanalyticsio/tutorial-sparkpi-python-flask
 ....
 
 Running this command should look something like this:
