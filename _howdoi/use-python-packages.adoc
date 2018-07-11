@@ -1,17 +1,18 @@
 = install Python packages in Jupyter notebooks on OpenShift
+:source-highlighter: coderay
+:coderay-css: style
 
 Sometimes you want to install a new package that isn't in your notebook image, usually while you're prototyping new techniques and aren't sure if a new package will be useful.  Here's how to install a new package from within the Jupyter notebook itself.  Make sure you're able to launch a Jupyter notebook on OpenShift:  follow the quickstart instructions on the link:/get-started[Get Started] page and then follow the instructions in the link:/how-do-i[How Do I? recipe] for launching a Jupyter notebook.
 
 For this example, we'll install `scikit-learn`.  We'll start by pasting the following code in to a notebook cell and then executing it by pressing Shift-Enter: 
 
-[code,ipython]
 ----
 !pip install --user scikit-learn
 ----
 
 This will execute the `pip install` command as the notebook user.  Next up, we need to make sure that the user-local library directory is in Python's search path -- paste this code into a notebook cell and execute it:
 
-[code,python]
+[source,python]
 ----
 import sys
 sys.path.append("/home/nbuser/.local/lib/python2.7/site-packages")
@@ -19,9 +20,8 @@ sys.path.append("/home/nbuser/.local/lib/python2.7/site-packages")
 
 Once we have the package installed and the path amended, we can use the newly-installed library from our notebook.  Try it out with this handwriting recognition example from the scikit-learn tutorial:
 
-[code,python]
+[source,python]
 ----
-
 from sklearn import datasets
 from sklearn import svm
 
@@ -35,9 +35,10 @@ clf.predict(digits.data[-1:])
 
 You can also run a notebook containing these cells on OpenShift with a single command:  
 
-....
+[source,shell]
+----
 oc new-app --template radanalytics-jupyter-notebook \
   -p NAME=scikit-learn-notebook \
   -p JUPYTER_NOTEBOOK_PASSWORD=secret \
   -p JUPYTER_NOTEBOOK_X_INCLUDE=https://radanalytics.io/assets/scikit-learn-notebook/scikit-learn.ipynb
-....
+----

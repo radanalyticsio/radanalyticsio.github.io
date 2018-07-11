@@ -68,4 +68,5 @@ defaults:
 
 asciidoc:
   ext: adoc
+  source-highlighter: coderay
 asciidoctor: {}
