@@ -71,9 +71,16 @@ and add it to the list!
 
             {% if pres.slides-url %}
             <a href="{{ pres.slides-url }}">
-              <i class="fa fa-picture-o" aria-hiddent="true"></i>
+              <i class="fa fa-picture-o" aria-hidden="true"></i>
               &nbsp; Slide deck</a>
             {% endif %}
+            
+            {% if pres.handout-url %}
+            <a href="{{ pres.handout-url }}">
+              <i class="fas fa-map" aria-hidden="true"></i>
+              &nbsp; Handout</a>
+            {% endif %}
+              
           </div>
         </div>
       </div>
