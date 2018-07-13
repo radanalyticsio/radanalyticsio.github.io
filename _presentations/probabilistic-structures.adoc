@@ -2,7 +2,10 @@
 :page-presentor: William Benton
 :page-date: 2018-01-26
 :page-media-url: https://youtu.be/4Kp35PjMHC8?t=6m28s
-:page-slides-url: https://chapeau.freevariable.com/2018/01/structures.html
+:page-slides-url: https://chapeau.freevariable.com/static/201801/probabilistic-structures.pdf
+:page-handout-url: https://chapeau.freevariable.com/2018/01/structures.html
+:page-venue: DevConf.cz
+:page-city: Brno, Czechia
 
 In this talk you'll learn about streaming algorithms and approximate data structures to characterize data sources that are too big to keep around or difficult to replay. We'll start simple, with an algorithm for on-line mean and variance estimates of a stream of samples. Then we'll look at Bloom filters (for approximate set membership), count-min sketch (for approximate member count in a multiset), and HyperLogLog (for approximate set cardinality). We'll cover implementing these algorithms, using them for data analysis (and even machine learning), and provide some intuition for why they work at scale. Come with reading knowledge of Python and leave with some cool new options in your scalable data processing toolbox!
 
