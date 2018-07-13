@@ -54,7 +54,8 @@ and add it to the list!
               <div class="list-view-pf-description">
                 <div class="list-group-item-heading">
                   <h2> {{ pres.title }}</h2>
-                  <em>{{ pres.presentor }}</em>
+                  <em>{{ pres.presentor }}</em><br/>
+                  <em>{{ pres.date | date: '%B %Y' }}</em>
                 </div>
               </div>
             </div>
