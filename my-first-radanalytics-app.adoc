@@ -114,6 +114,7 @@ one of the following language and framework options:
 * link:/assets/my-first-radanalytics-app/sparkpi-java-spring.html[Java with Spring]
 * link:/assets/my-first-radanalytics-app/sparkpi-java-vertx.html[Java with Vert.x]
 * link:/assets/my-first-radanalytics-app/sparkpi-python-flask.html[Python with Flask]
+* link:/assets/my-first-radanalytics-app/sparkpi-scala-scalatra.html[Scala with Scalatra]
 
 [[user]]
 == Become a user
