@@ -3,5 +3,7 @@
 :page-date: 2016-12-12
 :page-media-url: https://www.youtube.com/watch?v=zwmbI47gLEg
 :page-slides-url: https://docs.google.com/presentation/d/1WEVLbBDiqR3e3YT6pQa9THTq5oucFWoTH1pipKOL2iw/edit?usp=sharing
+:page-venue: Big Data Spain
+:page-city: Madrid, Spain
 
 For most of my lifetime in the computing world, data crunching and web serving were two very separate worlds. If a web app wanted access to the analysis there was a long process of ETL, DB works, imports and exports, and bribing various network and storage people for the resources you needed. With the rise of containers, orchestration, cheap computing and networking, and over 10 years of people tackling large problems at new scales we have finally come to a convergence. It is now possible for us to actually use the same hardware, and more importantly, clustering software to converge both types of workloads. I am going to lay out how this can look with Containers, Kubernetes, web servers, and Apache Spark. This can be considered a germ of what we can look to build in the future. I will demo this in action and show this is actually now achievable for mere mortals such as myself. Finally I will close with some thought experiments on what this can enable for the future. I know this is a keynote but I am hoping we can make it interactive with discussion and experience sharing!

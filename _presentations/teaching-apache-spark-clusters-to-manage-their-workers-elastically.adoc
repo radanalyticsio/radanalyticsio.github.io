@@ -3,6 +3,8 @@
 :page-date: 2017-02-08
 :page-media-url: https://youtu.be/vxALlQ2mTbI
 :page-slides-url: http://www.slideshare.net/SparkSummit/teaching-apache-spark-clusters-to-manage-their-workers-elastically-spark-summit-east-talk-by-erik-erlandson-and-trevor-mckay
+:page-venue: Spark Summit East
+:page-city: Boston, MA
 
 Devops engineers have applied a great deal of creativity and energy to invent tools that automate infrastructure management, in the service of deploying capable and functional applications. For data-driven applications running on Apache Spark, the details of instantiating and managing the backing Spark cluster can be a distraction from focusing on the application logic. In the spirit of devops, automating Spark cluster management tasks allows engineers to focus their attention on application code that provides value to end-users.
 

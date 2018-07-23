@@ -3,5 +3,7 @@
 :page-date: 2016-10-27
 :page-media-url: https://www.youtube.com/watch?v=al8cwKPx_8c
 :page-slides-url: http://www.slideshare.net/SparkSummit/spark-summit-eu-talk-by-william-benton
+:page-venue: Spark Summit EU
+:page-city: Brussels, Belgium
 
 Consider two recent trends in application development: more and more applications are taking advantage of architectures involving containerized microservices in order to enable improved elasticity, fault-tolerance, and scalability — whether in the public cloud or on-premise. In addition, analytic capabilities and scalable data processing have increasingly become a basic requirement for contemporary applications. The confluence of these trends suggests that there are a lot of good reasons to want to manage Spark with a container orchestration platform, but it’s not quite as simple as packaging up a standalone cluster in containers. This talk will present our team’s experiences migrating a production Spark cluster from a multi-tenant Mesos cluster to a shared compute resource managed by Kubernetes. We’ll explain the motivation behind microservices and containers and identify the architectures that make sense for containerized applications that depend on Spark. We’ll pay special attention to practical concerns of running Spark in containers, including networking, access control, persistent storage, and multitenancy. You’ll leave this talk with a better understanding of why you might want to run Spark in containers and some concrete ideas for how to get started doing it.

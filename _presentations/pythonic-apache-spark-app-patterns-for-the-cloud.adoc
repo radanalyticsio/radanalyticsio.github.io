@@ -3,5 +3,7 @@
 :page-date: 2018-01-28
 :page-media-url: https://www.youtube.com/watch?v=E16Bx_NMmyI
 :page-slides-url: https://github.com/elmiko/slidedecks/tree/2018/devconf-pythonic-spark-apps
+:page-venue: DevConf.cz
+:page-city: Brno, Czechia
 
 In this presentation Michael will demonstrate how to create and deploy Python based Apache Spark applications to cloud native environments. We will explore design patterns to help you integrate your analytics and machine learning algorithms into applications which can take full advantage of cloud native platforms like OpenShift Origin. You will see code samples and live demonstrations of techniques for building and deploying Apache Spark applications written in Python. These samples and techniques will provide a solid basis that you can use to create your own intelligent applications for the cloud.

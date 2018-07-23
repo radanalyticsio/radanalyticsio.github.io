@@ -3,6 +3,8 @@
 :page-date: 2017-02-09
 :page-media-url: https://www.youtube.com/watch?v=i7OjHrpVvxk
 :page-slides-url: http://www.slideshare.net/SparkSummit/optimizing-spark-deployments-for-containers-isolation-safety-and-performance-spark-summit-east-talk-by-william-benton
+:page-venue: Spark Summit East
+:page-city: Boston, MA
 
 Developers love Linux containers, which neatly package up an application and its dependencies and are easy to create and share. However, this unbeatable developer experience hides some deployment challenges for real applications: how do you wire together pieces of a multi-container application? Where do you store your persistent data if your containers are ephemeral? Do containers really contain and isolate your application, or are they merely hiding potential security vulnerabilities? Are your containers scheduled across your compute resources efficiently, or are they trampling on one another?
 

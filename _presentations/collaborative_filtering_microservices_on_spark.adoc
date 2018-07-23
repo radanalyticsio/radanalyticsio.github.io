@@ -3,6 +3,8 @@
 :page-date: 2018-01-26
 :page-media-url: https://www.youtube.com/watch?v=tgQg1fQbaLM
 :page-slides-url: https://github.com/ruivieira/presentations/blob/master/collaborative_filtering_microservices_on_spark.pdf
+:page-venue: DevConf.cz
+:page-city: Brno, Czechia
 
 The Alternating Least Squares (ALS) algorithm is still deemed the industry standard in collaborative filtering. In this talk we will focus on Apache Spark’s ALS implementation and discuss the steps we took to build a distributed recommendation engine, focusing on continuous model training and model management.
 

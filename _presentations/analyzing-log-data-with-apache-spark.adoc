@@ -3,6 +3,8 @@
 :page-date: 2016-06-08
 :page-media-url: https://www.youtube.com/watch?v=fhuoKe4li6E
 :page-slides-url: http://www.slideshare.net/SparkSummit/analyzing-log-data-with-apache-spark
+:page-venue: Spark Summit
+:page-city: San Francisco, CA
 
 Contemporary applications and infrastructure software leave behind a tremendous volume of metric and log data. This aggregated “digital exhaust” is inscrutable to humans and difficult for computers to analyze, since it is vast, complex, and not explicitly structured. This session will introduce the log processing domain and provide practical advice for analyzing log data with Apache Spark, including:
 

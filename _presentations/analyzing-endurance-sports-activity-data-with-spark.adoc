@@ -2,6 +2,8 @@
 :page-presentor: William Benton
 :page-date: 2014-07-01
 :page-media-url: https://www.youtube.com/watch?v=I775I0WzeqY&index=8
+:page-venue: Spark Summit
+:page-city: San Francisco, CA
 
 Spark’s support for efficient execution and rapid interactive prototyping enable novel approaches to understanding data-rich domains that have historically been underserved by analytical techniques. One such field is endurance sports, where athletes are faced with GPS and elevation traces as well as samples from heart rate, cadence, temperature, and wattage sensors. These data streams can be somewhat comprehensible at any given moment, when looking at a small window of samples on one’s watch or cycle computer, but are overwhelming in the aggregate.
 

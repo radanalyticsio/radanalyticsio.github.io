@@ -3,5 +3,8 @@
 :page-date: 2017-05-03
 :page-media-url: https://www.youtube.com/watch?v=ZcNehJz6WdY
 :page-slides-url: https://rh2017.smarteventscloud.com/connect/fileDownload/session/5DE8554D6C0A107B250CE002FDAB1F72/S105063%20-%20Converging%20insightful,%20data-led%20applications%20with%20traditional%20web%20applications.pdf
+:page-venue: Red Hat Summit
+:page-city: Boston, MA
+
 
 Data crunching and web serving have existed very separate worlds. Access by a web application to analysis required a long process of Extract, Transform, Load (ETL), database work, and imports and exports, as well as getting network and storage assistance. The rise of containers, orchestration, more cost-effective computing and networking has resulted in a convergence, creating the possibility of using the same hardware and, more importantly, clustering software to converge both types of workloads. In this session, we’ll discuss a high level vision of this approach with containers, Kubernetes, web servers, and Apache Spark. We’ll show a demo of how this convergence helps data analysis move from custom R or Python scripts on an analyst’s desktop to an accessible web app, while letting the analyst simultaneously constrain the analysis to prevent statistical overreach.
