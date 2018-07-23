@@ -2,6 +2,8 @@
 :page-presentor: William Benton
 :page-date: 2017-01-29
 :page-media-url: https://youtu.be/Va1ciXQ7wDY?t=4m53s
+:page-venue: DevConf.cz
+:page-city: Brno, Czechia
 
 Apache Spark is one of the most exciting open-source data-processing frameworks today. It features a range of useful capabilities and an unusually developer-friendly programming model. However, the ease of getting a simple Spark application running can hide some of the challenges you might face while going from a proof of concept to a real-world application. This talk will distill our experiences as early adopters of Spark in production, present a case study where using Spark effectively provided huge benefits over legacy solutions, explain why we migrated from a dedicated Spark cluster to OpenShift, and provide concrete advice regarding:
 

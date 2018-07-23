@@ -3,6 +3,8 @@
 :page-date: 2017-10-06
 :page-media-url: https://www.youtube.com/watch?v=vpm9GyxUqLQ
 :page-slides-url: http://bit.ly/blkSpark
+:page-venue: OpenSlava
+:page-city: Bratislava, Slovakia
 
 Cryptocurrencies attract various groups of people. Among other it could be investors,
 people from retail, tech enthusiasts, crypto-anarchists, etc. We are not going to

@@ -3,6 +3,9 @@
 :page-date: 2018-06-11
 :page-media-url: https://youtu.be/-bR3d5h9SWc
 :page-slides-url: https://github.com/ruivieira/presentations/blob/master/streaming-als/2018-06-11-berlin-buzzwords-streaming-als.pdf
+:page-venue: Berlin Buzzwords
+:page-city: Berlin, Germany
+
 
 Collaborative filtering is a well known method to implement recommendation engines. Although modern techniques, such as Alternating Least Squares (ALS), allow us to perform rating predictions with large amounts of observations, typically ALS is implemented as a distributed batch algorithm where retraining must be performed with the entirety of the data. However, when dealing with large amounts of data as a stream, batch retraining might be problematic.
 

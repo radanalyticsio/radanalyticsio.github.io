@@ -1,7 +1,9 @@
 = Intelligent applications on OpenShift from prototype to production
 :page-presentor: Rebecca Simmonds and Michael McCune
-:page-date: 2017-01-28
+:page-date: 2018-05-09
 :page-media-url: https://www.youtube.com/watch?v=ofm9cv18geo&t=1s
+:page-venue: Red Hat Summit
+:page-city: San Francisco, CA
 
 Today’s users demand tailored, dynamic, and constantly refined experiences. They expect intelligent applications that will learn from data and improve with longevity and popularity. Application intelligence takes many forms, including anomaly and fraud detection, product recommendations, natural-language understanding, even speech and image recognition. All of these capabilities will need to be put into production and managed alongside conventional application components.
 

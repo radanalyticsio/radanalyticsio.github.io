@@ -3,6 +3,9 @@
 :page-date: 2018-06-05
 :page-media-url: https://vimeo.com/274603830
 :page-slides-url:  https://www.slideshare.net/SparkSummit/building-machine-learning-algorithms-on-apache-spark-with-william-benton
+:page-venue: Spark+AI Summit
+:page-city: San Francisco, CA
+
 
 As a developer, data engineer, or data scientist, you’ve seen how Apache Spark is expressive enough to let you solve problems elegantly and efficient enough to let you scale out to handle more data. However, if you’re solving the same problems again and again, you probably want to capture and distribute your solutions so that you can focus on new problems and so other people can reuse and remix them: you want to develop a library that extends Spark.
 

@@ -3,6 +3,8 @@
 :page-date: 2016-12-20
 :page-media-url: https://feathercast.apache.org/2016/12/20/apache-big-data-seville-2016-building-apache-spark-application-pipelines-for-the-kubernetes-ecosystem-michael-mccune/
 :page-slides-url: https://github.com/elmiko/slidedecks/tree/2016/abd-eu-spark-on-kube
+:page-venue: Apache: Big Data
+:page-city: Seville, Spain
 
 Apache Spark based applications are often comprised of many separate, interconnected components that are a good match for an orchestrated containerized platform like Kubernetes. But with the increased flexibility afforded by these technologies comes a new set challenges for building rich data-centric applications.
 

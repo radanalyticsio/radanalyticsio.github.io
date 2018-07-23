@@ -3,6 +3,8 @@
 :page-date: 2017-02-09
 :page-media-url: https://www.youtube.com/watch?v=ETUYhEZRtWE
 :page-slides-url: http://www.slideshare.net/SparkSummit/sketching-data-with-tdigest-in-apache-spark-spark-summit-east-talk-by-erik-erlandson
+:page-venue: Spark Summit East
+:page-city: Boston, MA
 
 Algorithms for sketching probability distributions from large data sets are a fundamental building block of modern data science. Sketching plays a role in diverse applications ranging from visualization, optimizing data encodings, estimating quantiles, data synthesis and imputation. The T-Digest is a versatile sketching data structure. It operates on any numeric data, models tricky distribution tails with high fidelity, and most crucially it works smoothly with aggregators and map-reduce.
 

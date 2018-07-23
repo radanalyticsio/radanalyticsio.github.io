@@ -2,6 +2,8 @@
 :page-presentor: Rebecca Simmonds
 :page-date: 2018-06-05
 :page-media-url: https://databricks.com/session/apache-spark-from-notebook-to-cloud-native-application
+:page-venue: Spark+AI Summit
+:page-city: San Francisco, CA
 
 Data engineering teams love Apache Spark because it’s powerful and easy to manage, but managing a shared resource for experimental analyses and queries is very different from developing production applications in contemporary cloud environments: the gap between understanding Spark and being able to deploy and manage it in production can be vast.
 

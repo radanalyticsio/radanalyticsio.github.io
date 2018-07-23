@@ -3,6 +3,8 @@
 :page-date: 2017-01-28
 :page-media-url: https://www.youtube.com/watch?v=dnhrsKdV4C0&feature=youtu.be&t=395
 :page-slides-url: http://radanalytics.io/assets/insightful_apps_workshop/insightful_apps_with_apache_spark_and_openshift_workshop.pdf
+:page-venue: DevConf.cz
+:page-city: Brno, Czechia
 
 Nearly all of today’s most exciting applications are insightful applications: they employ machine learning and large-scale data processing to improve with longevity and popularity. It’s an easy bet that the important applications of tomorrow will be insightful as well. It’s also an easy bet that you’ll want to be deploying tomorrow’s applications on a contemporary container platform with a great developer workflow like OpenShift.
 
