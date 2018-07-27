@@ -1,5 +1,6 @@
 = recognize Spark version mismatch between driver, master and/or workers?
 :page-layout: howdoi
+:page-menu_entry: How do I?
 
 It's important that the Spark version running on your driver, master, and
 worker pods all match. Although some versions _might actually_ interoperate,
