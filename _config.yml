@@ -47,7 +47,7 @@ collections:
     permalink: /collections/:collection/:path # this is also part of the workaround
   howdoi:
     output: true # this is to workaround issue #161 in jekyll-asciidoc
-    permalink: /collections/:collection/:path # this is also part of the workaround
+    permalink: /:collection/:name # this is also part of the workaround
   presentations:
     output: true # this is to workaround issue #161 in jekyll-asciidoc
     permalink: /collections/:collection/:path # this is also part of the workaround

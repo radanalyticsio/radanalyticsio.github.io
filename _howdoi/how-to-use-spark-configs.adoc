@@ -1,4 +1,5 @@
 = use custom Spark configuration files with my cluster?
+:page-layout: howdoi
 
 Create custom versions of standard Spark configuration files such as `spark-defaults.conf`
 or `spark-env.sh` and put them together in a subdirectory, then create a configmap

@@ -93,3 +93,12 @@ div.flex-center {
     display: flex;
     align-items: center;
 }
+
+a.howdoi-link {
+    color: rgb(54, 54, 54);
+    text-decoration: none;
+}
+
+div.margin-top-1 {
+    margin-top: 1em;
+}

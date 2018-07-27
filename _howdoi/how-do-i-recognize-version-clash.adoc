@@ -1,4 +1,5 @@
 = recognize Spark version mismatch between driver, master and/or workers?
+:page-layout: howdoi
 
 It's important that the Spark version running on your driver, master, and
 worker pods all match. Although some versions _might actually_ interoperate,

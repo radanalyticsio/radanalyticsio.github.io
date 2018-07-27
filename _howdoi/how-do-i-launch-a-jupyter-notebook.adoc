@@ -1,4 +1,5 @@
 = launch a Jupyter notebook on OpenShift
+:page-layout: howdoi
 
 There are multiple ways to launch a Jupyter notebook on OpenShift with the
 radanalytics.io tooling. You can use the OpenShift console or the `oc` command
