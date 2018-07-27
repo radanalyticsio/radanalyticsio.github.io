@@ -1,4 +1,5 @@
 = install Python packages in Jupyter notebooks on OpenShift
+:page-layout: howdoi
 :source-highlighter: coderay
 :coderay-css: style
 

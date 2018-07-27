@@ -1,4 +1,5 @@
 = connect to Apache Kafka?
+:page-layout: howdoi
 
 You need to add `--packages org.apache.spark:spark-sql-kafka-0-10_2.11:2.1.0`
 when running `spark-shell`, `spark-submit` or to `SPARK_OPTIONS` for S2I. For
