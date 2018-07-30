@@ -1,6 +1,11 @@
 = This is the title, it should not include "how do i"
+:page-layout: howdoi
+:page-menu_entry: How do I?
 
 Your instructions should go here. This is an AsciiDoc document and as such
 you may use the available markup syntax. If you need to add graphics or
 other assets, please add them to the `assets/how-do-i` directory.
 
+The `page-layout` and `page-menu_entry` header options are present to inform
+the static site generator about the template and menu options used for this
+entry. They should not need to be modified.
