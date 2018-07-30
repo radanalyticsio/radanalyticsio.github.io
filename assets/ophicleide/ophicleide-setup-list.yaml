@@ -63,6 +63,8 @@ items:
     apiVersion: v1
     metadata:
       name: ophicleide-web
+      labels:
+        app: ophicleide
     spec:
       ports:
         - protocol: TCP
@@ -71,10 +73,32 @@ items:
       selector:
         name: ophicleide
 
+  - kind: Service
+    apiVersion: v1
+    metadata:
+      name: ophicleide-headless
+      labels:
+        app: ophicleide
+    spec:
+      clusterIP: None
+      ports:
+      - name: driver-rpc-port
+        port: 7078
+        protocol: TCP
+        targetPort: 7078
+      - name: blockmanager
+        port: 7079
+        protocol: TCP
+        targetPort: 7079
+      selector:
+        name: ophicleide
+
   - kind: Route
     apiVersion: v1
     metadata:
       name: ophicleide-web
+      labels:
+        app: ophicleide
     spec:
       host: ${WEB_ROUTE_HOSTNAME}
       to:
@@ -85,6 +109,8 @@ items:
     apiVersion: v1
     metadata:
       name: ophicleide
+      labels:
+        app: ophicleide
     spec:
       strategy:
         type: Rolling
@@ -112,7 +138,7 @@ items:
       template:
         metadata:
           labels:
-            name: ophicleide
+            app: ophicleide
         spec:
           containers:
             - name: ophicleide-web
@@ -134,8 +160,14 @@ items:
                   value: ${MONGO}
                 - name: OPH_SPARK_MASTER_URL
                   value: ${SPARK}
+                - name: DRIVER_HOST
+                  value: ophicleide-headless
               ports:
                 - containerPort: 8080
+                  protocol: TCP
+                - containerPort: 7078
+                  protocol: TCP
+                - containerPort: 7079
                   protocol: TCP
 
   parameters:
