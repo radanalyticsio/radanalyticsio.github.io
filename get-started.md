@@ -100,5 +100,5 @@ Now that you have Oshinko installed and running in your OpenShift project you
 might want to learn how deploy an Apache Spark cluster by reading
 [this article](/howdoi/deploy-a-spark-cluster-webui). We also recommend
 investigating the many [tutorials](/tutorials) that the radanalytics.io
-community have produced. These tutorials will you show how to fully utilize
+community have produced. These tutorials will show you how to fully utilize
 the intelligent application development workflow with Oshinko and OpenShift.
