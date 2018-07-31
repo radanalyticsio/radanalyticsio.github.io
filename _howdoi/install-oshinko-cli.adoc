@@ -2,7 +2,7 @@
 //
 // <List assemblies here, each on a new line>
 [id='install-oshinko-cli']
-= install the Oshinko command line interface tool
+= install the Oshinko command line interface tool?
 :page-layout: howdoi
 :page-menu_entry: How do I?
 
@@ -24,3 +24,5 @@ another option for creating and managing Apache Spark clusters on OpenShift.
 .Additional resources
 
 * link:https://github.com/radanalyticsio/oshinko-cli[Oshinko CLI project repository]
+
+* link:/howdoi/deploy-a-spark-cluster-cli[How do I deploy an Apache Spark cluster with the Oshinko command line interface tool?]
