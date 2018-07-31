@@ -40,9 +40,18 @@ and add it to the list!
   </div>
 
   <div class="col-lg-10 col-lg-offset-1">
-    <div class="list-group list-view-pf list-view-pf-view">
+      {% assign last_date = "0000" %}
       {% assign sorted_presentations = site.presentations | sort: 'date' | reverse %}
       {% for pres in sorted_presentations %}
+      {% assign presyear = pres.date | date: '%Y' %}
+      {% if presyear != last_date %}
+      {% if last_date != "0000" %}
+      </div>
+      {% endif %}
+      {% assign last_date = presyear %}
+      <h2>{{ presyear }}</h2>
+      <div class="list-group list-view-pf list-view-pf-view">
+      {% endif %}
 
       <div class="list-group-item">
         <div class="list-group-item-header flex-center">
@@ -55,7 +64,6 @@ and add it to the list!
                 <div class="list-group-item-heading">
                   <h2> {{ pres.title }}</h2>
                   <em>{{ pres.presentor }}</em><br/>
-                  <em>{% if pres.venue %}{{ pres.venue }} • {% endif %}{% if pres.city %}{{pres.city}} • {% endif %}{{ pres.date | date: '%B %Y' }}</em>
                 </div>
               </div>
             </div>
@@ -63,6 +71,8 @@ and add it to the list!
         </div>
         <div class="list-group-item-container container-fluid hidden">
           <div>
+            <em>{% if pres.venue %}{{ pres.venue }} • {% endif %}{% if pres.city %}{{pres.city}} • {% endif %}{{ pres.date | date: '%B %Y' }}</em>
+            
             {{ pres.content }}
 
             <a href="{{ pres.media-url }}">
