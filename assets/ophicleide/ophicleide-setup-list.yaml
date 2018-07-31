@@ -138,6 +138,7 @@ items:
       template:
         metadata:
           labels:
+            name: ophicleide
             app: ophicleide
         spec:
           containers:
