@@ -31,7 +31,10 @@ wget $RESOURCES_URL -qO - \
 https://radanalytics.io/resources.yaml  
 This is the latest resources file from [radanalytics.io](https://radanalytics.io)  
 DEFAULT_TAG=stable  
-NEW_TAG may be any version newer than v0.4.0  
+NEW_TAG may be any version newer than v0.5.3
+
+https://radanalytics.io/openshift/resources-v0.5.3.yaml  
+This file supports version v0.5.3 of Oshinko  
 
 https://radanalytics.io/openshift/resources-v0.4.0.yaml  
 This file supports version v0.4.0 of Oshinko  
