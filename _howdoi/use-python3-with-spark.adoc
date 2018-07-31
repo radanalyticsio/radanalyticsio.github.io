@@ -1,4 +1,6 @@
 = use Python 3 with Apache Spark
+:page-layout: howdoi
+:page-menu_entry: How do I?
 
 To use Python 3 with your OpenShift-based Apache Spark applications you will
 need to deploy a different base image for the Spark driver, master and workers.
