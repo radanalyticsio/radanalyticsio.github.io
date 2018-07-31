@@ -1,0 +1,31 @@
+// Module included in the following assemblies:
+//
+// <List assemblies here, each on a new line>
+[id='deploy-a-spark-cluster-cli']
+= deploy an Apache Spark cluster with the Oshinko command line interface tool?
+:page-layout: howdoi
+:page-menu_entry: How do I?
+
+Deploying an Apache Spark cluster through the Oshinko command line interface
+tool is a simple process that in most cases can be done by providing only a
+name for the new cluster.
+
+.Prerequisites
+
+* A terminal shell and OpenShift `oc` tool available with an active login to
+  OpenShift.
+
+* An OpenShift project with the radanalytics.io manifest installed, see the
+  link:/get-started[Get Started] instructions for more help.
+
+.Procedure
+
+. Type `oshinko create <cluster name>` into your terminal shell, replacing
+  `<cluster name>` with the name you will use to identify the cluster.
+
+. Confirm your cluster is created by typing `oshinko get <cluster name>`,
+  replacing `<cluster name>` with the name you chose for the cluster.
+
+.Additional resources
+
+* link:/howdoi/install-oshinko-cli[How do I install the Oshinko command line interface tool?]
