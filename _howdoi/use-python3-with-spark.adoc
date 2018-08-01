@@ -7,7 +7,7 @@ need to deploy a different base image for the Spark driver, master and workers.
 Depending on how your application is deployed this can take multiple forms.
 
 At the most basic level, to deploy a cluster with Python 3 you will need to
-change the base image that Oshinko uses. There are severl methods for doing
+change the base image that Oshinko uses. There are several methods for doing
 this:
 
 == Deploying Python 3 images with Oshinko webui

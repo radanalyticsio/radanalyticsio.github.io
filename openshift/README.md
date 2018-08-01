@@ -34,10 +34,12 @@ DEFAULT_TAG=stable
 NEW_TAG may be any version newer than v0.5.3
 
 https://radanalytics.io/openshift/resources-v0.5.3.yaml  
-This file supports version v0.5.3 of Oshinko  
+This file supports versions v0.4.x and v0.5.x of Oshinko  
+DEFAULT_TAG=v0.5.3
+NEW_TAG may be any version from v0.4.1 to v0.5.3 inclusive
 
 https://radanalytics.io/openshift/resources-v0.4.0.yaml  
-This file supports version v0.4.0 of Oshinko  
+This file supports only version v0.4.0 of Oshinko  
 
 https://radanalytics.io/openshift/resources-v0.3.yaml  
 This file supports versions v0.2.x and v0.3.x of Oshinko  
