@@ -1,0 +1,54 @@
+#!/bin/sh
+echo "* locating oc command"
+if ocloc=$(which oc) &> /dev/null; then
+    echo "  success: $ocloc"
+else
+    echo "  error: the oc command must be in your path"
+    exit 1
+fi
+
+echo "* checking OpenShift status"
+if oc status &> /dev/null; then
+    echo "  success: status acquired"
+else
+    echo "  error: unable to determine OpenShift status, perhaps you are not logged in?"
+    exit 1
+fi
+
+echo "* scanning for radanalytics.io objects"
+rad_valid=yes
+missing_objects=""
+
+check_component()
+{
+    if oc get "$1" "$2" &> /dev/null; then
+        if [[ "$rad_valid" == "yes" ]]; then
+            rad_valid=yes
+        fi
+    else
+        rad_valid=no
+        missing_objects="$1/$2 $missing_objects"
+    fi
+}
+
+check_component serviceaccount oshinko
+check_component rolebinding oshinko-edit
+check_component template oshinko-python-spark-build-dc
+check_component template oshinko-java-spark-build-dc
+check_component template oshinko-scala-spark-build-dc
+check_component template oshinko-webui-secure
+check_component template oshinko-webui
+check_component template radanalytics-jupyter-notebook
+
+if [[ "$rad_valid" == "yes" ]]; then
+    echo "  success: all radanalytics.io objects found"
+    echo "radanalytics.io installation is valid"
+else
+    echo "  error: the following radanalytics.io objects were not found:"
+    for o in $missing_objects
+    do
+        echo "  - $o"
+    done
+    echo "radanalytics.io installation is not valid"
+    exit 1
+fi
