@@ -1,0 +1,68 @@
+= validate my radanalytics.io installation?
+:page-layout: howdoi
+:page-menu_entry: How do I?
+
+A common task when working in a new OpenShift project is to determine if
+the radanalytics.io primitives have been properly installed. While this can
+be done using calls to the OpenShift command line utility, the
+radanalytics.io community has created a script that will check the validity of
+your installation.
+
+To use the `rad-validate` script you will need a Linux terminal shell and
+access to the `oc` Openshift command line utility.
+
+The validation script, `rad-validate`, can be downloaded from
+link:/assets/tools/rad-validate[this link]. You can also
+download the script in your shell using the `curl` utility as follows:
+
+....
+curl -o rad-validate https://radanalytics.io/assets/tools/rad-validate
+....
+
+Once you have downloaded the script you will want to make it executable in
+your shell for easy re-use. This can be done with the following command:
+
+....
+chmod +x rad-validate
+....
+
+You are now ready to run the validation check. To start the process simply
+type `./rad-validate` in the directory where you downloaded the script.
+Assuming your project contains a valid installation, the output will look
+something like this:
+
+....
+$ ./rad-validate
+* locating oc command
+  success: /bin/oc
+* checking OpenShift status
+  success: status acquired
+* scanning for radanalytics.io objects
+  success: all radanalytics.io objects found
+radanalytics.io installation is valid
+....
+
+If your project does *not* contain a valid installation, the output will look
+similar to the following:
+
+....
+$ ./rad-validate
+* locating oc command
+  success: /bin/oc
+* checking OpenShift status
+  success: status acquired
+* scanning for radanalytics.io objects
+  error: the following radanalytics.io objects were not found:
+  - template/radanalytics-jupyter-notebook
+  - template/oshinko-webui
+  - template/oshinko-webui-secure
+  - template/oshinko-scala-spark-build-dc
+  - template/oshinko-java-spark-build-dc
+  - template/oshinko-python-spark-build-dc
+  - rolebinding/oshinko-edit
+  - serviceaccount/oshinko
+radanalytics.io installation is not valid
+....
+
+To assist with automated tooling, this script will also return a valid exit
+code (`0`) upon success and an error (`1`) upon failure.
