@@ -67,7 +67,7 @@ items:
             forcePull: true
             from:
               kind: DockerImage
-              name: radanalyticsio/radanalytics-pyspark:stable
+              name: radanalyticsio/radanalytics-pyspark:v0.5.3
           type: Source
         triggers:
         - imageChange: {}
@@ -259,7 +259,7 @@ items:
             forcePull: true
             from:
               kind: DockerImage
-              name: radanalyticsio/radanalytics-java-spark:stable
+              name: radanalyticsio/radanalytics-java-spark:v0.5.3
           type: Source
         triggers:
         - imageChange: {}
@@ -458,7 +458,7 @@ items:
             forcePull: true
             from:
               kind: DockerImage
-              name: radanalyticsio/radanalytics-scala-spark:stable
+              name: radanalyticsio/radanalytics-scala-spark:v0.5.3
           type: Source
         triggers:
         - imageChange: {}
@@ -764,7 +764,7 @@ items:
                     timeoutSeconds: 1
                     initialDelaySeconds: 20
                 - name: oc-proxy
-                  image: radanalyticsio/oc-proxy:stable
+                  image: radanalyticsio/oc-proxy:v0.5.3
                   imagePullPolicy: IfNotPresent
                   args:
                     - proxy
@@ -792,7 +792,7 @@ items:
       - name: OSHINKO_WEB_IMAGE
         description: Full name of the oshinko web image
         required: true
-        value: radanalyticsio/oshinko-webui:stable
+        value: radanalyticsio/oshinko-webui:v0.5.3
       - name: OSHINKO_WEB_ROUTE_HOSTNAME
         description: The hostname used to create the external route for the webui
       - name: OSHINKO_REFRESH_INTERVAL
@@ -905,7 +905,7 @@ items:
                     timeoutSeconds: 1
                     initialDelaySeconds: 20
                 - name: oc-proxy
-                  image: radanalyticsio/oc-proxy:stable
+                  image: radanalyticsio/oc-proxy:v0.5.3
                   imagePullPolicy: IfNotPresent
                   args:
                     - proxy
@@ -929,7 +929,7 @@ items:
       - name: OSHINKO_WEB_IMAGE
         description: Full name of the oshinko web image
         required: true
-        value: radanalyticsio/oshinko-webui:stable
+        value: radanalyticsio/oshinko-webui:v0.5.3
       - name: OSHINKO_WEB_ROUTE_HOSTNAME
         description: The hostname used to create the external route for the webui
       - name: OSHINKO_REFRESH_INTERVAL
