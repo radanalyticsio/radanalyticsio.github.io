@@ -1,6 +1,6 @@
 #!/bin/sh
 echo "* locating oc command"
-if ocloc=$(which oc) &> /dev/null; then
+if ocloc=$(command -v oc) &> /dev/null; then
     echo "  success: $ocloc"
 else
     echo "  error: the oc command must be in your path"
@@ -21,11 +21,7 @@ missing_objects=""
 
 check_component()
 {
-    if oc get "$1" "$2" &> /dev/null; then
-        if [[ "$rad_valid" == "yes" ]]; then
-            rad_valid=yes
-        fi
-    else
+    if ! oc get "$1" "$2" &> /dev/null; then
         rad_valid=no
         missing_objects="$1/$2 $missing_objects"
     fi

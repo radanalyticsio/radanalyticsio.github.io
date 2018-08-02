@@ -8,7 +8,7 @@ be done using calls to the OpenShift command line utility, the
 radanalytics.io community has created a script that will check the validity of
 your installation.
 
-To use the `rad-validate` script you will need a Linux terminal shell and
+To use the `rad-validate` script you will need a POSIX terminal shell and
 access to the `oc` Openshift command line utility.
 
 The validation script, `rad-validate`, can be downloaded from
