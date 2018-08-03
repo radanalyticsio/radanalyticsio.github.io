@@ -1,4 +1,4 @@
-= use Python 3 with Apache Spark
+= use Python 3 with Apache Spark?
 :page-layout: howdoi
 :page-menu_entry: How do I?
 
