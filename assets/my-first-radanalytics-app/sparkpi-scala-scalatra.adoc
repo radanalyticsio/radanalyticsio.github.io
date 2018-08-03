@@ -3,6 +3,8 @@
 :page-menu_template: menu_tutorial_application.html
 :page-menu_backurl: /my-first-radanalytics-app.html
 :page-menu_backtext: Back to My First RADanalytics Application
+:source-highlighter: coderay
+:coderay-css: style
 
 == Building a Spark PI Microservice with Scalatra
 
@@ -14,26 +16,28 @@ You should already have the necessary prerequisites installed and configured, bu
 
 This project is built using https://www.scala-sbt.org/[SBT]. First, create the following file/directory structure
 
-....
+----
 tutorial-sparkpi-scala-scalatra (root)
     \_ build.sbt
     \_ project
         \_ Dependencies.scala
         \_ build.properties
         \_ plugins.sbt
-....
+----
 
 The primary build definition is contained in `build.sbt` (analogous to pom.xml for Maven or build.gradle for Gradle), however, there are also configurations that are applied project wide from the `project` directory. For an application as small and as simple as this, these configurations can be superfluous (ie: they could reside directly in the build.sbt file). However, they become much more important in complex multi-module builds. Therefore, as a matter of best practice, this tutorial will be set up that way.
 
 The file `build.properties` should be generated for you if you are using an IDE like Eclipse or IntelliJ IDEA. In this case it will be created by hand. For now, it simply contains the SBT version that the project is built with.
 
-```scala
+[source,scala]
+----
 sbt.version = 1.0.2
-```
+----
 
 The `plugins.sbt` file enables plugins globally for the project by adding extra settings and tasks. For this project, there are a few plugins required to enable the **Scalatra** framework. There are also additional plugins added to enable the project to be built and packaged as a deployable "fat jar".
 
-```scala
+[source,scala]
+----
 logLevel := Level.Warn
 
 resolvers += "Typesafe repository" at "http://repo.typesafe.com/typesafe/releases/"
@@ -42,11 +46,13 @@ addSbtPlugin( "com.eed3si9n" % "sbt-assembly" % "0.14.6" )
 addSbtPlugin( "com.typesafe.sbt" % "sbt-native-packager" % "1.3.2" )
 addSbtPlugin( "com.typesafe.sbt" % "sbt-twirl" % "1.3.13" )
 addSbtPlugin( "org.scalatra.sbt" % "sbt-scalatra" % "1.0.2" )
-```
+----
 
 
 `Dependencies.scala` is for dependency management. This centralizes all project dependencies and versions in one place. As mentioned above, this is overkill for a simple project like this, however, for complex multi-module builds it is invaluable in preventing configuration drift and dependency conflicts.
-```scala
+
+[source,scala]
+----
 import sbt._
 
 object Dependencies {
@@ -77,11 +83,12 @@ object Dependencies {
 
 
 }
-```
+----
 
 Finally, we come to the build definition itself, `build.sbt`. Comments have been added inline to the source code to explain the various components of the build.
 
-```scala
+[source,scala]
+----
 import sbt._
 import Dependencies._
 organization := "io.radanalytics"
@@ -119,12 +126,13 @@ assemblyMergeStrategy in assembly := {
     case PathList( "reference.conf" ) => MergeStrategy.concat
     case x => MergeStrategy.last
 }
-```
+----
 
 == Create the SparkPi Job
-Now it is time to implement the actual Spark job that will calculate π. For this example, the code is adapted directly from the https://github.com/apache/spark/blob/master/examples/src/main/scala/org/apache/spark/examples/SparkPi.scala[SparkPi Example]. The job will be encapsulated inside of an object that exposes only one method `calculate()`. Create a new Scala class, `src/main/resources/io/radanalytics/examples/scalatra/sparkpi/SparkPi.scala` and implement `calculate()` the method as shown below:
+Now it is time to implement the actual Spark job that will calculate π. For this example, the code is adapted directly from the https://github.com/apache/spark/blob/master/examples/src/main/scala/org/apache/spark/examples/SparkPi.scala[SparkPi Example]. The job will be encapsulated inside of an object that exposes only one method `calculate()`. Create a new Scala class, `src/main/scala/io/radanalytics/examples/scalatra/sparkpi/SparkPi.scala` and implement `calculate()` the method as shown below:
 
-```scala
+[source,scala]
+----
 package io.radanalytics.examples.scalatra.sparkpi
 
 import org.apache.spark.SparkContext
@@ -146,14 +154,15 @@ class SparkPI( spark : SparkContext, scale : Int ) {
     }
 
 }
-```
+----
 
 == Test the Spark Job
 Thankfully, there is a library that will help enable the testing of Spark jobs in a unit test like environment. This framework, by using some utilities from https://github.com/apache/hadoop/tree/trunk/hadoop-minicluster[hadoop-minicluster], can stand up an entire Spark environment inside of a Scalatest fixture, execute jobs, and compare results. The SparkPi example relies on random numbers for it's computation, which makes it hard to truly unit test. However, for real life use cases, https://github.com/holdenk/spark-testing-base[Spark Testing Base] includes a slew of testing capabilities including https://github.com/holdenk/spark-testing-base/wiki/RDDComparisons[RDD Comparisons], https://github.com/holdenk/spark-testing-base/wiki/DataFrameSuiteBase[Data Frame comparisons], and https://github.com/holdenk/spark-testing-base/wiki/StreamingSuiteBase[Spark Streaming test utilities].
 
 As a reference, an example of a Spark unit test using this framework would look like the following file, `src/test/scala/io/radanalytics/examples/scalatra/sparkpi/SparkPiTest.scala`:
 
-```scala
+[source,scala]
+----
 package io.radanalytics.examples.scalatra.sparkpi
 
 import com.holdenkarau.spark.testing.SharedSparkContext
@@ -177,31 +186,39 @@ class SparkPiTest extends FlatSpec with SharedSparkContext {
     }
 
 }
-```
+----
 
 == Implement the Service Endpoint
 https://github.com/scalatra/scalatra[Scalatra] is designed from the ground up to be an easy to use microservice framework. It is based on the http://sinatrarb.com[similarly named Ruby framework], but with a Scala DSL and idioms. Setting up a SparkPI service is fairly easy and only requires the following:
 
 1) Implement the servlet in `src/main/scala/io/radanalytics/examples/scalatra/sparkpi/SparkPiServlet.scala` to handle requests. This handler uses the `SparkPi.scala` class that was implemented in the last step to perform the calculation.
 
-```scala
+[source,scala]
+----
 package io.radanalytics.examples.scalatra.sparkpi
 
 import org.apache.spark.{SparkConf, SparkContext}
 import org.scalatra.{Ok, ScalatraServlet}
 
 class SparkPiServlet extends ScalatraServlet {
+    
+    get("/"){
+        Ok( "Scala Scalatra SparkPi server running. Add the 'sparkpi' route to this URL to invoke the app." )
+    }
+
     get( "/sparkpi" ) {
-        val spark = new SparkContext( new SparkConf().setAppName( "Radanalytics IO Scalatra Tutorial" ) )
+        val spark = new SparkContext( new SparkConf().setAppName( "RADAnalytics IO Scalatra Tutorial" ) )
         val sparkPi = new SparkPI( spark,2 ).calculate()
         spark.stop()
         Ok( "Pi is roughly " + sparkPi )
     }
 }
-```
+----
 
 2) Setup the Scalatra initialization and plumbing. Scalatra will want to default this class to being called `ScalatraBootstrap` in the default package. This behavior will be overridden in the bootstrap of the application to encourage better code organization. This class will be located in `src/main/scala/io/radanalytics/examples/scalatra/sparkpi/ScalatraInit.scala`.
-```
+
+[source,scala]
+----
 package io.radanalytics.examples.scalatra.sparkpi
 
 import javax.servlet.ServletContext
@@ -214,11 +231,12 @@ class ScalatraInit extends LifeCycle {
     }
 
 }
-```
+----
 
 3) Implement the main application class, which will bootstrap Jetty and bind the `SparkPiServlet` so that it can service requests. Notice the addition of an init parameter, which overrides the Scalatra default mentioned in the previous step. This class, called `src/main/scala/io/radanalytics/examples/scalatra/sparkpi/Main.scala`, is shown below.
 
-```scala
+[source,scala]
+----
 package io.radanalytics.examples.scalatra.sparkpi
 
 import org.eclipse.jetty.server.Server
@@ -237,7 +255,6 @@ object Main {
         context.setResourceBase( "src/main/webapp" )
         context.setInitParameter( ScalatraListener.LifeCycleKey, "io.radanalytics.examples.scalatra.sparkpi.ScalatraInit" ) // Override the Scalatra default for ScalatraBootstrap in default package
         context.addEventListener( new ScalatraListener )
-        context.addServlet( classOf[ DefaultServlet ], "/" ) // handles empty context root
 
         server.setHandler( context )
         server.start()
@@ -245,12 +262,12 @@ object Main {
     }
 
 }
-```
+----
 
 == Build the Application and Verify Locally
 The directory structure should now look like this:
 
-....
+----
 tutorial-sparkpi-scala-scalatra (root)
     \_ build.sbt
     \_ project
@@ -277,17 +294,19 @@ tutorial-sparkpi-scala-scalatra (root)
                             \_ scalatra
                                 \_ sparkpi
                                     \_ SparkPiTest.scala
-....
+----
 
 At this point it is possible to build and unit test the application locally. In the context of this tutorial, which is to deploy the application to Openshift, this step is optional. However, it can be helpful in validating that the code builds and passes all the tests before being deployed. If you have SBT installed, you can run the tests and generate the executable jar with the following command:
 
-```bash
+[source,shell]
+----
 # if this is your first SBT build this could take quite some time.
 sbt clean test assembly
-```
+----
 
 If this build succeeds, the deployable "fat jar" will be located in the following location:
-....
+
+----
 tutorial-sparkpi-scala-scalatra (root)
     \_ build.sbt
     ...
@@ -295,25 +314,49 @@ tutorial-sparkpi-scala-scalatra (root)
         \_scala-2.11
             \_ tutorial-sparkpi-scala-scalatra-assembly-0.0.1-SNAPSHOT.jar
 
-....
+----
 
 This deployment can be tested loby running `java -jar target/scala-2.11/tutorial-sparkpi-scala-scalatra-assembly-0.0.1-SNAPSHOT.jar. The service should start, but will fail when servicing requests, unless you have a Spark cluster running locally.
 
+== Commit your code and push it to a hosted Git repository
+Now that the core project code has been implemented, it's time to push it up to a hosted source code repository. In this example, GitHub will be the source code host, however, any Git hosting service (such as GitLab or BitBucket) will also work. Start by https://help.github.com/articles/create-a-repo/[creating a GitHub repository] for the project. Then, the following commands will add all the source code to the project and push it to GitHub.
+
+[source,shell]
+----
+cd <project_directory>  # hint: this is the directory that contains build.sbt
+
+# initialize the local Git repository
+git init
+git add --all
+git commit -m "implement SparkPI microservice with Scalatra"
+
+# add the remote repo and push to GitHub (or other Git hosting provider)
+git remote add origin <git_repo_url>
+git push origin master
+----
+
+The code is now hosted on GitHub and will be available to the s2i builder in the next step.
+
 == Deploy the Application to Openshift
-The application can be deployed to Openshift using the Radanalytics s2i images by executing the following command:
-```bash
+The application can be deployed to Openshift using the RADAnalytics s2i images by executing the following command:
+
+[source,shell]
+----
+# replace <git_repo_url> with the GitHub repository link from the previous step
+GIT_REPO_URL=<your_git_repo_url>
+
 oc new-app --template oshinko-scala-spark-build-dc \
     -p APPLICATION_NAME=sparkpi \
-    -p GIT_URI=https://github.com/reynoldsm88/tutorial-sparkpi-scala-scalatra \
+    -p GIT_URI=$GIT_REPO_URL \
     -p APP_MAIN_CLASS=io.radanalytics.examples.scalatra.sparkpi.Main \
     -p APP_FILE=tutorial-sparkpi-scala-scalatra-assembly-0.0.1-SNAPSHOT.jar \
     -p SBT_ARGS="clean assembly" \
     -p APP_ARGS="-Xms1024M, -Xmx2048M, -XX:MaxMetaspace=1024M"
-```
+----
 
 Use `oc logs -f bc/sparkpi` to tail the logs. The assembly task from SBT will be run, so it could take some time to complete. Once the application is ready you can expose it with `oc expose svc/sparkpi`.
 
-Now that the service is up and running, you can return to the https://radanalytics.io/my-first-radanalytics-app.html#user[My First Radanalytics Application page] to learn how to interact with this new microservice.
+Now that the service is up and running, you can return to the link:/my-first-radanalytics-app.html#user[My First RADanalytics Application] to learn how to interact with this new microservice.
 
 == Supplementary Materials and Further Reading
 * The full source code of this example can be found https://github.com/reynoldsm88/tutorial-sparkpi-scala-scalatra[on GitHub]
