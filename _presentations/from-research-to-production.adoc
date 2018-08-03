@@ -2,8 +2,6 @@
 :page-presentor: Sophie Watson
 :page-date: 2018-06-11
 :page-media-url: https://youtu.be/s3WbEfoxRjs
-:page-slides-url: a url to the slides from the presentation (optional)
-:page-handout-url: a url to the handout from the presentation (optional)
 :page-venue: Berlin Buzzwords
 :page-city: Berlin, Germany
 
