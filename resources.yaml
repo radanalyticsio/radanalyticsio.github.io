@@ -964,8 +964,10 @@ items:
                     timeoutSeconds: 1
                     initialDelaySeconds: 20
                 - name: oc-proxy
-                  image: radanalyticsio/oc-proxy:stable
+                  image: ${OSHINKO_WEB_IMAGE}
                   imagePullPolicy: IfNotPresent
+                  command:
+                    - "/usr/src/app/oc"
                   args:
                     - proxy
                     - "-p"
@@ -1105,8 +1107,10 @@ items:
                     timeoutSeconds: 1
                     initialDelaySeconds: 20
                 - name: oc-proxy
-                  image: radanalyticsio/oc-proxy:stable
+                  image: ${OSHINKO_WEB_IMAGE}
                   imagePullPolicy: IfNotPresent
+                  command:
+                    - "/usr/src/app/oc"
                   args:
                     - proxy
                     - "-p"
