@@ -30,102 +30,83 @@ This file also contains the code to create the Vert.x based HTTP routes and hand
 ....
 package io.radanalytics.examples.vertx;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
-
-import org.apache.log4j.*;
-
-import io.vertx.core.AbstractVerticle;
+import io.reactivex.Single;
 import io.vertx.core.Future;
-import io.vertx.core.http.HttpServerResponse;
-import io.vertx.core.http.HttpServerRequest;
-import io.vertx.core.json.Json;
 import io.vertx.core.json.JsonObject;
-import io.vertx.core.Vertx;
-import io.vertx.ext.web.Router;
-import io.vertx.ext.web.RoutingContext;
-import io.vertx.ext.web.handler.BodyHandler;
-import io.vertx.ext.web.handler.StaticHandler;
+import io.vertx.reactivex.core.AbstractVerticle;
+import io.vertx.reactivex.core.buffer.Buffer;
+import io.vertx.reactivex.core.http.HttpServer;
+import io.vertx.reactivex.core.http.HttpServerRequest;
+import io.vertx.reactivex.core.http.HttpServerResponse;
+import io.vertx.reactivex.ext.web.Router;
+import org.apache.log4j.Logger;
 
 public class SparkPiVerticle extends AbstractVerticle {
 
   private static final Logger log = Logger.getRootLogger();
-  private Properties prop = null;
+  private JsonObject prop = null;
+  private SparkPiProducer pi;
 
-  private String loadJarProperty() {
-    if (null==prop) {
-     prop = new Properties();
+  private Single<String> loadJarProperty() {
+    if (prop != null) {
+     return Single.just(prop.getString("jarfile"));
     }
-    String jarFile = "";
-    try {
-      InputStream inputStream = getClass().getClassLoader()
-                   .getResourceAsStream("sparkpi.properties");
-      prop.load(inputStream);
-      jarFile = prop.getProperty("sparkpi.jarfile");
-    } catch (IOException e) {
-        e.printStackTrace();
-    }
-    return jarFile;
+
+    return vertx.fileSystem().rxReadFile("sparkpi.json")
+            .map(Buffer::toJsonObject)
+            .doOnSuccess(json -> prop = json)
+            .map(json -> json.getString("jarfile"));
   }
 
   @Override
   public void start(Future<Void> fut) {
     // Create a router object.
     Router router = Router.router(vertx);
-    Runtime.getRuntime().addShutdownHook(new Thread() {
-      public void run() {
-        vertx.close();
-      }
-    });
+      router.route("/").handler(routingContext -> {
+          HttpServerResponse response = routingContext.response();
+          response
+                  .putHeader("content-type", "text/html")
+                  .end("Java Vert.x SparkPi server running. Add the 'sparkpi' route to this URL to invoke the app.");
+      });
 
-    String jarFile = this.loadJarProperty();
-    log.info("SparkPi submit jar is: "+jarFile);
+      router.route("/sparkpi").handler(routingContext -> {
+          HttpServerResponse response = routingContext.response();
+          HttpServerRequest request = routingContext.request();
+          int scale = 2;
+          if (request.params().get("scale") != null) {
+              scale = Integer.parseInt(request.params().get("scale"));
+          }
 
-    // init our Spark context
-    if (!SparkContextProvider.init(jarFile)) {
-        // masterURL probably not set
-        log.error("This application is intended to be run as an oshinko S2I.");
-        vertx.close();
-        System.exit(1);
-    }
-    SparkPiProducer pi = new SparkPiProducer();
+          int computedScale = scale;
+          vertx.<String>rxExecuteBlocking(future -> future.complete(pi.getPi(computedScale)))
+              .subscribe(
+                  res -> response
+                      .putHeader("content-type", "text/html")
+                      .end(res),
+                  routingContext::fail);
 
-    router.route("/").handler(routingContext -> {
-      HttpServerResponse response = routingContext.response();
-      response
-          .putHeader("content-type", "text/html")
-          .end("Java Vert.x SparkPi server running. Add the 'sparkpi' route to this URL to invoke the app.");
-    });
+      });
 
-    router.route("/sparkpi").handler(routingContext -> {
-      HttpServerResponse response = routingContext.response();
-      HttpServerRequest request = routingContext.request();
-      int scale = 2;
-      if (request.params().get("scale") != null) {
-          scale = Integer.parseInt(request.params().get("scale"));
-      }
-      response
-          .putHeader("content-type", "text/html")
-          .end(pi.GetPi(scale));
-    });
+    Single<String> loaded = loadJarProperty()
+            .doOnSuccess(jarFile -> {
+                log.info("SparkPi submit jar is: " + jarFile);
+                if (!SparkContextProvider.init(jarFile)) {
+                    throw new RuntimeException("This application is intended to be run as an oshinko S2I.");
+                }
+                pi = new SparkPiProducer();
+            });
 
-    vertx
-        .createHttpServer()
-        .requestHandler(router::accept)
-        .listen(
-            // here developers can make use of vertx-config if they like
-            this.config().getInteger("http.port", 8080),
-            result -> {
-              if (result.succeeded()) {
-                fut.complete();
-              } else {
-                fut.fail(result.cause());
-              }
-            }
-        );
+      Single<HttpServer> listening = vertx
+              .createHttpServer()
+              .requestHandler(router::accept)
+              .rxListen(this.config().getInteger("http.port", 8080));
+
+      Single.merge(loaded, listening)
+              .ignoreElements()
+              .subscribe(
+                      fut::complete,
+                      fut::fail
+              );
   }
 }
 ....
@@ -149,7 +130,6 @@ public class SparkContextProvider {
 
     private SparkConf sparkConf;
     private JavaSparkContext sparkContext;
-    private String jarFile;
 
     private SparkContextProvider() {}
 
@@ -185,21 +165,21 @@ It should contain these contents:
 ....
 package io.radanalytics.examples.vertx;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import org.apache.spark.api.java.function.Function;
-import org.apache.spark.api.java.function.Function2;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
 
-public class SparkPiProducer implements Serializable {
-    public String GetPi(int scale) {
-        JavaSparkContext jsc = SparkContextProvider.getContext();
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
+public class SparkPiProducer implements Serializable {
+
+    public String getPi(int scale) {
+        JavaSparkContext jsc = SparkContextProvider.getContext();
         int slices = scale;
         int n = 100000 * slices;
-        List<Integer> l = new ArrayList<Integer>(n);
+
+        List<Integer> l = new ArrayList<>(n);
         for (int i = 0; i < n; i++) {
             l.add(i);
         }
@@ -212,9 +192,7 @@ public class SparkPiProducer implements Serializable {
             return (x * x + y * y < 1) ? 1 : 0;
         }).reduce((integer, integer2) -> integer + integer2);
 
-        String ret = "Pi is rouuuughly " + 4.0 * count / n;
-
-        return ret;
+        return "Pi is rouuuughly " + 4.0 * count / n;
     }
 }
 ....
@@ -242,25 +220,16 @@ this source and include several classes and packages that will be needed:
 ....
 package io.radanalytics.examples.vertx;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
-
-import org.apache.log4j.*;
-
-import io.vertx.core.AbstractVerticle;
+import io.reactivex.Single;
 import io.vertx.core.Future;
-import io.vertx.core.http.HttpServerResponse;
-import io.vertx.core.http.HttpServerRequest;
-import io.vertx.core.json.Json;
 import io.vertx.core.json.JsonObject;
-import io.vertx.core.Vertx;
-import io.vertx.ext.web.Router;
-import io.vertx.ext.web.RoutingContext;
-import io.vertx.ext.web.handler.BodyHandler;
-import io.vertx.ext.web.handler.StaticHandler;
+import io.vertx.reactivex.core.AbstractVerticle;
+import io.vertx.reactivex.core.buffer.Buffer;
+import io.vertx.reactivex.core.http.HttpServer;
+import io.vertx.reactivex.core.http.HttpServerRequest;
+import io.vertx.reactivex.core.http.HttpServerResponse;
+import io.vertx.reactivex.ext.web.Router;
+import org.apache.log4j.Logger;
 ....
 
 The next lines set up the class that will serve as our application's entry point.
@@ -269,6 +238,24 @@ To create our `Verticle` we simply extend the `AbstractVerticle` class and write
 
 ....
 public class SparkPiVerticle extends AbstractVerticle {
+....
+
+We start by defining a method to access the application properties https://vertx.io/docs/vertx-rx/java/#_async_result_support[asynchronously].
+This method returns the application's Jar file location wrapped in a http://reactivex.io/documentation/single.html[Single] (a specialized type of http://reactivex.io/documentation/observable.html[Observable]
+that returns a single item).
+This method will load the Jar location from the JSON file (using Vert.x's builtin JSON reader and parser) and will notify any subscribed observers
+when it has successfully completed.
+....
+private Single<String> loadJarProperty() {
+    if (prop != null) {
+     return Single.just(prop.getString("jarfile"));
+    }
+
+    return vertx.fileSystem().rxReadFile("sparkpi.json")
+            .map(Buffer::toJsonObject)
+            .doOnSuccess(json -> prop = json)
+            .map(json -> json.getString("jarfile"));
+  }
 ....
 
 We then implement the `start` method which defines the behaviour of the `Verticle` when it is deployed.
@@ -284,60 +271,68 @@ We instantiate the Vert.x router so that we are able to declare routes by writin
 Router router = Router.router(vertx);
 ....
 
-And we also instantiate the Pi calculation class
-
-....
-SparkPiProducer pi = new SparkPiProducer();
-....
-
 The first route function will register the root `/` endpoint to simply return a string that we would like to display for our users.
 This endpoint will allow us to confirm that the server is running without needing to invoke Spark.
 
 ....
 router.route("/").handler(routingContext -> {
-      HttpServerResponse response = routingContext.response();
-      response
+  HttpServerResponse response = routingContext.response();
+  response
           .putHeader("content-type", "text/html")
           .end("Java Vert.x SparkPi server running. Add the 'sparkpi' route to this URL to invoke the app.");
-    });
+});
 ....
 
 The main route (or HTTP endpoint) to be defined is `/sparkpi`. 
 This is will return the Pi estimate computed by the `pi` instance.
 We use Vert.x's routing context to retrieve the scale parameter (if present) from the HTTP request.
 The SparkPiProducer class does the actual work of calculating Pi and we pass it the requested scale value, defaulting to 2.
+Since Vert.x follows an asynchronous design, concurrent calls to the `/sparkpi` endpoint would in turn result into
+concurrent calls to our Pi calculation service.
+To specify that calls to the Spark cluster should be dealt differently, we wrap them in a https://vertx.io/docs/kdoc/vertx/io.vertx.reactivex.core/-vertx/rx-execute-blocking.html[ExecuteBlocking] block.
+This allows the code inside the block to execute in a thread from the thread pool, keeping its original context, rather
+than running on the server's worker thread.
 
 ....
 router.route("/sparkpi").handler(routingContext -> {
-      HttpServerResponse response = routingContext.response();
-      HttpServerRequest request = routingContext.request();
-      int scale = 2;
-      if (request.params().get("scale") != null) {
-          scale = Integer.parseInt(request.params().get("scale"));
-      }
-      response
-          .putHeader("content-type", "text/html")
-          .end(pi.GetPi(scale));
-    });
+
+  HttpServerResponse response = routingContext.response();
+  HttpServerRequest request = routingContext.request();
+  int scale = 2;
+  if (request.params().get("scale") != null) {
+      scale = Integer.parseInt(request.params().get("scale"));
+  }
+
+  int computedScale = scale;
+  vertx.<String>rxExecuteBlocking(future -> future.complete(pi.getPi(computedScale)))
+      .subscribe(
+          res -> response
+              .putHeader("content-type", "text/html")
+              .end(res),
+          routingContext::fail);
+});
+....
+
+Finally, we delegate the instantiation of the Pi calculation class for when the jar properties are successfully read:
+
+....
+ Single<String> loaded = loadJarProperty()
+            .doOnSuccess(jarFile -> {
+                log.info("SparkPi submit jar is: " + jarFile);
+                if (!SparkContextProvider.init(jarFile)) {
+                    throw new RuntimeException("This application is intended to be run as an oshinko S2I.");
+                }
+                pi = new SparkPiProducer();
+            });
 ....
 
 Having defined the most important part of the `Verticle` we can then start the Vert.x server by calling
 
 ....
- vertx
-        .createHttpServer()
-        .requestHandler(router::accept)
-        .listen(
-            // here developers can make use of vertx-config if they like
-            this.config().getInteger("http.port", 8080),
-            result -> {
-              if (result.succeeded()) {
-                fut.complete();
-              } else {
-                fut.fail(result.cause());
-              }
-            }
-        );
+Single<HttpServer> listening = vertx
+              .createHttpServer()
+              .requestHandler(router::accept)
+              .rxListen(this.config().getInteger("http.port", 8080));
 ....
 
 The next file we will examine is `SparkContextProvider.java`, which will create a https://spark.apache.org/docs/latest/api/java/org/apache/spark/api/java/JavaSparkContext.html[SparkContext] using the https://en.wikipedia.org/wiki/Singleton_pattern[singleton pattern].
@@ -363,58 +358,60 @@ public class SparkContextProvider {
 
     private SparkConf sparkConf;
     private JavaSparkContext sparkContext;
-    private String jarFile;
 ....
 
 Since this class will implement the singleton pattern, we make its constructors private to ensure that it will only be instantiated by the `init` method. The second contructor function is the primary method here, it accepts the properties object and instantiates the internal private variables. The `setJars` function will instruct Spark to associate our application Jar with the https://spark.apache.org/docs/latest/api/java/org/apache/spark/SparkConf.html[SparkConf] object, and subsequently the Spark context.
 
 ....
-    private SparkContextProvider() {
-    }
+private SparkContextProvider() {}
 
-    private SparkContextProvider(SparkPiProperties props) {
-        this.sparkConf = new SparkConf().setAppName("JavaSparkPi");
-        this.sparkConf.setJars(new String[]{props.getJarFile()});
-        this.sparkContext = new JavaSparkContext(sparkConf);
-    }
+private SparkContextProvider(String jarFile) {
+    this.sparkConf = new SparkConf().setAppName("JavaSparkPi");
+    this.sparkConf.setJars(new String[]{jarFile});
+    this.sparkContext = new JavaSparkContext(sparkConf);
+}
 ....
 
 The `init` function is the main entry point for constructing the context provider. This function will simply check to determine if an instance has been created, and if not it will create that instance. As there is always the possibility of failure, this function will also catch any errors that result from spawning the new instance.
 
 ....
-    public static boolean init(SparkPiProperties props) {
-        try {
-            if (INSTANCE == null) {
-                INSTANCE = new SparkContextProvider(props);
-            }
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            return false;
+public static boolean init(SparkPiProperties props) {
+    try {
+        if (INSTANCE == null) {
+            INSTANCE = new SparkContextProvider(props);
         }
-        return true;
+    } catch (Exception e) {
+        System.out.println(e.getMessage());
+        return false;
     }
+    return true;
+}
 ....
 
 The last function in this class is the primary means of interacting with the context. This function provides a convenient method for any other class to gain the Spark contenxt.
 
 ....
-    public static JavaSparkContext getContext() {
-        return INSTANCE.sparkContext;
-    }
+@NotNull
+public static JavaSparkContext getContext() {
+    return INSTANCE.sparkContext;
+}
 ....
 
 == Create the application resource files
 
-In addition to the source files we also need a few resource files to set default properties and configurations for our application. To begin creating your resource files you will first need to make a directory for them by running the following command from the root of your project:
+In addition to the source files we also need a few resource files to set default properties and configurations for our application.
+To begin creating your resource files you will first need to make a directory for them by running the following command from the root of your project:
 
 ....
 mkdir -p src/main/resources
 ....
 
-The first file you will create in that directory is named `sparkpi.properties` and it should contain the following contents:
+The first file you will create in that directory is named `sparkpi.json` and it should contain the following contents:
 
 ....
-sparkpi.jarfile=/opt/app-root/src/@project.name@-@project.version@.jar
+{
+  "jarfile":"/opt/app-root/src/@project.name@-@project.version@.jar"
+}
 ....
 
 This line may look familiar as we create a variable in the `SparkPiProperties` class that will hold its value.
@@ -443,7 +440,7 @@ src/main/java/io/radanalytics/examples/vertx/SparkContextProvider.java
 src/main/java/io/radanalytics/examples/vertx/SparkPiProducer.java
 src/main/java/io/radanalytics/examples/vertx/SparkController.java
 src/main/resources/log4j.properties
-src/main/resources/sparkpi.properties
+src/main/resources/sparkpi.json
 ....
 
 == Create the application build file
@@ -465,7 +462,7 @@ Create a file name `pom.xml` in the root of your project and add these contents 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <!-- Be careful modifying these due to joint netty dependencies -->
-    <vertx.version>3.2.1</vertx.version>
+    <vertx.version>3.5.3</vertx.version>
     <spark.version>2.3.0</spark.version>
     <doc.skip>true</doc.skip>
   </properties>
@@ -474,6 +471,11 @@ Create a file name `pom.xml` in the root of your project and add these contents 
     <dependency>
       <groupId>io.vertx</groupId>
       <artifactId>vertx-core</artifactId>
+      <version>${vertx.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.vertx</groupId>
+      <artifactId>vertx-rx-java2</artifactId>
       <version>${vertx.version}</version>
     </dependency>
     <dependency>
@@ -500,45 +502,23 @@ Create a file name `pom.xml` in the root of your project and add these contents 
       </plugin>
 
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-shade-plugin</artifactId>
-        <version>2.3</version>
+        <groupId>io.reactiverse</groupId>
+        <artifactId>vertx-maven-plugin</artifactId>
+        <version>1.0.15</version>
         <executions>
           <execution>
-            <phase>package</phase>
+            <id>vmp</id>
             <goals>
-              <goal>shade</goal>
+              <goal>initialize</goal>
+              <goal>package</goal>
             </goals>
-            <configuration>
-               <shadedArtifactAttached>true</shadedArtifactAttached>
-               <shadedClassifierName>stand-alone</shadedClassifierName>
-               <filters>
-                  <filter>
-                     <!-- Exclude files that sign a jar
-                          (one or multiple of the dependencies),
-                          SecurityException otherwise.
-                     -->
-                     <artifact>*:*</artifact>
-                        <excludes>
-                           <exclude>META-INF/*.SF</exclude>
-                           <exclude>META-INF/*.RSA</exclude>
-                           <exclude>META-INF/*.INF</exclude>
-                        </excludes>
-                  </filter>
-               </filters>
-              <transformers>
-                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                  <manifestEntries>
-                    <Main-Class>io.vertx.core.Launcher</Main-Class>
-                    <Main-Verticle>io.radanalytics.examples.vertx.SparkPiVerticle</Main-Verticle>
-                  </manifestEntries>
-                </transformer>
-              </transformers>
-              <artifactSet/>
-              <outputFile>${project.build.directory}/${project.artifactId}-${project.version}-vertx.jar</outputFile>
-            </configuration>
           </execution>
         </executions>
+        <configuration>
+          <redeploy>true</redeploy>
+          <classifier>vertx</classifier>
+          <verticle>io.radanalytics.examples.vertx.SparkPiVerticle</verticle>
+        </configuration>
       </plugin>
     </plugins>
     <resources>
