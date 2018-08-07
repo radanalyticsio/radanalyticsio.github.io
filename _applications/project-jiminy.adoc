@@ -156,7 +156,9 @@ INFO:root:downloading and unzipping dataset
 INFO:root:found movies.csv file in dataset
 INFO:root:found ratings.csv file in dataset
 INFO:root:loading products table
+INFO:root:loaded products table
 INFO:root:loading ratings table
+INFO:root:loaded ratings table
 ....
 
 ==== Launch MongoDB Model Store
