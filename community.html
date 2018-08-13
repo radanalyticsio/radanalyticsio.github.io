@@ -49,7 +49,7 @@ and add it to the list!
       </div>
       {% endif %}
       {% assign last_date = presyear %}
-      <h2>{{ presyear }}</h2>
+      <h1>{{ presyear }}</h1>
       <div class="list-group list-view-pf list-view-pf-view">
       {% endif %}
 
@@ -71,7 +71,7 @@ and add it to the list!
         </div>
         <div class="list-group-item-container container-fluid hidden">
           <div>
-            <em>{% if pres.venue %}{{ pres.venue }} • {% endif %}{% if pres.city %}{{pres.city}} • {% endif %}{{ pres.date | date: '%B %Y' }}</em>
+            <p><em>{% if pres.venue %}{{ pres.venue }} • {% endif %}{% if pres.city %}{{pres.city}} • {% endif %}{{ pres.date | date: '%B %Y' }}</em></p>
             
             {{ pres.content }}
 
