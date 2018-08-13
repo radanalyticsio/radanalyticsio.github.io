@@ -816,6 +816,11 @@ items:
     template: oshinko-webui-secure
     metadata:
       name: oshinko-webui-secure
+      annotations:
+        description: |-
+          Launch the Oshinko Apache Spark cluster management WebUI, with a
+          secure login backed by OpenShift.
+        openshift.io/display-name: Oshinko WebUI(secure)
     objects:
       - kind: Service
         apiVersion: v1
@@ -1006,6 +1011,9 @@ items:
     template: oshinko-webui
     metadata:
       name: oshinko-webui
+      annotations:
+        description: Launch the Oshinko Apache Spark cluster management WebUI.
+        openshift.io/display-name: Oshinko WebUI
     objects:
       - kind: Service
         apiVersion: v1
