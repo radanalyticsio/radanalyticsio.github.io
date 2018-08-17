@@ -10,9 +10,12 @@
 [[introduction]]
 == Introduction
 
+Streaming data provides a means for providing awareness of events which can engender insights into patterns. Furthermore, these insights can foment prediction of future events. 
+
 [[architecture]]
 == Architecture
 
+In this section we present the system architecture of Equoid. 
 
 [[installation]]
 == Installation
