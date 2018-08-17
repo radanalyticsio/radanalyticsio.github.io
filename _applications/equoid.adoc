@@ -4,7 +4,7 @@
 :page-labels: [Scala, S2I, JDG, Spark]
 :page-layout: application
 :page-menu_template: menu_tutorial_application.html
-:page-description: Equoid is an implementation of a top-k (aka heavy hitters) tracking system built upon the notion of utilizing a Count-Min Sketch for counting. The project demonstrates the utility of microserviced data streaming pipelines coupled with a temporal and spatial efficient approach to a common use case. The application contains a web server, web UI, caching layer, AM-Q broker with associated data publisher and receivers. 
+:page-description: Equoid is an implementation of a top-k (aka heavy hitters) tracking system built upon the notion of utilizing a Count-Min Sketch for counting. The project demonstrates the utility of microserviced data streaming pipelines coupled with a temporal and spatial efficient approach to a common use case. The application contains a web server, web UI, caching layer, AMQ broker with associated data publisher and receivers. 
 :page-project_links: ["https://github.com/eldritchjs/equoid-data-publisher", "https://github.com/eldritchjs/equoid-data-handler", "https://github.com/eldritchjs/equoid-openshift", "https://github.com/Jiri-Kremser/equoid-ui"]
 
 [[introduction]]
@@ -44,7 +44,7 @@ oc create -f https://raw.githubusercontent.com/infinispan/infinispan-openshift-t
 
 these provide the OpenJDK image stream for the data-publisher service, the AM-Q image stream and template for the AM-Q microservice, the radanalytics.io Oshinko et al. resources, and the Infinispan template for the caching microservice, respectively. 
 
-==== Launch AM-Q
+==== Launch AMQ
 
 ....
 oc new-app --template=amq63-basic \
