@@ -1,0 +1,129 @@
+= Equoid
+:page-link: equoid
+:page-weight: 99
+:page-labels: [Scala, S2I, JDG, Spark]
+:page-layout: application
+:page-menu_template: menu_tutorial_application.html
+:page-description: Equoid is an implementation of a top-k (aka heavy hitters) tracking system built upon the notion of utilizing a Count-Min Sketch for counting. The project demonstrates the utility of microserviced data streaming pipelines coupled with a temporal and spatial efficient approach to a common use case. The application contains a web server, web UI, caching layer, AM-Q broker with associated data publisher and receivers. 
+:page-project_links: ["https://github.com/eldritchjs/equoid-data-publisher", "https://github.com/eldritchjs/equoid-data-handler", "https://github.com/eldritchjs/equoid-openshift", "https://github.com/Jiri-Kremser/equoid-ui"]
+
+[[introduction]]
+== Introduction
+
+[[architecture]]
+== Architecture
+
+
+[[installation]]
+== Installation
+
+As mentioned previously, Equoid consists of s number of microservices which require deployment to an Openshift instance. In this section a walkthrough of installing and configuring the Equoid services. These should be followed in the order presented. These steps follow the same flow as the equoid-openshift repository's https://github.com/EldritchJS/equoid-openshift/blob/master/start-full.sh[start-full.sh] script. 
+
+[[prerequisites]]
+=== Prerequisites
+
+You will need an Openshift instance in place which you are able to access and create new projects on. This could be local using minishift or the oc tooling, or on an admistered cluster to which you have access. Now you can created your project by running the following command:
+
+....
+oc new-project <YOUR_PROJECT_NAME>
+....
+
+where <YOUR_PROJECT_NAME> is whatever you choose to name your project (e.g. equoid)
+
+=== Image streams and templates
+
+Depending on your Openshift instance, some of the image streams necessary for Equoid may not be available, to be certain you have what's necessary to build Equoid, run the following sequence of commands:
+
+....
+oc create -f https://raw.githubusercontent.com/jboss-openshift/application-templates/master/openjdk/openjdk18-image-stream.json
+oc create -f https://raw.githubusercontent.com/jboss-openshift/application-templates/master/amq/amq63-image-stream.json
+oc create -f https://raw.githubusercontent.com/jboss-openshift/application-templates/master/amq/amq63-basic.json
+oc create -f https://radanalytics.io/resources.yaml
+oc create -f https://raw.githubusercontent.com/infinispan/infinispan-openshift-templates/master/templates/infinispan-ephemeral.json
+....
+
+these provide the OpenJDK image stream for the data-publisher service, the AM-Q image stream and template for the AM-Q microservice, the radanalytics.io Oshinko et al. resources, and the Infinispan template for the caching microservice, respectively. 
+
+==== Launch AM-Q
+
+....
+oc new-app --template=amq63-basic \
+    -l app=amqp \
+    -p MQ_PROTOCOL=amqp \
+    -p MQ_QUEUES=salesq \
+    -p MQ_USERNAME=daikon \
+    -p MQ_PASSWORD=daikon \
+    -p IMAGE_STREAM_NAMESPACE=`oc project -q`
+....
+
+
+==== Launch Infinispan Cache
+
+....
+oc new-app --template=infinispan-ephemeral \
+    -l app=datagrid \
+    -p APPLICATION_NAME=datagrid \
+    -p NAMESPACE=`oc project -q` \
+    -p APPLICATION_USER=daikon \
+    -p APPLICATION_PASSWORD=daikon \
+    -p MANAGEMENT_USER=daikon \
+    -p MANAGEMENT_PASSWORD=daikon
+....
+
+==== Launch Data Publisher
+
+....
+oc new-app \
+    -l app=publisher \
+    -e OP_MODE=single
+    --image-stream=`oc project -q`/redhat-openjdk18-openshift:1.3 \
+    https://github.com/eldritchjs/equoid-data-publisher
+....
+
+
+==== Launch Data Handler
+
+....
+oc new-app --template=oshinko-scala-spark-build-dc \
+    -l app=handler-20-stock \
+    -p SBT_ARGS=assembly \
+    -p APPLICATION_NAME=equoid-data-handler-20-stock \
+    -p GIT_URI=https://github.com/eldritchjs/equoid-data-handler \
+    -p GIT_REF=master \
+    -p APP_MAIN_CLASS=io.radanalytics.equoid.DataHandler \
+    -e JDG_HOST=datagrid-hotrod \
+    -e JDG_PORT=11222 \
+    -e WINDOW_SECONDS=20 \
+    -e SLIDE_SECONDS=20 \
+    -e BATCH_SECONDS=20 \
+    -e OP_MODE=stock
+    -p SPARK_OPTIONS='--driver-java-options=-Dvertx.cacheDirBase=/tmp'
+....
+
+==== Launch Web UI
+
+....
+BASE_URL="https://raw.githubusercontent.com/Jiri-Kremser/equoid-ui/master/ocp/"
+curl -sSL $BASE_URL/ocp-apply.sh | \
+    BASE_URL="$BASE_URL" \
+    KC_REALM_PATH="web-ui/keycloak/realm-config" \
+    bash -s stable
+....
+
+==== Modify Serviceaccount
+
+....
+oc policy add-role-to-user edit system:serviceaccount:$PROJECT_NAME:default
+....
+
+****
+****
+
+
+[[usage]]
+== Usage
+
+[[expansion]]
+== Expansion
+
+
