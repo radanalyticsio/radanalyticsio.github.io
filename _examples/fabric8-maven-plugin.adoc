@@ -1,4 +1,5 @@
 = Fabric8 Maven Plugin Example
+:page-project-name: Examples
 :page-link: fabric8-maven-plugin
 :page-weight: 100
 :page-labels: [Java, Kafka]

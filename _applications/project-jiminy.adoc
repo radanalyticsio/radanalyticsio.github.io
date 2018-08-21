@@ -1,4 +1,5 @@
-= Project Jiminy
+= Recommendation engine service with Apache Spark
+:page-project-name: Project Jiminy
 :page-link: project-jiminy
 :page-weight: 99
 :page-labels: [Python, Java, S2I, MongoDB, PostgreSQL]

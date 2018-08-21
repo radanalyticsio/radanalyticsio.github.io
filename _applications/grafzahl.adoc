@@ -1,4 +1,5 @@
-= Graf Zahl
+= Apache Kafka streaming query processing with Apache Spark
+:page-project-name: Graf Zahl
 :page-link: grafzahl
 :page-weight: 100
 :page-labels: [Python, Kafka, S2I]

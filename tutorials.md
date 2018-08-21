@@ -33,10 +33,12 @@ them to your peers and colleagues.
 {% for item in sorted_applications %}
 <h2>
 <a href="/applications/{{ item.link }}">{{ item.title }}</a>
+</h2>
+<h4>
 {% for label in item.labels %}
 <span class="badge">{{ label }}</span>
 {% endfor %}
-</h2>
+</h4>
 
 <p>
 {{ item.description }}
@@ -50,6 +52,7 @@ them to your peers and colleagues.
 <li><a href="{{ link }}" target="blank">{{ link }}</a></li>
 {% endfor %}
 </ul>
+<br/>
 {% endif %}
 
 {% endfor %}
@@ -60,10 +63,12 @@ them to your peers and colleagues.
 {% for item in sorted_examples %}
 <h2>
 <a href="/examples/{{ item.link }}">{{ item.title }}</a>
+</h2>
+<h4>
 {% for label in item.labels %}
 <span class="badge">{{ label }}</span>
 {% endfor %}
-</h2>
+</h4>
 
 <p>
 {{ item.description }}
@@ -78,5 +83,5 @@ them to your peers and colleagues.
 {% endfor %}
 </ul>
 {% endif %}
-
+<br/>
 {% endfor %}

@@ -1,4 +1,5 @@
-= Wine Map
+= PostgreSQL data analysis with Apache Spark
+:page-project-name: Wine Map
 :page-link: wine-map
 :page-weight: 100
 :page-labels: [Python, S2I, Spark, PostgreSQL]
