@@ -1,4 +1,5 @@
-= jGraf Zahl
+= Apache Kafka streaming query processing with Apache Spark
+:page-project-name: jGraf Zahl
 :page-link: jgrafzahl
 :page-weight: 100
 :page-labels: [Java, Kafka, S2I]

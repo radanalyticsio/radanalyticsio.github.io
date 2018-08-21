@@ -1,4 +1,5 @@
 = Ceph Source Example
+:page-project-name: Examples
 :page-link: ceph-source-example
 :page-weight: 100
 :page-labels: [Python, Ceph, S3, Jupyter]

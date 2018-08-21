@@ -1,4 +1,5 @@
 = PySpark HDFS Notebook
+:page-project-name: Examples
 :page-link: pyspark_hdfs_notebook
 :page-weight: 100
 :page-labels: [Python, HDFS, Jupyter]

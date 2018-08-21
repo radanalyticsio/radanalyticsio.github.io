@@ -1,4 +1,5 @@
-= Tensorflow MNIST
+= Tensorflow handwriting recognition
+:page-project-name: Tensorflow MNIST
 :page-link: tensorflow_mnist
 :page-weight: 100
 :page-labels: [Tensorflow, S2I]

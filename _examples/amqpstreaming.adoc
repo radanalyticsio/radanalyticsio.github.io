@@ -1,4 +1,5 @@
 = AMQP - Spark Streaming
+:page-project-name: Examples
 :page-link: amqpstreaming
 :page-weight: 100
 :page-labels: [Scala, ActiveMQ]

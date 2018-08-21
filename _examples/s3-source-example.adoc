@@ -1,4 +1,5 @@
 = S3 Source Example
+:page-project-name: Examples
 :page-link: s3-source-example
 :page-weight: 100
 :page-labels: [Python, S3, Jupyter]

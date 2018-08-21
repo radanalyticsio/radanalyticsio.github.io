@@ -1,4 +1,5 @@
 = Value-at-risk notebook
+:page-project-name: Examples
 :page-link: var
 :page-weight: 1
 :page-labels: [Python, Jupyter]

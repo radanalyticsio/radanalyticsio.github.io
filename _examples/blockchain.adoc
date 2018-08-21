@@ -1,4 +1,5 @@
 = Blockchain Analysis Notebook
+:page-project-name: Examples
 :page-link: blockchain
 :page-weight: 101
 :page-labels: [Python, Jupyter, spark-notebook]
