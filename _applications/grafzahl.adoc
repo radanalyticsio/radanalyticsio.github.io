@@ -1,4 +1,4 @@
-= Apache Kafka streaming query processing with Apache Spark
+= Streaming query processing with Apache Kafka and Apache Spark (Python)
 :page-project-name: Graf Zahl
 :page-link: grafzahl
 :page-weight: 100

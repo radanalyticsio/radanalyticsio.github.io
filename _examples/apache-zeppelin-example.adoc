@@ -1,4 +1,4 @@
-= Apache Zeppelin  Example
+= Apache Zeppelin Example
 :page-project-name: Examples
 :page-link: apache-zeppelin-example
 :page-weight: 100
