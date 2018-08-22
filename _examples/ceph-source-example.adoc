@@ -1,4 +1,4 @@
-= Ceph Source Example
+= Accessing data in Ceph with Apache Spark
 :page-project-name: Examples
 :page-link: ceph-source-example
 :page-weight: 100

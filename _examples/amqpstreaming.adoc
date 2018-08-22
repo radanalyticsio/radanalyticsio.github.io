@@ -1,4 +1,4 @@
-= AMQP - Spark Streaming
+= Integrating AMQP with Apache Spark
 :page-project-name: Examples
 :page-link: amqpstreaming
 :page-weight: 100
