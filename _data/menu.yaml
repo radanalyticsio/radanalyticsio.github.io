@@ -3,8 +3,6 @@ radanalyticsio:
     url: /
   - title: Get Started
     url: /get-started
-  - title: My First App
-    url: /my-first-radanalytics-app.html
   - title: Tutorials
     url: /tutorials
   - title: How do I?

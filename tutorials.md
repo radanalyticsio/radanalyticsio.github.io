@@ -29,6 +29,28 @@ them to your peers and colleagues.
 
 <h1 id="applications">Applications</h1>
 
+<h2>
+<a href="/my-first-radanalytics-app.html">SparkPi, your first Apache Spark application with radanalytics.io</a>
+</h2>
+<h4>
+<span class="badge">Java</span>
+<span class="badge">Python</span>
+</h4>
+
+<p>In this tutorial you will build a microservice which will calculate an
+approximate value for Pi when requested by HTTP. You will learn how to create
+applications which utilize Apache Spark and that are deployed directly from a
+source repository to OpenShift with a single command.</p>
+
+#### Project Links
+
+<ul>
+<li><a href="https://github.com/radanalyticsio/tutorial-sparkpi-java-spring" target="blank">https://github.com/radanalyticsio/tutorial-sparkpi-java-spring</a></li>
+<li><a href="https://github.com/radanalyticsio/tutorial-sparkpi-java-vertx" target="blank">https://github.com/radanalyticsio/tutorial-sparkpi-java-vertx</a></li>
+<li><a href="https://github.com/radanalyticsio/tutorial-sparkpi-python-flask" target="blank">https://github.com/radanalyticsio/tutorial-sparkpi-python-flask</a></li>
+</ul>
+<br/>
+
 {% assign sorted_applications = site.applications | sort: 'weight' %}
 {% for item in sorted_applications %}
 <h2>

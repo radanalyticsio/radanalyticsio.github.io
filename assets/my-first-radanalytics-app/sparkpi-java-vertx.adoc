@@ -1,4 +1,5 @@
 = SparkPi Java Vert.x
+:page-project-name: SparkPi
 :page-layout: markdown
 :page-menu_template: menu_tutorial_application.html
 :page-menu_backurl: /my-first-radanalytics-app.html
