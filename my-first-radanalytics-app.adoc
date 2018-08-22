@@ -1,10 +1,10 @@
-= My First RADanalytics Application
+= SparkPi, your first Apache Spark application with radanalytics.io
 :page-link: my-first-radanalytics-app
 :page-layout: markdown
 :page-menu_entry: My First App
 :page-description: In this tutorial you will learn how to create a source-to-image application for Apache Spark from the ground up. The source code is based on the upstream Pi calculator from the Apache Spark project examples with a slight twist, the addition of a web server to create an on-demand calculation microservice.
 
-pass:[<h1>My First RADanalytics Application</h1>]
+pass:[<h1>SparkPi, your first Apache Spark application with radanalytics.io</h1>]
 
 [[introduction]]
 == Introduction
