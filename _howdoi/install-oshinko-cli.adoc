@@ -1,0 +1,26 @@
+// Module included in the following assemblies:
+//
+// <List assemblies here, each on a new line>
+[id='install-oshinko-cli']
+= install the Oshinko command line interface tool
+:page-layout: howdoi
+:page-menu_entry: How do I?
+
+The Oshinko command line interface(CLI) tool is a binary application that gives you
+another option for creating and managing Apache Spark clusters on OpenShift.
+
+.Prerequisites
+
+* A Linux or MacOSX command terminal
+
+.Procedure
+
+. Download the Oshinko CLI tool archive appropriate for your operating system
+  from the link:https://github.com/radanalyticsio/oshinko-cli/releases[project Releases page].
+
+. Extract the `oshinko` binary from the archive to a location that is in your
+  terminal's `PATH`.
+
+.Additional resources
+
+* link:https://github.com/radanalyticsio/oshinko-cli[Oshinko CLI project repository]
