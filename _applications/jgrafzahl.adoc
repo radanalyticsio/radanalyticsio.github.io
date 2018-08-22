@@ -1,4 +1,4 @@
-= Apache Kafka streaming query processing with Apache Spark
+= Streaming query processing with Apache Kafka and Apache Spark (Java)
 :page-project-name: jGraf Zahl
 :page-link: jgrafzahl
 :page-weight: 100

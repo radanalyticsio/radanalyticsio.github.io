@@ -1,4 +1,4 @@
-= PostgreSQL data analysis with Apache Spark
+= Geographic data analytics with PostgreSQL and Apache Spark
 :page-project-name: Wine Map
 :page-link: wine-map
 :page-weight: 100

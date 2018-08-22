@@ -1,4 +1,4 @@
-= Tensorflow handwriting recognition
+= Handwriting recognition with Tensorflow
 :page-project-name: Tensorflow MNIST
 :page-link: tensorflow_mnist
 :page-weight: 100
