@@ -1,4 +1,4 @@
-= Apache Zeppelin Example
+= Deploying Apache Zeppelin notebooks
 :page-project-name: Examples
 :page-link: apache-zeppelin-example
 :page-weight: 100

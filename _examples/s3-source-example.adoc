@@ -1,4 +1,4 @@
-= S3 Source Example
+= Accessing data in S3 with Apache Spark
 :page-project-name: Examples
 :page-link: s3-source-example
 :page-weight: 100

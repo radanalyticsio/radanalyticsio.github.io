@@ -1,4 +1,4 @@
-= Blockchain Analysis Notebook
+= Analyzing blockchain graphs with Apache Spark and Jupyter
 :page-project-name: Examples
 :page-link: blockchain
 :page-weight: 101

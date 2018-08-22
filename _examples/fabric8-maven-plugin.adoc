@@ -1,4 +1,4 @@
-= Fabric8 Maven Plugin Example
+= Deploying Apache Spark clusters with Fabric8
 :page-project-name: Examples
 :page-link: fabric8-maven-plugin
 :page-weight: 100
