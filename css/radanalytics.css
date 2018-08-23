@@ -102,3 +102,11 @@ a.howdoi-link {
 div.margin-top-1 {
     margin-top: 1em;
 }
+
+/* this is for asciidoc title blocks, basically looks like an h2 */
+div.title {
+    font-size: 26px;
+    font-weight: 400;
+    margin-bottom: 10px;
+    margin-top: 20px;
+}
