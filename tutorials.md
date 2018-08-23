@@ -30,7 +30,7 @@ them to your peers and colleagues.
 <h1 id="applications">Applications</h1>
 
 <h2>
-<a href="/my-first-radanalytics-app.html">SparkPi, your first Apache Spark application with radanalytics.io</a>
+<a href="/my-first-radanalytics-app.html">SparkPi: an introduction to applications using Apache Spark with radanalytics.io</a>
 </h2>
 <h4>
 <span class="badge">Java</span>
