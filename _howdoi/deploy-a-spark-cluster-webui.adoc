@@ -42,3 +42,7 @@ and add nodes as required.
   Oshinko page, similar to the following example:
 +
 pass:[<img src="/assets/howdoi/oshinko-webui-deploy-3.png" alt="Oshinko with cluster" class="img-responsive">]
+
+.Additional resources
+
+* link:/howdoi/access-advanced-config-oshinko-webui[How do I access advanced cluster configurations in the Oshinko WebUI]
