@@ -1,60 +1,44 @@
+// Module included in the following assemblies:
+//
+// <List assemblies here, each on a new line>
+[id='deploy-a-spark-cluster-webui']
 = deploy an Apache Spark cluster with the Oshinko WebUI?
 :page-layout: howdoi
 :page-menu_entry: How do I?
 
 Deploying an Apache Spark cluster through the Oshinko WebUI is a simple
-process requiring only a few options for most deployments. Once you have
-deployed the Oshinko WebUI pod and visited its URL as exposed by OpenShift
-you should see a page that looks similar to the following image:
+process requiring only a few options for most deployments.
 
+.Prerequisites
+
+* An OpenShift project with the Oshinko WebUI running, see the
+  link:/get-started[Get Started] instructions for more help.
+
+.Procedure
+
+. Visit the Oshinko WebUI URL as exposed by OpenShift. You should see a page
+  that looks similar to the following image:
++
 pass:[<img src="/assets/howdoi/oshinko-webui-deploy-1.png" alt="Oshinko" class="img-responsive">]
 
-To begin the Spark cluster deployment click on the "Deploy" button in the
-upper left of the page. You will be presented with a modal dialog window that
-looks similar to this:
-
-Note: for details about the "Advanced cluster configuration", please see
-the link:#advanced[section below].
-
+. To begin the Spark cluster deployment, click "Deploy" in the upper right of
+  the page. A dialog box similar to the following appears:
++
 pass:[<img src="/assets/howdoi/oshinko-webui-deploy-2.png" alt="Oshinko deploy" class="img-responsive">]
 
-You will now need to choose a name for your cluster and the initial number of
-worker nodes that it should contain. As the name that is used will be an
-identifier to OpenShift it must obey a few simple rules: it should be limited
-to a maximum length of 253 characters, and should consist of only lower case
-alphanumeric characters, `-`, and `.`.
+. Enter a name for your cluster and specify the initial number of worker nodes
+  that it will contain. Because the name will be an indentifier to OpenShift, it
+  must not exceed 253 characters, and must consist of only lower case alphanumeric
+  characters, `-` (hyphen), and `.` (period).
++
+The number of worker nodes that you choose depends on the type of work you are
+doing. You can adjust this number after launch without disrupting your driver
+application, therefore you can begin with a smaller number of worker nodes
+and add nodes as required.
 
-The number of worker nodes that you choose will be highly dependent on the
-type of work you are doing. You will be able to adjust this number after
-launch without disrupting your driver application, as such it is safe to begin
-with a smaller number of workers if you are unsure.
-
-Once you have input a name and the number of workers click on the "Deploy"
-button in the lower right of the dialog box to start the deployment.
-Assuming there are no errors, you will see your cluster's status and details
-on the Oshinko page, it will look similar to this:
-
+. After you have entered a name and specified the number of worker nodes,
+  click "Deploy" in the lower right of the dialog box to start the deployment.
+  Assuming there are no errors, the cluster's status and details appear on the
+  Oshinko page, similar to the following example:
++
 pass:[<img src="/assets/howdoi/oshinko-webui-deploy-3.png" alt="Oshinko with cluster" class="img-responsive">]
-
-[[advanced]]
-== Advanced Cluster Configuration
-
-In most cases you will not need to change the underlying details of your Spark
-cluster beyond the name and number of workers. If, however, you find yourself
-needing access to the Spark configurations, image details, or metrics options
-then you will need to use the "Advanced cluster configuration" option
-presented in the "Deploy cluster" dialog box.
-
-While deploying your cluster, clicking on the "Advanced cluster configuration"
-link in the "Deploy cluster" dialog will expand the dialog box to present the
-following options:
-
-pass:[<img src="/assets/howdoi/oshinko-webui-deploy-4.png" alt="Oshinko advanced options" class="img-responsive">]
-
-From here you will be able to set any of the advanced options before launching
-your cluster. Please note that these options (aside from the worker count)
-cannot be adjusted after deploying the new Spark cluster.
-
-You can always return the basic configuration and remove any advanced options
-you have filled in by clicking on the "Basic cluster configuration" link at
-the bottom the dialog.
