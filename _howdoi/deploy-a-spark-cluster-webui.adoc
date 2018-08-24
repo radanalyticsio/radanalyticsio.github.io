@@ -7,11 +7,11 @@
 :page-menu_entry: How do I?
 
 Deploying an Apache Spark cluster through the Oshinko WebUI is a simple
-process requiring only a few options for most deployments.
+process requiring only a few options in most cases.
 
 .Prerequisites
 
-* An OpenShift project with the Oshinko WebUI running, see the
+* An OpenShift project with the Oshinko WebUI running. See the
   link:/get-started[Get Started] instructions for more help.
 
 .Procedure
