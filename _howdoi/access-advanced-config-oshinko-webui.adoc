@@ -1,0 +1,37 @@
+// Module included in the following assemblies:
+//
+// <List assemblies here, each on a new line>
+[id='access-advanced-config-oshinko-webui']
+= access advanced cluster configurations in the Oshinko WebUI
+:page-layout: howdoi
+:page-menu_entry: How do I?
+
+When deploying an Apache Spark cluster with the Oshinko WebUI, you may need to
+change details other than the name and number of workers. If you need to access
+the Spark configurations, image details, or metrics options, follow the steps
+in this procedure.
+
+.Prerequisites
+
+* An OpenShift project with the Oshinko WebUI running. See the
+  link:/get-started[Get Started] instructions for more help.
+
+.Procedure
+
+. While deploying your cluster, click on the "Advanced cluster configuration"
+  link in the "Deploy cluster" dialog box to expand the dialog box:
++
+pass:[<img src="/assets/howdoi/oshinko-webui-deploy-4.png" alt="Oshinko advanced options" class="img-responsive">]
+
+. Set any desired advanced options before deploying your cluster. Note that
+  these options (aside from the worker count) cannot be adjusted after
+  deploying the new Spark cluster.
+
+. To remove any advanced options that you set, click the "Basic cluster configuration"
+  link at the bottom of the dialog box.
+
+.Additional resources
+
+* link:/howdoi/deploy-a-spark-cluster-webui[How do I deploy an Apache Spark cluster with the Oshinko WebUI?]
+
+* link:/howdoi/use-spark-configs[How do I use custom Spark configuration files with my cluster?]
