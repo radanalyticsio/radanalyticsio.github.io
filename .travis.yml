@@ -15,7 +15,14 @@ before_install:
 ## add insecure-registry and restart docker
 - export TEST_DIR=`pwd`
 - export ORIGIN_DIR=$TEST_DIR/../origin
-- ./travis-helpers/prepare.sh
+- |
+      wget https://raw.githubusercontent.com/radanalyticsio/radanalyticsio.github.io/master/resources.yaml -O master_resources.yaml
+      diff master_resources.yaml resources.yaml
+      if [ "$?" -eq 0 ]; then
+          echo "No change in resources.yaml, exiting ..."
+          exit 0
+      fi
+      ./travis-helpers/prepare.sh
 
 install:
 - git clone https://github.com/radanalyticsio/oshinko-s2i
