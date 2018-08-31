@@ -6,9 +6,9 @@ services:
 - docker
 matrix:
   include:
-    - env: TO_TEST=pyspark-templates
-    - env: TO_TEST=java-templates
-    - env: TO_TEST=scala-templates
+    - env: TO_TEST=pyspark-templates OPENSHIFT_VERSION=v3.10
+    - env: TO_TEST=java-templates OPENSHIFT_VERSION=v3.10
+    - env: TO_TEST=scala-templates OPENSHIFT_VERSION=v3.10
   fast_finish: true
 
 before_install:
