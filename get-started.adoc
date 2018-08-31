@@ -1,0 +1,113 @@
+= Get Started
+:page-layout: markdown
+:page-title: Get Started
+:page-menu_entry: Get Started
+
+== Overview
+
+The radanalytics.io projects are all focused on increasing your ability to
+design, deploy, and maintain insightful data-driven applications. The
+foundation of this effort are infrastructure projects which simplify the
+process of deploying and managing data processing frameworks.
+
+This introduction will help you learn about the primary radanalytics.io
+projects, how to install them, and how to utilize them with your own
+applications.
+
+== Which projects should you start with?
+
+Although the link:/projects[projects] page contains all the collected efforts of
+the radanalytics.io community, there are several applications which deserve to
+be highlighted as they are key to beginning your journey here.
+
+=== Oshinko
+
+The Oshinko project covers several individual applications which all focus on
+the goal of deploying and managing https://spark.apache.org[Apache Spark]
+clusters on https://www.openshift.com[Red Hat OpenShift] and
+https://www.openshift.org[OpenShift Origin].
+
+With the Oshinko family of applications you can create, scale, and destroy
+Apache Spark clusters. These clusters can then be used by your applications
+within an OpenShift project by providing a simple connection URL to the
+cluster. There are multiple paths to achieving this: browser based graphical
+interface, command line tool, and a RESTful server.
+
+To begin your exploration, we recommend starting with the
+https://github.com/radanalyticsio/oshinko-webui[oshinko-webui] application.
+The oshinko-webui is a self-contained deployment of the Oshinko technologies.
+An OpenShift user can deploy the oshinko-webui container into their project
+and then access the server with a web browser. Through the browser interface
+you will be able to manage Apache Spark clusters within your project.
+
+Another important part of Oshinko to highlight is the
+https://github.com/radanalyticsio/oshinko-s2i[oshinko-s2i] repository and
+associated images which implement the
+https://docs.openshift.org/latest/architecture/core_concepts/builds_and_image_streams.html#source-build[source-to-image]
+workflow for Apache Spark based applications. These images enable
+you to create full applications that can be built, deployed and upgraded
+directly from a source repository.
+
+== Quickstart with Oshinko
+
+=== 1. Connect to an OpenShift cluster
+
+Download the https://github.com/openshift/origin/releases[oc command]
+and login to an existing cluster with `oc login`. Alternatively,
+https://www.openshift.org/#try[setup your own cluster] with `oc cluster up` or the
+https://www.openshift.org/minishift[Minishift] tool(Windows and Mac users
+may find this option easiest to start).
+Oshinko version 0.4.0 and newer require origin 3.6.0.
+
+=== 2. Install and setup Oshinko
+
+First, install all the Oshinko resources into your project using the following
+command:
+
+....
+oc create -f https://radanalytics.io/resources.yaml
+....
+
+This creates the latest versions of the Oshinko S2I (source-to-image)
+templates and the Oshinko Web UI application, as well as a ServiceAccount and
+RoleBinding needed for creation and management of Apache Spark clusters.
+Look https://github.com/radanalyticsio/radanalyticsio.github.io/tree/master/openshift[here]
+for instructions on how to use components from a specific Oshinko release.
+
+Second, start the Oshinko Web UI application with this command:
+
+....
+oc new-app --template=oshinko-webui
+....
+
+This creates the Oshinko Web UI, which can be used to manually create and manage Apache Spark clusters.
+
+Alternatively, if you would prefer to use Oshinko with your OpenShift credentials
+(recommended for environments with public access) you can run the following to
+start a secure Oshinko Web UI:
+
+....
+oc new-app --template=oshinko-webui-secure
+....
+
+At this point you should visit your
+https://docs.openshift.com/container-platform/latest/architecture/infrastructure_components/web_console.html[OpenShift Console]
+with a web browser, locate the Oshinko Web UI route URL, and begin exploring
+the Oshinko Web UI.
+
+**OpenShift Console**
+
+pass:[<img src="/img/get-started-openshift-with-oshinko-webui.png" class="img-responsive screenshot">]
+
+**Oshinko Web UI**
+
+pass:[<img src="/img/get-started-fresh-oshinko-webui.png" class="img-responsive screenshot">]
+
+=== 3. Begin using Apache Spark on OpenShift
+
+Now that you have Oshinko installed and running in your OpenShift project you
+might want to learn how deploy an Apache Spark cluster by reading
+link:/howdoi/deploy-a-spark-cluster-webui[this article]. We also recommend
+investigating the many link:/tutorials[tutorials] that the radanalytics.io
+community have produced. These tutorials will show you how to fully utilize
+the intelligent application development workflow with Oshinko and OpenShift.
