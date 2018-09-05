@@ -1,0 +1,48 @@
+// Module included in the following assemblies:
+//
+// <List assemblies here, each on a new line>
+[id='access-spark-webui']
+= access the Apache Spark web interface?
+:page-layout: howdoi
+:page-menu_entry: How do I?
+
+Apache Spark provides an HTML-based web interface that displays information
+about the state of the processing cluster as well as applications that have
+been run on the cluster.
+
+After deploying an Apache Spark cluster with Oshinko, you will find its
+associated resources (Pods, Services, Routes) in the OpenShift console. Using
+this information you will navigate to the Spark cluster web interface.
+
+.Prerequisites
+
+* A web browser.
+
+* An OpenShift console available.
+
+* An Apache Spark cluster deployed by Oshinko.
+
+.Procedure
+
+. Navigate your browser to the OpenShift console and select the project that
+  contains the Apache Spark cluster.
+
+. Locate the master pod for your Apache Spark cluster, this can be found by
+  looking for a resource that is identified by the name you chose for the
+  cluster with `-m` appended to it.
+
+. Expand the resource view associated with the Spark master pod to expose
+  its details. It should look similar to this:
++
+pass:[<img src="/assets/howdoi/spark-cluster-webui-1.png" alt="OpenShift console Spark" class="img-responsive">]
+
+. Click on the link provided in the "NETWORKING" section that is associated
+  with the route for the UI service. This service will have the name of your
+  cluster with `-ui` appended to it. After clicking the link you will be
+  navigated to the Spark master interface page which will look similar to this:
++
+pass:[<img src="/assets/howdoi/spark-cluster-webui-2.png" alt="Spark master interface" class="img-responsive">]
+
+.Additional resources
+
+* link:/howdoi/deploy-a-spark-cluster-webui[How do I deploy an Apache Spark cluster with the Oshinko WebUI?]
