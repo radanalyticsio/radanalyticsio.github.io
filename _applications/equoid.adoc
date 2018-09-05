@@ -1,5 +1,6 @@
 = Equoid
 :page-link: equoid
+:page-liquid:
 :page-weight: 99
 :page-labels: [Scala, S2I, JDG, Spark]
 :page-layout: application
@@ -34,7 +35,7 @@ pass:[<img src="/assets/equoid/Equoid-Architecture.png" alt="Alt text" class="im
 Equoid utilizes a caching layer for storing the top-k values. The data publisher transmits records to AMQ-P, the data handler retrieves mesages from the AMQ-P broker, parses or converts them per user specification, then adds the information to the extant top-k object. It's worth noting that multiple instances of the data publisher and data handler can co-exist, which would be akin to a production system. 
 
 ****
-Note: in a production environment one pass data through to a persistent storage medium, whether a direct copy of the top-k or the messages received from the broker. 
+Note: in a production environment we would pass some data through to a persistent storage medium, either a direct copy of the top-k items or the raw messages received from the broker. 
 ****
 
 [[implementation]]
@@ -53,12 +54,12 @@ In data streaming applications, an issue that arises is the availability of qual
 [[installation]]
 == Installation
 
-As mentioned previously, Equoid consists of s number of microservices which require deployment to an Openshift instance. In this section a walkthrough of installing and configuring the Equoid services. These should be followed in the order presented. These steps follow the same flow as the equoid-openshift repository's https://github.com/EldritchJS/equoid-openshift/blob/master/start-full.sh[start-full.sh] script. 
+As mentioned previously, Equoid consists of a number of microservices which require deployment to an OpenShift instance. In order to get you started as painlessly as possible, in this section a walkthrough of installing and configuring the Equoid services is given. These should be followed in the order presented. These steps follow the same flow as the equoid-openshift repository's https://github.com/EldritchJS/equoid-openshift/blob/master/start-full.sh[start-full.sh] script. 
 
 [[prerequisites]]
 === Prerequisites
 
-You will need an Openshift instance in place which you are able to access and create new projects on. This could be local using minishift or the oc tooling, or on an admistered cluster to which you have access. Be certain to log in to the Openshift cluster, then you can created your project by running the following command:
+You will need an OpenShift instance in place which you are able to access and create new projects on. This could be local using minishift or the oc tooling, or on an admistered cluster to which you have access. Be certain to log in to the OpenShift cluster, then you can created your project by running the following command:
 
 ....
 oc new-project <YOUR_PROJECT_NAME>
@@ -68,7 +69,7 @@ where `<YOUR_PROJECT_NAME>` is whatever you choose to name your project (e.g. eq
 
 === Image streams and templates
 
-Depending on your Openshift instance, some of the image streams necessary for Equoid may not be available, to be certain you have what's necessary to build Equoid, run the following sequence of commands:
+Depending on your OpenShift instance, some of the image streams necessary for Equoid may not be available, to be certain you have what's necessary to build Equoid, run the following sequence of commands:
 
 ....
 oc create -f https://raw.githubusercontent.com/jboss-openshift/application-templates/master/openjdk/openjdk18-image-stream.json
@@ -156,10 +157,6 @@ curl -sSL $BASE_URL/ocp-apply.sh | \
 ....
 oc policy add-role-to-user edit system:serviceaccount:$PROJECT_NAME:default
 ....
-
-****
-****
-
 
 [[usage]]
 == Usage
