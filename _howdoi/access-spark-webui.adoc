@@ -7,8 +7,8 @@
 :page-menu_entry: How do I?
 
 Apache Spark provides an HTML-based web interface that displays information
-about the state of the processing cluster as well as applications that have
-been run on the cluster.
+about the state of the processing cluster and previously executed
+applications.
 
 After deploying an Apache Spark cluster with Oshinko, you will find its
 associated resources (Pods, Services, Routes) in the OpenShift console. Using
