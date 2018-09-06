@@ -21,10 +21,25 @@ name for the new cluster.
 .Procedure
 
 . Type `oshinko create <cluster name>` into your terminal shell, replacing
-  `<cluster name>` with the name you will use to identify the cluster.
+  `<cluster name>` with the name you will use to identify the cluster. It
+  will look similar to this:
++
+....
+$ oshinko create mycluster
+shared cluster mycluster created
+spark master: spark://mycluster:7077
+....
 
 . Confirm your cluster is created by typing `oshinko get <cluster name>`,
-  replacing `<cluster name>` with the name you chose for the cluster.
+  replacing `<cluster name>` with the name you chose for the cluster. It will
+  look similar to this:
++
+....
+$ oshinko get mycluster
+
+name                     workers                 status
+mycluster                1                       Running
+....
 
 .Additional resources
 
