@@ -1,4 +1,4 @@
-= use custom Spark configuration files with my cluster?
+= How do I use custom Spark configuration files with my cluster?
 :page-layout: howdoi
 :page-menu_entry: How do I?
 
