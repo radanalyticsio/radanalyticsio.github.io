@@ -2,7 +2,7 @@
 //
 // <List assemblies here, each on a new line>
 [id='access-advanced-config-oshinko-webui']
-= access advanced cluster configurations in the Oshinko WebUI?
+= How do I access advanced cluster configurations in the Oshinko WebUI?
 :page-layout: howdoi
 :page-menu_entry: How do I?
 

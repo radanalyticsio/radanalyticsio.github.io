@@ -1,4 +1,4 @@
-= connect to Apache Kafka?
+= How do I connect to Apache Kafka?
 :page-layout: howdoi
 :page-menu_entry: How do I?
 

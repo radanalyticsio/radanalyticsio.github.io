@@ -1,4 +1,4 @@
-= This is the title, it should not include "how do i"
+= This is the title, it should start with "How do I"
 :page-layout: howdoi
 :page-menu_entry: How do I?
 

@@ -2,7 +2,7 @@
 //
 // <List assemblies here, each on a new line>
 [id='deploy-a-spark-cluster-cli']
-= deploy an Apache Spark cluster with the Oshinko command line interface tool?
+= How do I deploy an Apache Spark cluster with the Oshinko command line interface tool?
 :page-layout: howdoi
 :page-menu_entry: How do I?
 

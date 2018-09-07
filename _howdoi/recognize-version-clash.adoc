@@ -1,4 +1,4 @@
-= recognize Spark version mismatch between driver, master and/or workers?
+= How do I recognize Spark version mismatch between driver, master and/or workers?
 :page-layout: howdoi
 :page-menu_entry: How do I?
 
