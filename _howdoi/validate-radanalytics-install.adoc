@@ -1,4 +1,4 @@
-= validate my radanalytics.io installation?
+= How do I validate my radanalytics.io installation?
 :page-layout: howdoi
 :page-menu_entry: How do I?
 

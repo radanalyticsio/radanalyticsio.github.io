@@ -1,4 +1,4 @@
-= install Python packages in Jupyter notebooks on OpenShift?
+= How do I install Python packages in Jupyter notebooks on OpenShift?
 :page-layout: howdoi
 :page-menu_entry: How do I?
 :source-highlighter: coderay
