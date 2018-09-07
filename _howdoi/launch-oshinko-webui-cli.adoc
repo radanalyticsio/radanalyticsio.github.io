@@ -1,0 +1,41 @@
+// Module included in the following assemblies:
+//
+// <List assemblies here, each on a new line>
+[id='launch-oshinko-webui-cli']
+= How do I launch the Oshinko web interface from the command line?
+:page-layout: howdoi
+:page-menu_entry: How do I?
+
+.Prerequisites
+
+* A terminal shell and OpenShift `oc` tool available with an active login to
+  OpenShift.
+
+* An OpenShift project with radanalytics.io installed.
+
+* A web browser available.
+
+.Procedure
+
+. Switch to the project with radanalytics.io installed by typing
+  `oc project <project name>`, where `<project name>` is the name of the
+  project with radanalytics.io installed.
+
+. Type `oc new-app oshinko-webui` into your terminal shell. If you would
+  prefer to use Oshinko with your OpenShift credentials (recommended for
+  environments with public access) then type `oc new-app oshinko-webui-secure`
+  instead.
+
+. Type `oc get route oshinko-web` to find the exposed URL for the Oshinko
+  web interface.
+
+. Navigate your browser to the URL returned from the previous step. You should
+  see a page that looks like this:
++
+pass:[<img src="/assets/howdoi/oshinko-fresh-install.png" alt="Oshinko fresh install" class="img-responsive">]
+
+.Additional resources
+
+* link:/howdoi/install-radanalyticsio[How do I install radanalytics.io?]
+
+* link:/howdoi/deploy-a-spark-cluster-webui[How do I deploy an Apache Spark cluster with the Oshinko WebUI?]
