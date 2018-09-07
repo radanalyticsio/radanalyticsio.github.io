@@ -2,7 +2,7 @@
 //
 // <List assemblies here, each on a new line>
 [id='deploy-a-spark-cluster-webui']
-= deploy an Apache Spark cluster with the Oshinko WebUI?
+= How do I deploy an Apache Spark cluster with the Oshinko WebUI?
 :page-layout: howdoi
 :page-menu_entry: How do I?
 

@@ -2,7 +2,7 @@
 //
 // <List assemblies here, each on a new line>
 [id='install-oshinko-cli']
-= install the Oshinko command line interface tool?
+= How do I install the Oshinko command line interface tool?
 :page-layout: howdoi
 :page-menu_entry: How do I?
 

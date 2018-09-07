@@ -25,7 +25,7 @@ menu_entry: How do I?
           <div class="list-view-pf-body">
             <div class="list-view-pf-description">
               <div class="list-group-item-heading">
-                <h4>{{ doc.title }}</h4>
+                <h4>{{ doc.title | remove_first: "How do I " }}</h4>
               </div>
             </div>
           </div>

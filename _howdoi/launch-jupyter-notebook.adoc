@@ -1,4 +1,4 @@
-= launch a Jupyter notebook on OpenShift?
+= How do I launch a Jupyter notebook on OpenShift?
 :page-layout: howdoi
 :page-menu_entry: How do I?
 
