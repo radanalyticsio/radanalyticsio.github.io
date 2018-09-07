@@ -1,0 +1,39 @@
+// Module included in the following assemblies:
+//
+// <List assemblies here, each on a new line>
+[id='install-radanalyticsio']
+= How do I install radanalytics.io?
+:page-layout: howdoi
+:page-menu_entry: How do I?
+
+The radanalytics.io community project encompass several technologies that are
+integrated to promote the workflow and lifecycle of intelligent applications
+on OpenShift and Kubernetes.
+
+Many of the radanalytics.io components work in concert transparently to the
+user. An "installation" of these components is largely handled by OpenShift
+and Kubernetes, but there is a small amount of configuration required by
+users.
+
+.Prerequisites
+
+* A terminal shell and OpenShift `oc` tool available with an active login to
+  OpenShift.
+
+.Procedure
+
+. Create a project to install radanalytics.io by typing
+  `oc new-project <project name>`, where `<project name>` is the identifier
+  you will use for the new project. Alternatively, you may select a
+  pre-existing project by typing `oc project <project name>`.
+
+. Type `oc create -f pass:[https://radanalytics.io/resources.yaml]` into your
+  terminal shell.
+
+.Additional resources
+
+* link:/howdoi/validate-radanalytics-install[How do I validate my radanalytics.io installation?]
+
+* link:/howdoi/launch-oshinko-webui-cli[How do I launch the Oshinko web interface from the command line?]
+
+* link:/howdoi/install-oshinko-cli[How do I install the Oshinko command line interface tool?]

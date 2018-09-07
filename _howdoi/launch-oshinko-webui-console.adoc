@@ -1,0 +1,55 @@
+// Module included in the following assemblies:
+//
+// <List assemblies here, each on a new line>
+[id='launch-oshinko-webui-console']
+= How do I launch the Oshinko web interface from the OpenShift console?
+:page-layout: howdoi
+:page-menu_entry: How do I?
+
+.Prerequisites
+
+* An OpenShift project with radanalytics.io installed.
+
+* A web browser available.
+
+.Procedure
+
+. Select the project with radanalytics.io installed from the OpenShift
+  console.
+
+. Click the "Add to Project" dropdown in the upper right and then click
+  "Select from Project". You will see a dialog box that looks similar to this:
++
+pass:[<img src="/assets/howdoi/openshift-add-to-project.png" alt="OpenShift add to project" class="img-responsive">]
+
+. Select the "Oshinko WebUI" item and then click on "Next" in the lower right.
+  If you would perfer to use Oshinko with your OpenShift credentials
+  (recommended for environments with public access) then select "Oshinko
+  WebUI(secure)" instead. After clicking "Next" you will see the Information
+  page which looks similar to this:
++
+pass:[<img src="/assets/howdoi/oshinko-launch-1.png" alt="Oshinko launch screen 1" class="img-responsive">]
+
+. Click "Next" in the lower right. You will now be presented with the
+  Configuration page which will look similar to this:
++
+pass:[<img src="/assets/howdoi/oshinko-launch-2.png" alt="Oshinko launch screen 2" class="img-responsive">]
+
+. Click "Create" in the lower right. You will now be presented with the Results
+  page which will look similar to this:
++
+pass:[<img src="/assets/howdoi/oshinko-launch-3.png" alt="Oshinko launch screen 3" class="img-responsive">]
+
+. Click "Close" in the lower right. You will now be returned to the OpenShift
+  project page.
+
+. Locate the URL for the exposed route to the Oshinko WebUI and click it. You
+  will be navigated to the Oshinko WebUI which will look similar to this:
++
+pass:[<img src="/assets/howdoi/oshinko-fresh-install.png" alt="Oshinko fresh install" class="img-responsive">]
+
+.Additional resources
+
+* link:/howdoi/install-radanalyticsio[How do I install radanalytics.io?]
+
+* link:/howdoi/deploy-a-spark-cluster-webui[How do I deploy an Apache Spark cluster with the Oshinko WebUI?]
