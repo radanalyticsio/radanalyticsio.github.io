@@ -29,7 +29,7 @@ The primary build definition is contained in `build.sbt` (analogous to pom.xml f
 
 The file `build.properties` should be generated for you if you are using an IDE like Eclipse or IntelliJ IDEA. In this case it will be created by hand. For now, it simply contains the SBT version that the project is built with.
 
-[source,scala]
+[source, scala]
 ----
 sbt.version = 1.0.2
 ----
@@ -201,7 +201,7 @@ import org.apache.spark.{SparkConf, SparkContext}
 import org.scalatra.{Ok, ScalatraServlet}
 
 class SparkPiServlet extends ScalatraServlet {
-    
+
     get("/"){
         Ok( "Scala Scalatra SparkPi server running. Add the 'sparkpi' route to this URL to invoke the app." )
     }
@@ -316,7 +316,7 @@ tutorial-sparkpi-scala-scalatra (root)
 
 ----
 
-This deployment can be tested loby running `java -jar target/scala-2.11/tutorial-sparkpi-scala-scalatra-assembly-0.0.1-SNAPSHOT.jar. The service should start, but will fail when servicing requests, unless you have a Spark cluster running locally.
+This deployment can be tested loby running `java -jar target/scala-2.11/tutorial-sparkpi-scala-scalatra-assembly-0.0.1-SNAPSHOT.jar`. The service should start, but will fail when servicing requests, unless you have a Spark cluster running locally.
 
 == Commit your code and push it to a hosted Git repository
 Now that the core project code has been implemented, it's time to push it up to a hosted source code repository. In this example, GitHub will be the source code host, however, any Git hosting service (such as GitLab or BitBucket) will also work. Start by https://help.github.com/articles/create-a-repo/[creating a GitHub repository] for the project. Then, the following commands will add all the source code to the project and push it to GitHub.
