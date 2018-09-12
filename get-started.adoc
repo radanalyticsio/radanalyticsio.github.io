@@ -18,6 +18,13 @@ This introduction will help you learn about the primary radanalytics.io
 projects, how to install them, and how to utilize them with your own
 applications.
 
+****
+Looking for the shortest path to begin working with
+radanalytics.io? Please see the
+link:/howdoi/install-radanalyticsio[How do I install radanalytics.io?]
+article.
+****
+
 == Which projects should you start with?
 
 Although the link:/projects[projects] page contains all the collected efforts of
@@ -51,6 +58,7 @@ https://docs.openshift.org/latest/architecture/core_concepts/builds_and_image_st
 workflow for Apache Spark based applications. These images enable
 you to create full applications that can be built, deployed and upgraded
 directly from a source repository.
+
 
 .Additional resources
 
