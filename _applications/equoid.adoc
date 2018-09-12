@@ -26,7 +26,7 @@ Equoid, on the other hand, incorporates a Count-Min Sketch for keeping track of 
 
 === Data Sources
 
-In data streaming applications, an issue that arises is the availability of quality data streams. Indeed, seldom are the organizations willing to part with their live streams gratis. One can consider a synthetic stream, wherein a dataset is transmitted piecemeal over a stream, in a temporal fashion if desired, or at random. However, this is still limited to available datasets which may not possess the characteristics one wishes to address in their solution. As such, this notion of a synthetic dataset could be extended such that controls are provided for adding randomness to the record selection and/or generation process. For illustrative purposes, Equoid has three sample use cases, all derived from the same dataset. Namely, the online retail dataset provided by the UC Irvine Machine learning library https://archive.ics.uci.edu/ml/datasets/online+retail[found here]. We address the cases where a dataset is to be passed linearly through the stream, the case where one column is chosen at random and sent through the strea, and a case where two columns are chosen at random and sent through the stream. For convenience, we provide a file for each of these which can be provided to the data publisher.
+In data streaming applications, an issue that arises is the availability of quality data streams. Indeed, seldom are the organizations willing to part with their live streams gratis. One can consider a synthetic stream, wherein a dataset is transmitted piecemeal over a stream, in a temporal fashion if desired, or at random. However, this is still limited to available datasets which may not possess the characteristics one wishes to address in their solution. As such, this notion of a synthetic dataset could be extended such that controls are provided for adding randomness to the record selection and/or generation process. For illustrative purposes, Equoid has three sample use cases, all derived from the same dataset. Namely, the online retail dataset provided by the UC Irvine Machine learning library https://archive.ics.uci.edu/ml/datasets/online+retail[found here]. We address the cases where a dataset is to be passed linearly through the stream, the case where one column is chosen at random using a https://en.wikipedia.org/wiki/Zipf%27s_law[Zipfian distribution] and sent through the strea, and a case where two columns are chosen at random and sent through the stream. For convenience, we provide a file for each of these which can be provided to the data publisher.
 
 [[architecture]]
 == Microservice Architecture
@@ -75,7 +75,7 @@ where `<YOUR_PROJECT_NAME>` is whatever you choose to name your project (e.g. eq
 Depending on your OpenShift instance, some of the image streams necessary for Equoid may not be available, to be certain you have what's necessary to build Equoid, run the following sequence of commands:
 
 ....
-oc create -f https://raw.githubusercontent.com/jboss-openshift/application-templates/master/openjdk/openjdk18-image-stream.json
+oc create -f https://raw.githubusercontent.com/radanalyticsio/equoid-openshift/resources.json
 oc create -f https://raw.githubusercontent.com/jboss-openshift/application-templates/master/amq/amq63-image-stream.json
 oc create -f https://raw.githubusercontent.com/jboss-openshift/application-templates/master/amq/amq63-basic.json
 oc create -f https://radanalytics.io/resources.yaml
@@ -129,7 +129,7 @@ oc new-app \
 
 === Launch Data Handler
 
-With the data streaming underway we are ready to start our data handler. Note that `JDG_HOST` and `JDG_PORT` need to be set to appropriate values, in the case of the template provided, these are `datagrid-hotrod` and `11222` respectively. In addition, `WINDOW_SECONDS` is the number of second for which you wish to track the top-k items, `SLIDE_SECONDS` represents the number of seconds to slide your data window each iteration, and `BATCH_SECONDS` is the size of samples you wish to acquire from the message stream at a time. Finally, `OP_MODE` needs to be set to the same value as set for the data publisher.
+We are now ready to start our data handler. Note that `JDG_HOST` and `JDG_PORT` need to be set to appropriate values, in the case of the template provided, these are `datagrid-hotrod` and `11222` respectively. In addition, `WINDOW_SECONDS` is the number of second for which you wish to track the top-k items, `SLIDE_SECONDS` represents the number of seconds to slide your data window each iteration, and `BATCH_SECONDS` is the size of samples you wish to acquire from the message stream at a time. Finally, `OP_MODE` needs to be set to the same value as set for the data publisher.
 
 ....
 oc new-app --template=oshinko-scala-spark-build-dc \
