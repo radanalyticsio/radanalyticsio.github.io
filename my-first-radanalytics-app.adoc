@@ -6,35 +6,49 @@
 
 pass:[<h1>SparkPi: an introduction to applications using Apache Spark with radanalytics.io</h1>]
 
-[[introduction]]
-== Introduction
+In this tutorial you will build a microservice which will calculate an
+approximate value for https://en.wikipedia.org/wiki/Pi[Pi] when requested by
+HTTP. You will learn how to create applications that utilize Apache Spark and
+that are deployed directly from a source repository to OpenShift with a single command.
 
-In this tutorial you will build a microservice which will calculate an approximate value for https://en.wikipedia.org/wiki/Pi[Pi] when requested by HTTP. You will learn how to create applications which utilize Apache Spark and that are deployed directly from a source repository to OpenShift with a single command.
-
-This tutorial will walk you through every step of creating, deploying and operating an Apache Spark driver application on OpenShift. You should expect to spend 30 to 60 minutes on these exercises, depending on your familiarity.
+This tutorial walks you through the steps of creating, deploying and operating
+an Apache Spark driver application on OpenShift. You should expect to spend
+30 to 60 minutes on these exercises.
 
 [[prerequisites]]
 == Prerequisites
 
-Before beginning the tutorial, there are a few prerequisites which are necessary to ensure you have the proper tools and resources to complete the work.
-
-* Access to an OpenShift cluster
-* A terminal with the `oc` command available
-* A new project in OpenShift to store your work
-* The Oshinko templates available in your project (see the link:/get-started[Get Started] page for instructions)
-* An editor to work on your source files
-* An online space for a Git repository to store your code, such as https://github.com[GitHub] or https://bitbucket.com[BitBucket]
-
-With these in place you are ready to begin creating your microservice.
+* You have access to an OpenShift cluster.
+* A terminal with the `oc` command is available.
+* A new project in OpenShift is available to store your work.
+* The Oshinko templates are available in your project (See the
+  link:/howdoi/install-radanalyticsio[How do I install radanalytics.io?]
+  article for instructions.)
+* An editor to work on your source files is available.
+* An online space for a Git repository is available to store your code, such
+  as https://github.com[GitHub], https://bitbucket.com[BitBucket] or
+  https://gitlab.com[GitLab].
 
 [[overview]]
 == Application overview
 
-The SparkPi microservice that you will build during this tutorial is quite simple in its design and functionality. SparkPi is deployed as a single server pod and several Apache Spark pods. The microservice provides an HTTP server that will accept `GET` requests and respond with an estimation of Pi. It does this by utilizing Apache Spark to calculate the value using the https://en.wikipedia.org/wiki/Approximations_of_%CF%80#Summing_a_circle.27s_area[summing of a circle's area] technique.
+The SparkPi microservice that you will build during this tutorial is quite
+simple in its design and functionality. SparkPi is deployed as a single server
+pod and several Apache Spark pods. The microservice provides an HTTP server
+that accepts `GET` requests and responds with an estimation of Pi. It does
+this by using Apache Spark to calculate the value by using the
+https://en.wikipedia.org/wiki/Approximations_of_%CF%80#Summing_a_circle.27s_area[summing of a circle's area]
+technique.
 
-It is worth mentioning that in a normal environment you would not want to run extended calculations during an HTTP request unless they can be completed quickly. For the purposes of this tutorial however, it simplifies the implementation details. As you build further applications from the material provided here please keep this simplification of design in mind.
+Note that usually you would not run extended calculations during an HTTP
+request unless the calculations can be completed quickly. However, this
+simplifies the implementation details. As you build further applications from
+the material provided here, keep this simplification of design in mind.
 
-Regardless of the implementation language or the HTTP framework, all of the tutorial applications linked from this page have the same general architecture. This diagram shows the major components involved with deployment and usage of the microservice:
+Regardless of the implementation language or the HTTP framework, all of the
+tutorial applications linked from this page have the same general
+architecture. The following diagram shows the major components involved with
+deployment and usage of the microservice:
 
 pass:[<img src="/assets/my-first-radanalytics-app/sparkpi-architecture.svg" class="img-responsive center-block">]
 
@@ -46,25 +60,57 @@ pass:[<img src="/assets/my-first-radanalytics-app/sparkpi-architecture.svg" clas
 
 3. An Apache Spark cluster
 
-Although this is three different components, the main one that you will be concerned with throughout the tutorial is #2. You should already have a computer with the necessary tools installed for making Pi requests, editing your source files and commanding OpenShift to deploy your microservice. The Apache Spark cluster will be created automatically for you by the http://github.com/radanalyticsio/oshinko-s2i[Oshinko source-to-image tools].
+The SparkPi component is the main component that you will be concerned with
+throughout the tutorial. You should already have a computer with the necessary
+tools installed for making Pi requests, editing your source files and
+commanding OpenShift to deploy your microservice. The Apache Spark cluster is
+created automatically for you by the
+http://github.com/radanalyticsio/oshinko-s2i[Oshinko source-to-image tools].
 
-As https://docs.openshift.org/latest/architecture/core_concepts/builds_and_image_streams.html#source-build[source-to-image] technology is fundamental to the operation of this tutorial, let's take a closer look at its details. Source-to-image provides a convenient way for you to produce container images directly from your source repositories. This work is handled by language specific builder images which can ingest your source code, assemble it and then produce an application image which is ready to be deployed. In the case of the Oshinko source-to-image builders, an Apache Spark cluster will also be created dynamically for your application when it runs.
+https://docs.openshift.org/latest/architecture/core_concepts/builds_and_image_streams.html#source-build[Source-to-image]
+technology is fundamental to the operation of this tutorial. Source-to-image
+provides a convenient way for you to produce container images directly from
+your source repositories. This work is handled by language specific builder
+images which can ingest your source code, assemble it and then produce an
+application image which is ready to be deployed. In the case of the Oshinko
+source-to-image builders, an Apache Spark cluster is also created dynamically
+for your application when it runs.
 
 [[setup]]
 == Setup your coding environment
 
-To utilize the source-to-image workflow you will need to have a https://git-scm.com[Git] repository to store your work. This repository is then used by the source-to-image builders to create the final application image which will be run on OpenShift. For the purposes of this tutorial your repository will need to be accessible by the OpenShift cluster. The easiest way to do this is by using an external service like https://github.com[GitHub] or https://bitbucket.com[BitBucket].
+To use the source-to-image workflow you will need to have a
+https://git-scm.com[Git] repository to store your work. This repository is
+then used by the source-to-image builders to create the final application
+image which will be run on OpenShift. For the purposes of this tutorial your
+repository must be accessible by the OpenShift cluster. The easiest way to do
+this is by using an external service like https://github.com[GitHub],
+https://bitbucket.com[BitBucket], or https://gitlab.com[GitLab].
 
-Create a new repository on your preferred platform and make a local clone of it, if you need help with this process there are instructions available in https://confluence.atlassian.com/get-started-with-bitbucket/create-a-repository-861178559.html[BitBucket's documentation] and https://help.github.com/articles/create-a-repo/[GitHub's documentation].
+Create a new repository on your preferred platform and make a local clone of
+it. For more information see
+https://confluence.atlassian.com/get-started-with-bitbucket/create-a-repository-861178559.html[BitBucket's documentation]
+and https://help.github.com/articles/create-a-repo/[GitHub's documentation].
 
 With your freshly minted repository you are ready to start coding!
 
 [[stack]]
 == Choose your language and technology stack
 
-This tutorial has been developed for multiple languages and HTTP frameworks. Functionally, all these microservices work in the same manner with similar results to an end user. In this way they represent a black box style microservice which could be replaced with another component that satisfies the same input and output requirements.
+This tutorial was developed for multiple languages and HTTP frameworks.
+Functionally, all of these microservices work in the same manner with similar
+results to an end user. In this way they represent a black box style
+microservice which can be replaced with another component that satisfies the
+same input and output requirements.
 
-Each of these language specific tutorials provide instructions on how to structure your repository and what files to create. You will also learn how each microservice works and the commands necessary to build and launch them in OpenShift. Because the source-to-image templates that you will use are language specific, you must choose a single implementation to exist in your repository. When you are finished, return here to learn about interacting with your microservice and exposing it outside of OpenShift. Please choose one of the following language and framework options:
+Each of these language specific tutorials provide instructions on how to
+structure your repository and what files to create. You will also learn how
+each microservice works and the commands necessary to build and launch them
+in OpenShift. Because the source-to-image templates that you will use are
+language specific, you must choose a single implementation to exist in your
+repository. When you are finished, return here to learn about interacting
+with your microservice and exposing it outside of OpenShift. Choose
+one of the following language and framework options:
 
 * link:/assets/my-first-radanalytics-app/sparkpi-java-spring.html[Java with Spring]
 * link:/assets/my-first-radanalytics-app/sparkpi-java-vertx.html[Java with Vert.x]
@@ -73,15 +119,25 @@ Each of these language specific tutorials provide instructions on how to structu
 [[user]]
 == Become a user
 
-At this point you should have created a code repository for your microservice, populated the repository with source files, built an application image and launched that image on OpenShift. The final stage in this tutorial is to expose your microservice outside of OpenShift and begin interacting with it as a user would.
+At this point you should have created a code repository for your microservice,
+populated the repository with source files, built an application image, and
+launched that image on OpenShift. The final stage in this tutorial is to
+expose your microservice outside of OpenShift and begin interacting with it as
+a user.
 
-The first step in this process is to expose a route to your microservice. OpenShift contains an edge router which will associate domain name URIs with services. By default, applications you create through source-to-image have services that can expose routes which will contain their name, the project name and a hostname for the OpenShift server. You can create these routes by using the following command:
+The first step in this process is to expose a route to your microservice.
+OpenShift contains an edge router which associates domain name URIs with
+services. By default, applications you create through source-to-image have
+services that can expose routes which will contain their name, the project
+name and a hostname for the OpenShift server. You can create these routes by
+using the following command:
 
 ....
 oc expose svc/sparkpi
 ....
 
-To see the routes available in your project, run `oc get routes`, you should see something like this:
+To see the routes available in your project, run `oc get routes`. This command
+should return output similar to the following example:
 
 ....
 $ oc get route
@@ -90,9 +146,16 @@ cluster-uo7wa9-ui-route   cluster-uo7wa9-ui-route-pi.10.0.1.109.xip.io          
 sparkpi                   sparkpi-pi.10.0.1.109.xip.io                             sparkpi             8080-tcp                 None
 ....
 
-You will notice that in addition to the `sparkpi` route we created earlier that there is also a route prefixed with `cluster-`. This is the route created automatically by the Oshinko source-to-image tooling and it provides access to the Apache Spark web interface. You may visit either one of these routes in your web browser to inspect the results.
+Notice that in addition to the `sparkpi` route you created earlier that there
+is also a route prefixed with `cluster-`. This is the route created
+automatically by the Oshinko source-to-image tooling and it provides access
+to the Apache Spark web interface. You can visit either one of these routes
+in your web browser to inspect the results.
 
-In addition to accessing the SparkPi microservice through the web browser, you can use the `curl` tool and a little bit of command scripting to get the results. The following commands will substitute in the URI for your service and the results should look similar for you:
+In addition to accessing the SparkPi microservice through the web browser,
+you can use the `curl` tool and command scripting to achieve the results. The
+following commands substitute in the URI for your service and the results
+should look similar for you:
 
 ....
 $ curl http://`oc get routes/sparkpi --template='{{.spec.host}}'`
@@ -102,7 +165,9 @@ $ curl http://`oc get routes/sparkpi --template='{{.spec.host}}'`/sparkpi
 Pi is roughly 3.140480
 ....
 
-You can see that our rough approximation is close, but not quite close enough. You can try adding the `scale` parameter to your URL to see how it affects the outcome.
+You can see that this rough approximation is close, but not quite close
+enough. Try adding the `scale` parameter to your URL to see how it affects the
+outcome.
 
 ....
 curl http://`oc get routes/sparkpi --template='{{.spec.host}}'`/sparkpi?scale=5
@@ -111,4 +176,9 @@ curl http://`oc get routes/sparkpi --template='{{.spec.host}}'`/sparkpi?scale=5
 [[explore]]
 == Continue exploring
 
-Congratulations! You have just created and deployed your first RADanalytics application onto OpenShift. At this point you are beginning to understand the core concepts behind the Oshinko source-to-image tooling. You should investigate the other applications and examples in the link:/tutorials[Tutorials] section and also revisit the link:/get-started[Get Started] page to learn how the Oshinko webui can be used to control the Apache Spark clusters in your projects.
+You have created and deployed your first radanalytics.io application onto
+OpenShift. At this point you are beginning to understand the core concepts
+behind the Oshinko source-to-image tooling. Investigate the other applications
+and examples in the link:/tutorials[Tutorials] section and also revisit the
+link:/get-started[Get Started] page to learn how you can use the Oshinko WebUI
+to control the Apache Spark clusters in your projects.
