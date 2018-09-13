@@ -2,10 +2,10 @@
 :page-link: equoid
 :page-liquid:
 :page-weight: 0 
-:page-labels: [Scala, S2I, Infinispan, Spark]
+:page-labels: [Scala, S2I, Infinispan, Spark, Artemis]
 :page-layout: application
 :page-menu_template: menu_tutorial_application.html
-:page-description: Equoid is an implementation of a top-k (aka heavy hitters) tracking system built upon the notion of utilizing a Count-Min Sketch. The project demonstrates the utility of microserviced data streaming pipelines coupled with a temporal and spatial efficient approach to a common use case. The application contains a web server, web UI, caching layer, A-MQ broker with associated data publisher and receivers. 
+:page-description: Equoid is an implementation of a top-k (aka heavy hitters) tracking system built upon the notion of utilizing a Count-Min Sketch. The project demonstrates the utility of microserviced data streaming pipelines coupled with a temporal and spatial efficient approach to a common use case. The application contains a web server, web UI, caching layer, Apache Artemis broker with associated data publisher and receivers. 
 :page-project_links: ["https://github.com/eldritchjs/equoid-data-publisher", "https://github.com/eldritchjs/equoid-data-handler", "https://github.com/eldritchjs/equoid-openshift", "https://github.com/Jiri-Kremser/equoid-ui"]
 
 [[introduction]]
@@ -46,11 +46,11 @@ The following diagram shows the overall architecture of Equoid.
 
 pass:[<img src="/assets/equoid/Equoid-Architecture.png" alt="Alt text" class="img-responsive arch" width="800px">]
 
-Equoid utilizes a caching layer for storing the top-k values. The data publisher transmits records to A-MQ, the data handler retrieves mesages from the A-MQ broker, parses or converts them per user specification, then adds the information to the extant top-k object. It's worth noting that multiple instances of the data publisher and data handler can co-exist, which would be akin to a production system. 
+Equoid utilizes a caching layer for storing the top-k values. The data publisher transmits records to Artemis, the data handler retrieves mesages from the Artemis broker, parses or converts them per user specification, then adds the information to the extant top-k object. It's worth noting that multiple instances of the data publisher and data handler can co-exist, which would be akin to a production system. 
 
 == Software Components
 
-We chose to use A-MQ for the message broker, with the expectation it would be scalable in terms of number of streams as well as volume of traffic. In the same vein, we utilized Spark for our microservices requiring scalability, namely the data handler. Since we wished to take advantage of extant Spark libraries, and the CMSketch() object is only (as of this writing) available in Java and Scala, we chose to implement the handler in Scala. In the interest of uniformity the sample data publisher is also written in Scala. Furthermore, the AMQP Spark connector used by the data handler is one developed by Paolo Patierno at Red Hat, with more information https://radanalytics.io/examples/amqpstreaming[in this tutorial] and associated https://github.com/redhat-iot/amqp-spark-demo[upstream project].
+We chose to use Artemis for the message broker, with the expectation it would be scalable in terms of number of streams as well as volume of traffic. In the same vein, we utilized Spark for our microservices requiring scalability, namely the data handler. Since we wished to take advantage of extant Spark libraries, and the CMSketch() object is only (as of this writing) available in Java and Scala, we chose to implement the handler in Scala. In the interest of uniformity the sample data publisher is also written in Scala. Furthermore, the AMQP Spark connector used by the data handler is one developed by Paolo Patierno at Red Hat, with more information https://radanalytics.io/examples/amqpstreaming[in this tutorial] and associated https://github.com/redhat-iot/amqp-spark-demo[upstream project].
 
 pass:[<img src="/assets/equoid/Equoid-Software-Components.png" alt="Alt text" class="img-responsive arch" width="800px">]
  
@@ -75,28 +75,21 @@ where `<YOUR_PROJECT_NAME>` is whatever you choose to name your project (e.g. eq
 Depending on your OpenShift instance, some of the image streams necessary for Equoid may not be available, to be certain you have what's necessary to build Equoid, run the following sequence of commands:
 
 ....
-oc create -f https://raw.githubusercontent.com/radanalyticsio/equoid-openshift/resources.json
-oc create -f https://raw.githubusercontent.com/jboss-openshift/application-templates/master/amq/amq63-image-stream.json
-oc create -f https://raw.githubusercontent.com/jboss-openshift/application-templates/master/amq/amq63-basic.json
+oc create -f https://raw.githubusercontent.com/radanalyticsio/equoid-openshift/openjdk18-image-stream.json
 oc create -f https://radanalytics.io/resources.yaml
 oc create -f https://raw.githubusercontent.com/infinispan/infinispan-openshift-templates/master/templates/infinispan-ephemeral.json
 ....
 
-these provide the OpenJDK image stream for the data-publisher service, the A-MQ image stream and template for the A-MQ microservice, the radanalytics.io Oshinko et al. resources, and the Infinispan template for the caching microservice, respectively. 
+these provide the OpenJDK image stream for the data-publisher service, the radanalytics.io Oshinko et al. resources for facilitating Spark cluster creation and deployment, and the Infinispan template for the caching microservice, respectively. 
 
-=== Launch A-MQ
+=== Launch Artemis
 
-Next we'll get A-MQ running, since it's necessary for both the data handler and publisher `MQ_QUEUES`, `MQ_USERNAME`, `MQ_PASSWORD` should be changed to your desired values.
+We'll get Artemis up and running, as it is necessary for both the publisher and handler:
 
 ....
-oc new-app --template=amq63-basic \
-    -l app=amqp \
-    -p MQ_PROTOCOL=amqp \
-    -p MQ_QUEUES=<YOUR_QUEUE_NAME> \
-    -p MQ_USERNAME=<YOUR_USERNAME> \
-    -p MQ_PASSWORD=<YOUR_PASSWORD> \
-    -p IMAGE_STREAM_NAMESPACE=`oc project -q`
+oc create -f https://raw.githubusercontent.com/radanalyticsio/equoid-openshift/artemis-rc.yaml
 ....
+
 
 === Launch Infinispan Cache
 
@@ -129,7 +122,7 @@ oc new-app \
 
 === Launch Data Handler
 
-We are now ready to start our data handler. Note that `JDG_HOST` and `JDG_PORT` need to be set to appropriate values, in the case of the template provided, these are `datagrid-hotrod` and `11222` respectively. In addition, `WINDOW_SECONDS` is the number of second for which you wish to track the top-k items, `SLIDE_SECONDS` represents the number of seconds to slide your data window each iteration, and `BATCH_SECONDS` is the size of samples you wish to acquire from the message stream at a time. Finally, `OP_MODE` needs to be set to the same value as set for the data publisher.
+We are now ready to start our data handler. Note that `INFINISPAN_HOST` and `INFINISPAN_PORT` need to be set to appropriate values, in the case of the template provided, these are `datagrid-hotrod` and `11222` respectively. In addition, `WINDOW_SECONDS` is the number of second for which you wish to track the top-k items, `SLIDE_SECONDS` represents the number of seconds to slide your data window each iteration, and `BATCH_SECONDS` is the size of samples you wish to acquire from the message stream at a time. Finally, `OP_MODE` needs to be set to the same value as set for the data publisher.
 
 ....
 oc new-app --template=oshinko-scala-spark-build-dc \
@@ -139,8 +132,8 @@ oc new-app --template=oshinko-scala-spark-build-dc \
     -p GIT_URI=https://github.com/eldritchjs/equoid-data-handler \
     -p GIT_REF=master \
     -p APP_MAIN_CLASS=io.radanalytics.equoid.DataHandler \
-    -e JDG_HOST=<YOUR_HOSTNAME> \
-    -e JDG_PORT=<YOUR_PORT> \
+    -e INFINISPAN_HOST=<YOUR_HOSTNAME> \
+    -e INFINISPAN_PORT=<YOUR_PORT> \
     -e WINDOW_SECONDS=<YOUR_WINDOW_SIZE> \
     -e SLIDE_SECONDS=<YOUR_SLIDING_SIZE> \
     -e BATCH_SECONDS=<YOUR_BATCH_SIZE> \
