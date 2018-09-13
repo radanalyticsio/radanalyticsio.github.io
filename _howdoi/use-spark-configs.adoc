@@ -30,7 +30,7 @@ worker configurations and then use it to create a cluster:
 oc create configmap clusterconfig --from-literal=sparkworkerconfig=mysparkconfig \
                                     --from-literal=sparkmasterconfig=mysparkconfig \
 				    --from-literal=workercount=4
-oc create mycluster --storedconfig=clusterconfig
+oshinko create mycluster --storedconfig=clusterconfig
 
 Also note that the `Advanced` tab for cluster creation on the oshinko web UI allows
 the names of configmaps to be entered for worker, master, or cluster configuration.
