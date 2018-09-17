@@ -22,11 +22,11 @@ Using the instructions that follow, you will be able to deploy Equoid on an Open
 
 When thinking about keeping track of the top-k items received in a stream, it is tempting to pursue a counting approach wherein every element received has its count kept. This, while guaranteed to be correct, can be prohibitive with respect to data transfers and storage footprint. Consider a system where the streamed items to be counted have a massive or countably infinite range of values. In this case, storage must be allocated for a label and counter, each item of the stream will require a lookup and increment, and a check to see if a shuffle is needed, assuming the data is to be sorted in-place. 
 
-Equoid, on the other hand, incorporates a Count-Min Sketch for keeping track of the heavy hitters received over the stream. Without delving into the math involved, a Count-Min Sketch is a probabilistic data structure which  provides a frequency table of events, in the top-k case these events would be a given item appearing on the stream. In terms of storage and computation it amounts to a set of hash functions mapping events to frequencies, so a table of hash functions is maintained. I said previously that the counting approach is guaranteed to be correct since it takes into account every item ever seen on the stream. In the Count-Min Sketch case, it is known that a measure of overcounting is possible and expected, however, for large scale data streams, this is usually neglible. Furthermore, parameters have been exposed in Equoid for tuning the sketches to the data stream as described further below. Another benefit of using the count-min sketch approach is the disregard of anomalous or spurious values. However, this also eliminates the potential for detecting similar but different values (e.g. itemN vs itemn.) This could be addressed by considering similarity measures of incoming values with those currently in the top-k. 
+Equoid, on the other hand, incorporates a Count-Min Sketch for keeping track of the heavy hitters received over the stream. Without delving into the math involved, a Count-Min Sketch is a probabilistic data structure which  provides a frequency table of events, in the top-k case these events would be a given item appearing on the stream. In terms of storage and computation it amounts to a set of hash functions mapping events to frequencies, so a table of hash functions is maintained. I said previously that the counting approach is guaranteed to be correct since it takes into account every item ever seen on the stream. In the Count-Min Sketch case, it is known that a measure of overcounting is possible and expected, however, for large scale data streams, the impact of this overcounting is usually neglible. Furthermore, parameters have been exposed in Equoid for tuning the sketches to the data stream as described further below; by tuning these parameters to your data stream you can optimize the performance of the model. Myriad theses have been published on this very subject and as such will not be discussed further herein. Another benefit of using the Count-Min sketch approach is the disregard of anomalous or spurious values. However, this also eliminates the potential for detecting similar but different values (e.g. itemN vs itemn.) This could be addressed by considering similarity measures of incoming values with those currently in the top-k. 
 
 === Data Sources
 
-In data streaming applications, an issue that arises is the availability of quality data streams. Indeed, seldom are the organizations willing to part with their live streams gratis. One can consider a synthetic stream, wherein a dataset is transmitted piecemeal over a stream, in a temporal fashion if desired, or at random. However, this is still limited to available datasets which may not possess the characteristics one wishes to address in their solution. As such, this notion of a synthetic dataset could be extended such that controls are provided for adding randomness to the record selection and/or generation process. For illustrative purposes, Equoid has three sample use cases, all derived from the same dataset. Namely, the online retail dataset provided by the UC Irvine Machine learning library https://archive.ics.uci.edu/ml/datasets/online+retail[found here]. We address the cases where a dataset is to be passed linearly through the stream, the case where one column is chosen at random using a https://en.wikipedia.org/wiki/Zipf%27s_law[Zipfian distribution] and sent through the strea, and a case where two columns are chosen at random and sent through the stream. For convenience, we provide a file for each of these which can be provided to the data publisher.
+In data streaming applications, an issue that arises is the availability of quality data streams. Indeed, seldom are organizations willing to part with their live streams gratis. One can consider a synthetic stream, wherein a dataset is transmitted piecemeal over a stream, in a temporal fashion if desired, or at random. However, this is still limited to available datasets which may not possess the characteristics one wishes to address in their solution. As such, this notion of a synthetic dataset could be extended such that controls are provided for adding randomness to the record selection and/or generation process. For illustrative purposes, Equoid has three sample use cases, all derived from the same dataset. Namely, the online retail dataset made available through the UC Irvine Machine learning library https://archive.ics.uci.edu/ml/datasets/online+retail[found here]. We address the cases where a dataset is to be passed linearly through the stream, the case where one column is chosen at random using a https://en.wikipedia.org/wiki/Zipf%27s_law[Zipfian distribution] and sent through the stream, and a case where two columns are chosen at random and sent through the stream. For convenience, we give a file for each of these which can be streamed to the data publisher.
 
 [[architecture]]
 == Microservice Architecture
@@ -36,7 +36,7 @@ Equoid is made up of a number of components giving users a means for visualizing
 The services of Equoid are: 
 
 - A data publisher
-- An message broker
+- A message broker
 - A data handler
 - A caching layer 
 - A web UI
@@ -50,29 +50,29 @@ Equoid utilizes a caching layer for storing the top-k values. The data publisher
 
 == Software Components
 
-We chose to use Artemis for the message broker, with the expectation it would be scalable in terms of number of streams as well as volume of traffic. In the same vein, we utilized Spark for our microservices requiring scalability, namely the data handler. Since we wished to take advantage of extant Spark libraries, and the CMSketch() object is only (as of this writing) available in Java and Scala, we chose to implement the handler in Scala. In the interest of uniformity the sample data publisher is also written in Scala. Furthermore, the AMQP Spark connector used by the data handler is one developed by Paolo Patierno at Red Hat, with more information https://radanalytics.io/examples/amqpstreaming[in this tutorial] and associated https://github.com/redhat-iot/amqp-spark-demo[upstream project].
+We chose to use Artemis for the message broker, with the expectation it would be scalable in terms of number of streams as well as volume of traffic. In the same vein, we utilized Spark for our microservice requiring scalability, namely the data handler. Since we wished to take advantage of extant Spark libraries, and the CMSketch() object is only (as of this writing) available in Java and Scala, we chose to implement the handler in Scala. In the interest of uniformity the sample data publisher is also written in Scala. Furthermore, the AMQP Spark connector used by the data handler is one developed by Paolo Patierno at Red Hat, with more information https://radanalytics.io/examples/amqpstreaming[this tutorial] and associated https://github.com/redhat-iot/amqp-spark-demo[upstream project].
 
 pass:[<img src="/assets/equoid/Equoid-Software-Components.png" alt="Alt text" class="img-responsive arch" width="800px">]
  
 [[installation]]
 == Installation
 
-As mentioned previously, Equoid consists of a number of microservices which require deployment to an OpenShift instance. In order to get you started as painlessly as possible, in this section a walkthrough of installing and configuring the Equoid services is given. These should be followed in the order presented. These steps follow the same flow as the equoid-openshift repository's https://github.com/EldritchJS/equoid-openshift/blob/master/start-full.sh[start-full.sh] script. 
+As mentioned previously, Equoid consists of a number of microservices which require deployment to an OpenShift instance. In order to get you started as swiftly as possible, in this section a walkthrough of installing and configuring the Equoid services is given. These should be followed in the order presented. These steps follow the same flow as the equoid-openshift repository's https://github.com/EldritchJS/equoid-openshift/blob/master/start-full.sh[start-full.sh] script. 
 
 [[prerequisites]]
 === Prerequisites
 
-You will need an OpenShift instance in place which you are able to access and create new projects on. This could be local using minishift or the oc tooling, or on an admistered cluster to which you have access. Be certain to log in to the OpenShift cluster, then you can created your project by running the following command:
+You will need an OpenShift instance in place which you are able to access and create new projects on. This could be local using minishift https://docs.okd.io/latest/minishift/getting-started/quickstart.html[(tutorial here)] or the oc tooling https://github.com/openshift/origin/releases[(download found here)], or on an admistered cluster to which you have access. Be certain to log in to the OpenShift cluster, then you can created your project by running the following command:
 
 ....
 oc new-project <YOUR_PROJECT_NAME>
 ....
 
-where `<YOUR_PROJECT_NAME>` is whatever you choose to name your project (e.g. equoid)
+where `<YOUR_PROJECT_NAME>` is whatever you choose to name your project (e.g. equoid).
 
 === Image streams and templates
 
-Depending on your OpenShift instance, some of the image streams necessary for Equoid may not be available, to be certain you have what's necessary to build Equoid, run the following sequence of commands:
+Depending on your OpenShift instance, some of the image streams necessary for Equoid may not be available. To be certain you have what's necessary to build Equoid, run the following sequence of commands:
 
 ....
 oc create -f https://raw.githubusercontent.com/radanalyticsio/equoid-openshift/openjdk18-image-stream.json
@@ -80,7 +80,7 @@ oc create -f https://radanalytics.io/resources.yaml
 oc create -f https://raw.githubusercontent.com/infinispan/infinispan-openshift-templates/master/templates/infinispan-ephemeral.json
 ....
 
-these provide the OpenJDK image stream for the data-publisher service, the radanalytics.io Oshinko et al. resources for facilitating Spark cluster creation and deployment, and the Infinispan template for the caching microservice, respectively. 
+These provide the OpenJDK image stream for the data-publisher service, the radanalytics.io Oshinko resources for facilitating Spark cluster creation and deployment, and the Infinispan template for the caching microservice, respectively. 
 
 === Launch Artemis
 
@@ -93,7 +93,7 @@ oc create -f https://raw.githubusercontent.com/radanalyticsio/equoid-openshift/a
 
 === Launch Infinispan Cache
 
-We'll want our caching layer in place before we begin streaming and ingesting, the following will get an Infinispan pod running. `APPLICATION_USER`, `APPLICATION_PASSWORD`, `MANAGEMENT_USER` and `MANAGEMENT_PASSWORD` should be changed to your desired values. 
+We'll want our caching layer in place before we begin streaming and ingesting. The following will get an Infinispan pod running. `APPLICATION_USER`, `APPLICATION_PASSWORD`, `MANAGEMENT_USER` and `MANAGEMENT_PASSWORD` should be changed to your desired values. 
 
 ....
 oc new-app --template=infinispan-ephemeral \
@@ -143,7 +143,7 @@ oc new-app --template=oshinko-scala-spark-build-dc \
 
 === Launch Web UI and Set Up Keycloak
 
-Equoid's web UI is launched using a script developed by one of Equoid's contributors, Jiri Kremser. The following calls will utilize that script to set up the UI as well as a keycloak instance for users and login. Finally, an edit role is given to the project's service account so additional data handler instances can be created/modified. 
+Equoid's web UI is launched using a script developed by one of Equoid's contributors, Jiri Kremser. The following calls will utilize that script to set up the UI as well as a Keycloak instance for users and login. Finally, an edit role is given to the project's service account so additional data handler instances can be created/modified. 
 
 ....
 BASE_URL="https://raw.githubusercontent.com/Jiri-Kremser/equoid-ui/master/ocp/"
@@ -197,5 +197,5 @@ Single-field sales messages sent in order as provided in the UCI dataset::
 
 === Multi-field specification and selection
 
-One potentially useful feature would be to provide a means for specifying a prio the format of messages such that individual fields or combinations of fields could be considered for top-k analysis. 
+One potentially useful feature would be to provide a means for specifying a priori the format of messages such that individual fields or combinations of fields could be considered for top-k analysis. 
 
