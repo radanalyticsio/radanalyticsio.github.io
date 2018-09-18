@@ -126,9 +126,9 @@ We are now ready to start our data handler. Note that `INFINISPAN_HOST` and `INF
 
 ....
 oc new-app --template=oshinko-scala-spark-build-dc \
-    -l app=handler-20-$OP_MODE \
+    -l app=handler \
     -p SBT_ARGS=assembly \
-    -p APPLICATION_NAME=equoid-data-handler-20-$OP_MODE \
+    -p APPLICATION_NAME=equoid-data-handler \
     -p GIT_URI=https://github.com/radanalyticsio/equoid-data-handler \
     -p APP_MAIN_CLASS=io.radanalytics.equoid.DataHandler \
     -e INFINISPAN_HOST=<YOUR_HOSTNAME> \
