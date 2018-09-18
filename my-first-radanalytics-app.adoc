@@ -6,14 +6,14 @@
 
 pass:[<h1>SparkPi: an introduction to applications using Apache Spark with radanalytics.io</h1>]
 
-In this tutorial you will build a microservice which will calculate an
-approximate value for https://en.wikipedia.org/wiki/Pi[Pi] when requested by
-HTTP. You will learn how to create applications that utilize Apache Spark and
-that are deployed directly from a source repository to OpenShift with a single command.
-
 This tutorial walks you through the steps of creating, deploying and operating
-an Apache Spark driver application on OpenShift. You should expect to spend
-30 to 60 minutes on these exercises.
+an Apache Spark driver application on OpenShift. You will build a microservice
+which will calculate an approximate value for
+https://en.wikipedia.org/wiki/Pi[Pi] when requested by HTTP. Through this
+process you will also learn how to create applications that utilize Apache
+Spark and that are deployed directly from a source repository to OpenShift
+with a single command. You should expect to spend 30 to 60 minutes on these
+exercises.
 
 [[prerequisites]]
 == Prerequisites
@@ -36,9 +36,8 @@ The SparkPi microservice that you will build during this tutorial is quite
 simple in its design and functionality. SparkPi is deployed as a single server
 pod and several Apache Spark pods. The microservice provides an HTTP server
 that accepts `GET` requests and responds with an estimation of Pi. It does
-this by using Apache Spark to calculate the value by using the
-https://en.wikipedia.org/wiki/Approximations_of_%CF%80#Summing_a_circle.27s_area[summing of a circle's area]
-technique.
+this by using Apache Spark to calculate the value by using a
+https://en.wikipedia.org/wiki/Approximations_of_%CF%80#Summing_a_circle.27s_area[Monte Carlo method].
 
 Note that usually you would not run extended calculations during an HTTP
 request unless the calculations can be completed quickly. However, this
@@ -70,7 +69,7 @@ http://github.com/radanalyticsio/oshinko-s2i[Oshinko source-to-image tools].
 https://docs.openshift.org/latest/architecture/core_concepts/builds_and_image_streams.html#source-build[Source-to-image]
 technology is fundamental to the operation of this tutorial. Source-to-image
 provides a convenient way for you to produce container images directly from
-your source repositories. This work is handled by language specific builder
+your source repositories. This work is handled by language-specific builder
 images which can ingest your source code, assemble it and then produce an
 application image which is ready to be deployed. In the case of the Oshinko
 source-to-image builders, an Apache Spark cluster is also created dynamically
