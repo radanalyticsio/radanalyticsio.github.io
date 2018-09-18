@@ -75,19 +75,19 @@ where `<YOUR_PROJECT_NAME>` is whatever you choose to name your project (e.g. eq
 Depending on your OpenShift instance, some of the image streams necessary for Equoid may not be available. To be certain you have what's necessary to build Equoid, run the following sequence of commands:
 
 ....
-oc create -f https://raw.githubusercontent.com/radanalyticsio/equoid-openshift/openjdk18-image-stream.json
+oc create -f https://raw.githubusercontent.com/radanalyticsio/equoid-openshift/master/fabric8-image-streams.json
 oc create -f https://radanalytics.io/resources.yaml
 oc create -f https://raw.githubusercontent.com/infinispan/infinispan-openshift-templates/master/templates/infinispan-ephemeral.json
 ....
 
-These provide the OpenJDK image stream for the data-publisher service, the radanalytics.io Oshinko resources for facilitating Spark cluster creation and deployment, and the Infinispan template for the caching microservice, respectively. 
+These provide the Fabric8 fuse-java image stream for the data-publisher service, the radanalytics.io Oshinko resources for facilitating Spark cluster creation and deployment as well as S2I for the data-handler, and the Infinispan template for the caching microservice, respectively. 
 
 === Launch Artemis
 
 We'll get Artemis up and running, as it is necessary for both the publisher and handler:
 
 ....
-oc create -f https://raw.githubusercontent.com/radanalyticsio/equoid-openshift/artemis-rc.yaml
+oc create -f https://raw.githubusercontent.com/radanalyticsio/equoid-openshift/master/artemis-rc.yaml
 ....
 
 
@@ -113,10 +113,10 @@ We can next begin publishing our streaming data by starting an instance of the d
 ....
 oc new-app \
     -l app=publisher \
-    -e OP_MODE={SINGLE|DUAL|LINEAR}
-    -e DATA_URL_PRIMARY=<YOUR_DATASET_URL>
-    --image-stream=`oc project -q`/redhat-openjdk18-openshift:1.3 \
-    https://github.com/eldritchjs/equoid-data-publisher
+    -e OP_MODE={single|dual|linear} \
+    -e DATA_URL_PRIMARY=<YOUR_DATASET_URL> \
+    --image-stream=`oc project -q`/fuse-java \
+    https://github.com/radanalyticsio/equoid-data-publisher
 ....
 
 
@@ -126,18 +126,17 @@ We are now ready to start our data handler. Note that `INFINISPAN_HOST` and `INF
 
 ....
 oc new-app --template=oshinko-scala-spark-build-dc \
-    -l app=handler-20-stock \
+    -l app=handler-20-$OP_MODE \
     -p SBT_ARGS=assembly \
-    -p APPLICATION_NAME=equoid-data-handler-20-stock \
-    -p GIT_URI=https://github.com/eldritchjs/equoid-data-handler \
-    -p GIT_REF=master \
+    -p APPLICATION_NAME=equoid-data-handler-20-$OP_MODE \
+    -p GIT_URI=https://github.com/radanalyticsio/equoid-data-handler \
     -p APP_MAIN_CLASS=io.radanalytics.equoid.DataHandler \
     -e INFINISPAN_HOST=<YOUR_HOSTNAME> \
     -e INFINISPAN_PORT=<YOUR_PORT> \
     -e WINDOW_SECONDS=<YOUR_WINDOW_SIZE> \
     -e SLIDE_SECONDS=<YOUR_SLIDING_SIZE> \
     -e BATCH_SECONDS=<YOUR_BATCH_SIZE> \
-    -e OP_MODE={SINGLE|DUAL|LINEAR}
+    -e OP_MODE={single|dual|linear} \
     -p SPARK_OPTIONS='--driver-java-options=-Dvertx.cacheDirBase=/tmp'
 ....
 
@@ -146,20 +145,26 @@ oc new-app --template=oshinko-scala-spark-build-dc \
 Equoid's web UI is launched using a script developed by one of Equoid's contributors, Jiri Kremser. The following calls will utilize that script to set up the UI as well as a Keycloak instance for users and login. Finally, an edit role is given to the project's service account so additional data handler instances can be created/modified. 
 
 ....
-BASE_URL="https://raw.githubusercontent.com/Jiri-Kremser/equoid-ui/master/ocp/"
+BASE_URL="https://raw.githubusercontent.com/radanalyticsio/equoid-ui/master/ocp/"
 curl -sSL $BASE_URL/ocp-apply.sh | \
     BASE_URL="$BASE_URL" \
     KC_REALM_PATH="web-ui/keycloak/realm-config" \
     bash -s stable
-oc policy add-role-to-user edit system:serviceaccount:$PROJECT_NAME:default
+oc policy add-role-to-user edit system:serviceaccount:`oc project -q`:default
 ....
 
 [[usage]]
 == Usage
 
+=== Web Interface
+With all the microservices running, you can now view a visualization of the data stream's top-ks for the parameters you set. By browsing to the OpenShift webui for your cluster, logging in, and looking at your project's overview, you should see a pod/application named equoid-ui with an associated URI. By clicking on the latter, you will then be at the login screen for your equoid system. Log in using either of the default credential sets listed on the login page, then click on the graph tab. You should see a visualization of your stream's data which updates periodically. 
+
+In addition, you can add a frequent item by clicking on the add item button. Finally, you can add another data handler via the command line, a script is included in equoid-openshift to facilitate additional data handler instances. Once these are up and running, the web UI will automatically add their data in a separate graph tab. 
+ 
+=== Equoid Application Settings
 We provide a number of variables to modify per the needs of end users. In this section, these are described. 
 
-=== Data Publisher
+==== Data Publisher
 
 `DATA_URL_PRIMARY` - URL of either full dataset or list of all field values for the linear and single `OP_MODE` settings, respectively.
 
@@ -167,7 +172,7 @@ We provide a number of variables to modify per the needs of end users. In this s
 
 `OP_MODE` - Operating mode: single for a list of field values from which random elements will be generated, dual for two lists of field values from which random elements will be generated, linear for a dataset meant to be read in sequence and transmitted.
 
-=== Data Handler
+==== Data Handler
 
 `WINDOW_SECONDS` - Size, in seconds of window for which the top-k elements should be determined. 
 
@@ -177,19 +182,19 @@ We provide a number of variables to modify per the needs of end users. In this s
 
 `OP_MODE` - As with the data publisher, single for a list of field values from which random elements will be generated, dual for two lists of field values from which random elements will be generated, linear for a dataset meant to be read in sequence and transmitted.
 
-=== Settings for Examples
+==== Settings for Examples
 
 Single-field sales messages generated from a set of possible values for item ID as provided by UCI dataset::
-* `DATA_URL_PRIMARY` https://github.com/EldritchJS/equoid-data-publisher/blob/master/data/StockCodes.txt for data publisher 
+* `DATA_URL_PRIMARY` https://raw.githubusercontent.com/radanalyticsio/equoid-data-publisher/master/data/StockCodes.txt for data publisher 
 * `OP_MODE` single for both data publisher and handler
 
 Dual-field sales messages generated from a set of possible values for item ID and country as provided by UCI dataset::
-* `DATA_URL_PRIMARY` https://github.com/EldritchJS/equoid-data-publisher/blob/master/data/StockCodes.txt for data publisher 
-* `DATA_URL_SECONDARY` https://github.com/EldritchJS/equoid-data-publisher/blob/master/data/Countries.txt for data publisher 
+* `DATA_URL_PRIMARY` https://raw.githubusercontent.com/radanalyticsio/equoid-data-publisher/master/data/StockCodes.txt for data publisher 
+* `DATA_URL_SECONDARY` https://raw.githubusercontent.com/radanalyticsio/equoid-data-publisher/master/data/Countries.txt for data publisher 
 * `OP_MODE` dual for both data publisher and handler
 
 Single-field sales messages sent in order as provided in the UCI dataset::
-* `DATA_URL_PRIMARY` https://github.com/EldritchJS/equoid-data-publisher/blob/master/data/StockCodes.txt for data publisher 
+* `DATA_URL_PRIMARY` https://raw.githubusercontent.com/radanalyticsio/equoid-data-publisher/master/data/StockCodesLinear.txt for data publisher 
 * `OP_MODE` linear for both data publisher and handler
 
 [[expansion]]
