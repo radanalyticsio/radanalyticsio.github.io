@@ -35,6 +35,7 @@ them to your peers and colleagues.
 <h4>
 <span class="badge">Java</span>
 <span class="badge">Python</span>
+<span class="badge">Scala</span>
 </h4>
 
 <p>In this tutorial you will build a microservice which will calculate an
