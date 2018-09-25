@@ -1,4 +1,5 @@
-= Example Application
+= Example Application Title Text
+:page-project-name: Example Application
 :page-link: example_application
 :page-weight: 100
 :page-labels: [Example, Programming Language, Technology]
@@ -24,6 +25,9 @@ important for displaying information about the application on the site. The
 most important variables to fill out while creating your documentation are:
 `page-link`, `page-description` and `page-project_links`.
 
+* `page-project-name` is the name that will be displayed in the navigation
+  menu bar when a user lands on this page. This value allows you to vary the
+  title of your document from the name of the application project.
 * `page-link` is the name that will be used internally when generating the site,
   it has meaning for the directory structure and links that will be created,
   it should be a single continuous word with no spaces (underscores and
