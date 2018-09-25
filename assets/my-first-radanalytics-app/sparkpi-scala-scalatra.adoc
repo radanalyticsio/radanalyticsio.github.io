@@ -316,7 +316,7 @@ tutorial-sparkpi-scala-scalatra (root)
 
 ----
 
-This deployment can be tested loby running `java -jar target/scala-2.11/tutorial-sparkpi-scala-scalatra-assembly-0.0.1-SNAPSHOT.jar`. The service should start, but will fail when servicing requests, unless you have a Spark cluster running locally.
+This deployment can be tested by running `java -jar target/scala-2.11/tutorial-sparkpi-scala-scalatra-assembly-0.0.1-SNAPSHOT.jar`. The service should start, but will fail when servicing requests, unless you have a Spark cluster running locally.
 
 == Commit your code and push it to a hosted Git repository
 Now that the core project code has been implemented, it's time to push it up to a hosted source code repository. In this example, GitHub will be the source code host, however, any Git hosting service (such as GitLab or BitBucket) will also work. Start by https://help.github.com/articles/create-a-repo/[creating a GitHub repository] for the project. Then, the following commands will add all the source code to the project and push it to GitHub.
@@ -359,7 +359,7 @@ Use `oc logs -f bc/sparkpi` to tail the logs. The assembly task from SBT will be
 Now that the service is up and running, you can return to the link:/my-first-radanalytics-app.html#user[My First RADanalytics Application] to learn how to interact with this new microservice.
 
 == Supplementary Materials and Further Reading
-* The full source code of this example can be found https://github.com/reynoldsm88/tutorial-sparkpi-scala-scalatra[on GitHub]
+* The full source code of this example can be found https://github.com/radanalyticsio/tutorial-sparkpi-scala-scalatra[on GitHub]
 * https://www.scala-sbt.org/1.x/docs/index.html[SBT documentation]
 * https://github.com/holdenk/spark-testing-base/wiki[Spark Testing Base Documentation]
 * http://www.scalatra.org/guides[Scalatra User Guides]
