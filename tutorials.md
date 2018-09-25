@@ -48,6 +48,7 @@ source repository to OpenShift with a single command.</p>
 <li><a href="https://github.com/radanalyticsio/tutorial-sparkpi-java-spring" target="blank">https://github.com/radanalyticsio/tutorial-sparkpi-java-spring</a></li>
 <li><a href="https://github.com/radanalyticsio/tutorial-sparkpi-java-vertx" target="blank">https://github.com/radanalyticsio/tutorial-sparkpi-java-vertx</a></li>
 <li><a href="https://github.com/radanalyticsio/tutorial-sparkpi-python-flask" target="blank">https://github.com/radanalyticsio/tutorial-sparkpi-python-flask</a></li>
+<li><a href="https://github.com/radanalyticsio/tutorial-sparkpi-scala-scalatra" target="blank">https://github.com/radanalyticsio/tutorial-sparkpi-scala-scalatra</a></li>
 </ul>
 <br/>
 
