@@ -27,8 +27,10 @@ users.
   you will use for the new project. Alternatively, you may select a
   pre-existing project by typing `oc project <project name>`.
 
-. Type `oc create -f pass:[https://radanalytics.io/resources.yaml]` into your
-  terminal shell.
+. Into your terminal shell type
+....
+oc create -f https://radanalytics.io/resources.yaml
+....
 
 .Additional resources
 
