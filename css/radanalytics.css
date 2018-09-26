@@ -110,3 +110,29 @@ div.title {
     margin-bottom: 10px;
     margin-top: 20px;
 }
+
+/* clipboard + code blocks */
+.clipboard {
+    border: 0;
+    font-size: .75em;
+    text-transform: uppercase;
+    font-weight: 500;
+    padding: 6px;
+    color: #888;
+    position: absolute;
+    top: .6rem;
+    right: .5rem;
+    background: transparent;
+    border-radius: 3px;
+}
+
+.pre-code {
+  position: relative;
+  padding-right: 40px;
+  background-color: #f1f1f1;
+}
+
+.clipboard:hover, .clipboard:focus, .clipboard:active {
+    outline: 0;
+    background-color: #ddd;
+}
