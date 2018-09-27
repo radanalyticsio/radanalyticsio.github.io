@@ -1,4 +1,4 @@
-= Equoid
+= Scalable trending item detection on streaming data
 :page-link: equoid
 :page-liquid:
 :page-weight: 0 
@@ -22,7 +22,7 @@ Using the instructions that follow, you will be able to deploy Equoid on an Open
 
 When thinking about keeping track of the top-k items received in a stream, it is tempting to pursue a counting approach wherein every element received has its count kept. This, while guaranteed to be correct, can be prohibitive with respect to data transfers and storage footprint. Consider a system where the streamed items to be counted have a massive or countably infinite range of values. In this case, storage must be allocated for a label and counter, each item of the stream will require a lookup and increment, and a check to see if a shuffle is needed, assuming the data is to be sorted in-place. 
 
-Equoid, on the other hand, incorporates a Count-Min Sketch for keeping track of the heavy hitters received over the stream. Without delving into the math involved, a Count-Min Sketch is a probabilistic data structure which  provides a frequency table of events, in the top-k case these events would be a given item appearing on the stream. In terms of storage and computation it amounts to a set of hash functions mapping events to frequencies, so a table of hash functions is maintained. I said previously that the counting approach is guaranteed to be correct since it takes into account every item ever seen on the stream. In the Count-Min Sketch case, it is known that a measure of overcounting is possible and expected, however, for large scale data streams, the impact of this overcounting is usually neglible. Furthermore, parameters have been exposed in Equoid for tuning the sketches to the data stream as described further below; by tuning these parameters to your data stream you can optimize the performance of the model. Myriad theses have been published on this very subject and as such will not be discussed further herein. Another benefit of using the Count-Min sketch approach is the disregard of anomalous or spurious values. However, this also eliminates the potential for detecting similar but different values (e.g. itemN vs itemn.) This could be addressed by considering similarity measures of incoming values with those currently in the top-k. 
+Equoid, on the other hand, incorporates a Count-Min Sketch for keeping track of the heavy hitters received over the stream. Without delving into the math involved, a Count-Min Sketch is a probabilistic data structure which  provides a frequency table of events, in the top-k case these events would be a given item appearing on the stream. In terms of storage and computation it amounts to a set of hash functions mapping events to frequencies, so a table of hash functions is maintained. As mentioned, the counting approach is guaranteed to be correct since it takes into account every item ever seen on the stream. In the Count-Min Sketch case, it is known that a measure of overcounting is possible and expected, however, for large scale data streams, the impact of this overcounting is usually neglible. Furthermore, parameters have been exposed in Equoid for tuning the sketches to the data stream as described further below; by tuning these parameters to your data stream you can optimize the performance of the model, though this is not discussed here. Another benefit of using the Count-Min sketch approach is the disregard of anomalous or spurious values. However, this also eliminates the potential for detecting similar but different values (e.g. itemN vs itemn.) This could be addressed by considering similarity measures of incoming values with those currently in the top-k. 
 
 === Data Sources
 
@@ -31,7 +31,7 @@ In data streaming applications, an issue that arises is the availability of qual
 [[architecture]]
 == Microservice Architecture
 
-Equoid is made up of a number of components giving users a means for visualizing the top-k elements in a stream during a specified temporal window. This is made possible through a hosted web UI and backend REST interface for parameter updates. 
+Equoid is made up of a number of components which provide  a means for determining the top-k elements in a stream during a specified temporal window. This is made possible through a hosted web UI and backend REST interface for parameter updates. 
 
 The services of Equoid are: 
 
@@ -57,44 +57,42 @@ pass:[<img src="/assets/equoid/Equoid-Software-Components.png" alt="Alt text" cl
 [[installation]]
 == Installation
 
-As mentioned previously, Equoid consists of a number of microservices which require deployment to an OpenShift instance. In order to get you started as swiftly as possible, in this section a walkthrough of installing and configuring the Equoid services is given. These should be followed in the order presented. These steps follow the same flow as the equoid-openshift repository's https://github.com/EldritchJS/equoid-openshift/blob/master/start-full.sh[start-full.sh] script. 
+Equoid consists of a number of microservices which require deployment to an OpenShift instance. In order to get you started as swiftly as possible, in this section a walkthrough of installing and configuring the Equoid services is given. 
 
 [[prerequisites]]
 === Prerequisites
 
-You will need an OpenShift instance in place which you are able to access and create new projects on. This could be local using minishift https://docs.okd.io/latest/minishift/getting-started/quickstart.html[(tutorial here)] or the oc tooling https://github.com/openshift/origin/releases[(download found here)], or on an admistered cluster to which you have access. Be certain to log in to the OpenShift cluster, then you can created your project by running the following command:
+* An available OpenShift instance.
+* A terminal with the OpenShift (`oc`) command and active login session are available.
+* An OpenShift project you own.
 
-....
-oc new-project <YOUR_PROJECT_NAME>
-....
+[[procedure]]
+=== Procedure
 
-where `<YOUR_PROJECT_NAME>` is whatever you choose to name your project (e.g. equoid).
-
-=== Image streams and templates
-
+. Install Image Streams and Templates
++
 Depending on your OpenShift instance, some of the image streams necessary for Equoid may not be available. To be certain you have what's necessary to build Equoid, run the following sequence of commands:
-
++
 ....
 oc create -f https://raw.githubusercontent.com/radanalyticsio/equoid-openshift/master/fabric8-image-streams.json
 oc create -f https://radanalytics.io/resources.yaml
 oc create -f https://raw.githubusercontent.com/infinispan/infinispan-openshift-templates/master/templates/infinispan-ephemeral.json
 ....
-
++
 These provide the Fabric8 fuse-java image stream for the data-publisher service, the radanalytics.io Oshinko resources for facilitating Spark cluster creation and deployment as well as S2I for the data-handler, and the Infinispan template for the caching microservice, respectively. 
 
-=== Launch Artemis
-
+. Launch Artemis
++
 We'll get Artemis up and running, as it is necessary for both the publisher and handler:
-
++
 ....
 oc create -f https://raw.githubusercontent.com/radanalyticsio/equoid-openshift/master/artemis-rc.yaml
 ....
 
-
-=== Launch Infinispan Cache
-
+. Launch Infinispan Cache
++
 We'll want our caching layer in place before we begin streaming and ingesting. The following will get an Infinispan pod running. `APPLICATION_USER`, `APPLICATION_PASSWORD`, `MANAGEMENT_USER` and `MANAGEMENT_PASSWORD` should be changed to your desired values. 
-
++
 ....
 oc new-app --template=infinispan-ephemeral \
     -l app=datagrid \
@@ -105,11 +103,12 @@ oc new-app --template=infinispan-ephemeral \
     -p MANAGEMENT_USER=<YOUR_MGMT_USERNAME> \
     -p MANAGEMENT_PASSWORD=<YOUR_MGMT_PASSWORD>
 ....
++
 
-=== Launch Data Publisher
-
+. Launch Data Publisher
++
 We can next begin publishing our streaming data by starting an instance of the data publisher. `OP_MODE` described later should be set to the mode you wish. Also, `DATA_URL_PRIMARY` should be set to the location of your data set or data potential values file. 
-
++
 ....
 oc new-app \
     -l app=publisher \
@@ -119,11 +118,10 @@ oc new-app \
     https://github.com/radanalyticsio/equoid-data-publisher
 ....
 
-
-=== Launch Data Handler
-
+. Launch Data Handler
++
 We are now ready to start our data handler. Note that `INFINISPAN_HOST` and `INFINISPAN_PORT` need to be set to appropriate values, in the case of the template provided, these are `datagrid-hotrod` and `11222` respectively. In addition, `WINDOW_SECONDS` is the number of second for which you wish to track the top-k items, `SLIDE_SECONDS` represents the number of seconds to slide your data window each iteration, and `BATCH_SECONDS` is the size of samples you wish to acquire from the message stream at a time. Finally, `OP_MODE` needs to be set to the same value as set for the data publisher.
-
++
 ....
 oc new-app --template=oshinko-scala-spark-build-dc \
     -l app=handler \
@@ -140,10 +138,10 @@ oc new-app --template=oshinko-scala-spark-build-dc \
     -p SPARK_OPTIONS='--driver-java-options=-Dvertx.cacheDirBase=/tmp'
 ....
 
-=== Launch Web UI and Set Up Keycloak
-
+. Launch Web UI and Set Up Keycloak
++
 Equoid's web UI is launched using a script developed by one of Equoid's contributors, Jiri Kremser. The following calls will utilize that script to set up the UI as well as a Keycloak instance for users and login. Finally, an edit role is given to the project's service account so additional data handler instances can be created/modified. 
-
++
 ....
 BASE_URL="https://raw.githubusercontent.com/radanalyticsio/equoid-ui/master/ocp/"
 curl -sSL $BASE_URL/ocp-apply.sh | \
@@ -153,16 +151,8 @@ curl -sSL $BASE_URL/ocp-apply.sh | \
 oc policy add-role-to-user edit system:serviceaccount:`oc project -q`:default
 ....
 
-[[usage]]
-== Usage
-
-=== Web Interface
-With all the microservices running, you can now view a visualization of the data stream's top-ks for the parameters you set. By browsing to the OpenShift webui for your cluster, logging in, and looking at your project's overview, you should see a pod/application named equoid-ui with an associated URI. By clicking on the latter, you will then be at the login screen for your equoid system. Log in using either of the default credential sets listed on the login page, then click on the graph tab. You should see a visualization of your stream's data which updates periodically. 
-
-In addition, you can add a frequent item by clicking on the add item button. Finally, you can add another data handler via the command line, a script is included in equoid-openshift to facilitate additional data handler instances. Once these are up and running, the web UI will automatically add their data in a separate graph tab. 
- 
 === Equoid Application Settings
-We provide a number of variables to modify per the needs of end users. In this section, these are described. 
+Equoid's system configuration and tuning parameters are described below.
 
 ==== Data Publisher
 
@@ -171,6 +161,7 @@ We provide a number of variables to modify per the needs of end users. In this s
 `DATA_URL_SECONDARY` - URL of all field values for the dual `OP_MODE` setting.
 
 `OP_MODE` - Operating mode: single for a list of field values from which random elements will be generated, dual for two lists of field values from which random elements will be generated, linear for a dataset meant to be read in sequence and transmitted.
+
 
 ==== Data Handler
 
@@ -181,6 +172,7 @@ We provide a number of variables to modify per the needs of end users. In this s
 `BATCH_SECONDS` - Size, in seconds, of the batch size to be acquired from the broker.
 
 `OP_MODE` - As with the data publisher, single for a list of field values from which random elements will be generated, dual for two lists of field values from which random elements will be generated, linear for a dataset meant to be read in sequence and transmitted.
+
 
 ==== Settings for Examples
 
@@ -197,10 +189,26 @@ Single-field sales messages sent in order as provided in the UCI dataset::
 * `DATA_URL_PRIMARY` https://raw.githubusercontent.com/radanalyticsio/equoid-data-publisher/master/data/StockCodesLinear.txt for data publisher 
 * `OP_MODE` linear for both data publisher and handler
 
+[[usage]]
+== Usage
+
+=== Web Interface
+With all the microservices running, you can now view a visualization of the data stream's top-ks for the parameters you have chosen. By browsing to the OpenShift web UI for your cluster, logging in, and looking at your project's overview, you should see a pod/application named equoid-ui with an associated URI. You could also run `oc get routes` from the command line to get the URI. By browsing to the address, you will then be at the initial splash screen for your equoid system, as shown in the following:
+
+pass:[<img src="/assets/equoid/Splash-Screen.png" alt="Alt text" class="img-responsive arch" width="800px">]
+
+By clicking on "sign in" you will be taken to the login screen. You can log in using either of the default credential sets listed on the login page, then click on the graph tab. You should see a visualization of your stream's data which updates periodically. Similar to the following, which shows an example of Equoid determining the top-3 items for 20 second windows. By hovering over areas of the graph, a breakdown of the items within received within the time window are displayed, as shown in the figure.  
+
+pass:[<img src="/assets/equoid/Graph-Screen.png" alt="Alt text" class="img-responsive arch" width="800px">]
+
+In addition, you can add a new frequent item by entering an item ID in the textbox on the left of the page and then clicking on the add button. Finally, you can add another data handler via the command line, a script is included in equoid-openshift to facilitate additional data handler instances. Once these are up and running, the web UI will automatically add their data in a separate graph tab. 
+
 [[expansion]]
 == Expansion
 
 === Multi-field specification and selection
 
 One potentially useful feature would be to provide a means for specifying a priori the format of messages such that individual fields or combinations of fields could be considered for top-k analysis. 
+
+Another would be to expand on parameter tuning, some further analysis of the incoming data stream to guide parameter settings, for example. 
 
