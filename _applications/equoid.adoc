@@ -1,4 +1,5 @@
 = Scalable trending item detection on streaming data
+:page-project-name: Equoid
 :page-link: equoid
 :page-liquid:
 :page-weight: 0 
@@ -29,7 +30,7 @@ Equoid, on the other hand, incorporates a Count-Min Sketch for keeping track of 
 In data streaming applications, an issue that arises is the availability of quality data streams. Indeed, seldom are organizations willing to part with their live streams gratis. One can consider a synthetic stream, wherein a dataset is transmitted piecemeal over a stream, in a temporal fashion if desired, or at random. However, this is still limited to available datasets which may not possess the characteristics one wishes to address in their solution. As such, this notion of a synthetic dataset could be extended such that controls are provided for adding randomness to the record selection and/or generation process. For illustrative purposes, Equoid has three sample use cases, all derived from the same dataset. Namely, the online retail dataset made available through the UC Irvine Machine learning library https://archive.ics.uci.edu/ml/datasets/online+retail[found here]. We address the cases where a dataset is to be passed linearly through the stream, the case where one column is chosen at random using a https://en.wikipedia.org/wiki/Zipf%27s_law[Zipfian distribution] and sent through the stream, and a case where two columns are chosen at random and sent through the stream. For convenience, we give a file for each of these which can be streamed to the data publisher.
 
 [[architecture]]
-== Microservice Architecture
+== Architecture
 
 Equoid is made up of a number of components which provide  a means for determining the top-k elements in a stream during a specified temporal window. This is made possible through a hosted web UI and backend REST interface for parameter updates. 
 
@@ -50,7 +51,7 @@ Equoid utilizes a caching layer for storing the top-k values. The data publisher
 
 == Software Components
 
-We chose to use Artemis for the message broker, with the expectation it would be scalable in terms of number of streams as well as volume of traffic. In the same vein, we utilized Spark for our microservice requiring scalability, namely the data handler. Since we wished to take advantage of extant Spark libraries, and the CMSketch() object is only (as of this writing) available in Java and Scala, we chose to implement the handler in Scala. In the interest of uniformity the sample data publisher is also written in Scala. Furthermore, the AMQP Spark connector used by the data handler is one developed by Paolo Patierno at Red Hat, with more information https://radanalytics.io/examples/amqpstreaming[this tutorial] and associated https://github.com/redhat-iot/amqp-spark-demo[upstream project].
+We chose to use Artemis for the message broker, with the expectation it would be scalable in terms of number of streams as well as volume of traffic. In the same vein, we utilized Spark for our microservice requiring scalability, namely the data handler. Since we wished to take advantage of extant Spark libraries, and Spark's `CMSketch` object is only (as of this writing) available in Java and Scala, we chose to implement the handler in Scala. In the interest of uniformity, the sample data publisher is also written in Scala. Furthermore, the AMQP Spark connector used by the data handler was developed by Paolo Patierno at Red Hat, with more information https://radanalytics.io/examples/amqpstreaming[this tutorial] and associated https://github.com/redhat-iot/amqp-spark-demo[upstream project].
 
 pass:[<img src="/assets/equoid/Equoid-Software-Components.png" alt="Alt text" class="img-responsive arch" width="800px">]
  
@@ -212,3 +213,7 @@ One potentially useful feature would be to provide a means for specifying a prio
 
 Another would be to expand on parameter tuning, some further analysis of the incoming data stream to guide parameter settings, for example. 
 
+[[videos]]
+== Videos
+
+No videos are available for this application.
