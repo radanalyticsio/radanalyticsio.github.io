@@ -88,7 +88,7 @@ documents stored in the `_faqs` directory. To add a new question/answer pair,
 simply do the following:
 
 1. Copy the `_templates/faq.adoc` file to the `_faqs` directory, and
-   rename it to suite reflect your question.
+   rename it to reflect your question.
 1. Edit the contents of the new file to contain your question, the title of
    the document will get converted to be used in the FAQ page.
 1. Commit the new file to your feature branch and propose a pull request when
@@ -101,7 +101,7 @@ documents stored in the `_howdoi` directory. To add a new question/answer pair,
 simply do the following:
 
 1. Copy the `_templates/how-do-i.adoc` file to the `_howdoi` directory, and
-   rename it to suite reflect your question.
+   rename it to reflect your question.
 1. Edit the contents of the new file to contain your question, the title of
    the document will get converted to be used in the "How do I" page.
 1. If you need to add media files for your entry, add them to the
