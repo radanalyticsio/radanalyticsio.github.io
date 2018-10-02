@@ -2,9 +2,7 @@
 :page-layout: howdoi
 :page-menu_entry: How do I?
 
-radanalytics.io components are regularly updated to work out-of-the-box with a recent Apache Spark release. When you follow the instructions under link:/howdoi/install-radanalyticsio[How do I install radanalytics.io?], your project is set up to use a pre-determined distribution of Apache Spark. Simple and easy!
-
-If you need to choose your own Apache Spark distribution, radanalytics.io makes that simple, too, with a script to generate custom images and a slightly different template to install the components.
+When you follow the instructions under link:/howdoi/install-radanalyticsio[How do I install radanalytics.io?], your project is set up to use a pre-determined distribution of Apache Spark. You can also choose your own Apache Spark distribution with the instructions below.
 
 .Prerequisites
 
@@ -60,3 +58,13 @@ By default, the images are built with the `latest` tag. To use a tag other than 
 .. Install components from the newly generated template file
 
     oc create -f resources-is-2.3.0.yaml
+
+.Additional resources
+
+* link:/howdoi/install-radanalyticsio.adoc[How do I install radanalytics.io?]
+
+* link:/howdoi/validate-radanalytics-install[How do I validate my radanalytics.io installation?]
+
+* link:/howdoi/launch-oshinko-webui-cli[How do I launch the Oshinko web interface from the command line?]
+
+* link:/howdoi/install-oshinko-cli[How do I install the Oshinko command line interface tool?]
