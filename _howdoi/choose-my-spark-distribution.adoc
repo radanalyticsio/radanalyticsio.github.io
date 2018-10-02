@@ -1,0 +1,62 @@
+= How do I install radanalytics.io and choose my own Apache Spark distribution?
+:page-layout: howdoi
+:page-menu_entry: How do I?
+
+radanalytics.io components are regularly updated to work out-of-the-box with a recent Apache Spark release. When you follow the instructions under link:/howdoi/install-radanalyticsio[How do I install radanalytics.io?], your project is set up to use a pre-determined distribution of Apache Spark. Simple and easy!
+
+If you need to choose your own Apache Spark distribution, radanalytics.io makes that simple, too, with a script to generate custom images and a slightly different template to install the components.
+
+.Prerequisites
+
+. A terminal shell and OpenShift `oc` tool available with an active login to OpenShift.
+
+. An Apache Spark distribution tarball. The tarball may be a local file or a url and should have the same basic structure as an Apache Spark tarball
+
+* a top-level directory we'll call TOP
+* binaries under TOP/bin
+* jar files under TOP/jars
+* configuration files under TOP/conf
+
+. Optionally, an md5 file for the tarball (if an md5 file is used, both the tarball and the md5 file *must be* downloaded to a subdirectory and that subdirectory specified as the argument to the `build` command below).
+
+.Procedure
+
+. Get the `rad-image` script
+
+.. The script is available from link:/assets/tools/rad-image[this link], or download it in your shell using curl:
+
+    curl -o rad-image https://radanalytics.io/assets/tools/rad-image
+
+.. Make sure that it's executable:
+
+    chmod +x rad-image
+
+.. By the way, you can access help for `rad-image` like this:
+
+    ./rad-image -h
+
+. Build the radanalytics.io images with the Spark distribution you've selected. This will create image streams in your current OpenShift project to hold the completed images. Note that the value for the Spark distribution may be a file, url or subdirectory. Here's an example using a url
+
+
+    ./rad-image build https://archive.apache.org/dist/spark/spark-2.3.0/spark-2.3.0-bin-hadoop2.7.tgz
+
+. Install the radanalytics.io components that will work with the image streams
+
+    oc create -f https://radanalytics.io/resources-is.yaml
+
+.Using Image tags
+
+By default, the images are built with the `latest` tag. To use a tag other than latest
+
+.. Specify the `-t TAG` option on the build command
+
+    ./rad-image build -t 2.3.0 spark-2.3.0-bin-hadoop2.7.tgz
+
+.. Generate a template file that uses your tag
+
+    ./rad-image template 2.3.0
+    Creating resources-is-2.3.0.yaml
+
+.. Install components from the newly generated template file
+
+    oc create -f resources-is-2.3.0.yaml
