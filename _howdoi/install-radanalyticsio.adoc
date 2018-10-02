@@ -34,7 +34,7 @@ oc create -f https://radanalytics.io/resources.yaml
 
 .Additional resources
 
-* link:/howdoi/choose-my-spark-distribution[ How do I install radanalytics.io and choose my own Apache Spark distribution?]
+* link:/howdoi/choose-my-spark-distribution[How do I install radanalytics.io and choose my own Apache Spark distribution?]
 
 * link:/howdoi/validate-radanalytics-install[How do I validate my radanalytics.io installation?]
 

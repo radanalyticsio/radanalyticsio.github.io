@@ -61,7 +61,7 @@ By default, the images are built with the `latest` tag. To use a tag other than 
 
 .Additional resources
 
-* link:/howdoi/install-radanalyticsio.adoc[How do I install radanalytics.io?]
+* link:/howdoi/install-radanalyticsio[How do I install radanalytics.io?]
 
 * link:/howdoi/validate-radanalytics-install[How do I validate my radanalytics.io installation?]
 
