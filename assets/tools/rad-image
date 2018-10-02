@@ -199,7 +199,7 @@ function clean_up() {
 function get_image() {
     case $1 in
 	radanalytics-pyspark)
-	    echo radanalyticsio/radanalytics-pyspark-inc:latest
+	    echo radanalyticsio/radanalytics-pyspark-inc:stable
 	    ;;
 	radanalytics-pyspark-py36)
 	    echo radanalyticsio/radanalytics-pyspark-py36-inc:stable
