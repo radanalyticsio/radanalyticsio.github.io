@@ -37,12 +37,12 @@ IMAGESTREAMS="radanalytics-pyspark radanalytics-pyspark-py36 radanalytics-java-s
 
 while getopts h option; do
     case $option in
-	h)
-	    usage
-	    exit 0
-	    ;;	    
-	*)
-	    ;;
+        h)
+            usage
+            exit 0
+            ;;
+        *)
+            ;;
     esac
 done
 
@@ -64,7 +64,7 @@ function check_build() {
     local BUILDNUM=$(get_build_num $name)
     if [ "$BUILDNUM" == "0" ]; then
         # Buildconfig is brand new, lastVersion hasn't been updated yet
-	status="starting"
+        status="starting"
     else
         status=$(oc get build "$name"-$BUILDNUM --template="{{index .status \"phase\"}}")
     fi
@@ -77,68 +77,97 @@ function make_imagestream() {
     
     label=$(oc get is $1 --template='{{index .metadata.labels "radanalytics.io/completion"}}' 2> /dev/null)
     if [ "$?" -eq 0 ]; then
-	if [ "$label" == $1 ]; then
-	    newbuild=false
-	else
-	    echo Imagestream $1 exists but does not match, please delete it and try again.
-	    return 1
-	fi
+        if [ "$label" == $1 ]; then
+            newbuild=false
+        else
+            echo Imagestream $1 exists but does not match, please delete it and try again.
+            return 1
+        fi
     fi
     if [ "$newbuild" == "true" ]; then
-	echo Creating imagestream $1
-	oc create is $1 > /dev/null
-	if [ "$?" -ne 0 ]; then
-	    echo Unable to create imagestream $1
-	    return 1
-	fi
-	oc label is $1 radanalytics.io/completion=$1 > /dev/null
+        echo Creating imagestream $1
+        oc create is $1 > /dev/null
+        if [ "$?" -ne 0 ]; then
+            echo Unable to create imagestream $1
+            return 1
+        fi
+        oc label is $1 radanalytics.io/completion=$1 > /dev/null
         oc set image-lookup $1 --enabled=true > /dev/null
     fi
 }
 
-function make_buildconfig() {
-    local image
-    local type
-    local dest
-    local newbuild=true
-    local label
+function cleanup_imagestreamtag() {
+    # There is a strange failure mode where a failed build creates a destination imagestreamtag which is empty
+    # and does not show up with "get" but which nevertheless is listed in the imagestream and causes an error
+    # when the imagestreamtag is created by the buildconfig.
+    # So, if the imagestreamtag doesn't exist, delete it :) This fixes the error
+    res=$(oc get imagestreamtag $1)
+    if [ "$?" -ne 0 ]; then
+        oc delete imagestreamtag $1
+    fi
+}
 
-    
+function make_buildconfig() {
+    local image     # the image in the buildconfig if it exists
+    local type      # the type in the buildconfig if it exists
+    local dest      # the destination in the buildconfig if it exists
+    local imagearg  # the builder image that was passed (arg 1) with the prefix removed
+    local label     # this script's unique label on the buildconfig if it exists
+    local newbuild=true
+
     local tag
     if [ -n "$3" ]; then
         tag="$3"
     else
-	tag="latest"
+        tag="latest"
     fi
-    
+
+    # the new-build command will download the docker-image but will reference it from a newly created imagestream
+    # and the reference will not have the radanalyticsio prefix, so remove it
+    imagearg=${1#"radanalyticsio/"}
+
+    # If the imagestreamtag for the builder image doesn't exist
+    # 1) we have to delete the imagestream itself if it *does* exist so it can be recreated
+    # 2) we have to delete the buildconfig if it exists and recreate it so it will in turn create the imagestream,
+    #    so remember the result of this check
+    oc get imagestreamtag $imagearg &> /dev/null
+    local istag_exists=$?
+    if [ "$istag_exists" -ne 0 ]; then
+        # toss the tag to get the name of the imagestream
+        local is=$(echo $imagearg | sed -e s/:.*//)
+        oc delete imagestream 2> /dev/null $is
+    fi
+
+    # Get values out of the buildconfig if it exists so we can compare them
     image=$(oc get buildconfig $2 --template='{{.spec.strategy.sourceStrategy.from.name}}' 2> /dev/null)
     type=$(oc get buildconfig $2 --template='{{.spec.source.type}}' 2> /dev/null)
     dest=$(oc get buildconfig $2 --template='{{.spec.output.to.name}}' 2> /dev/null)
-    if [ "$?" -eq 0 ]; then
 
-	# If we found it, make sure the type and image match
-        if [ "$type" != "Binary" ] || [ "$image" != $1 ] || [ "$dest" != "$2":"$tag" ]; then
-	    
-	    # well if it doesn't match and it was created by us, just delete it
-	    label=$(oc get buildconfig $2 --template='{{index .metadata.labels "radanalytics.io/completion"}}')
-	    if [ "$label" == $2 ]; then
-		echo Deleting buildconfig $2
-		oc delete buildconfig $2 > /dev/null
-	    else
-	        echo Buildconfig $2 exists but does not match, please delete it and try again.
-	        return 1
-	    fi
-	else
-	    newbuild=false
-	fi
+    # If the buildconfig values don't match or we have to recreate the builder imagestream
+    # then delete the buildconfig as long as it was created by us (otherwise ask the user to delete it)
+    if [ "$?" -eq 0 ]; then
+        if [ "$istag_exists" -ne 0 ] || [ "$type" != "Binary" ] || [ "$image" != $imagearg ] || [ "$dest" != "$2":"$tag" ]; then
+            label=$(oc get buildconfig $2 --template='{{index .metadata.labels "radanalytics.io/completion"}}')
+            if [ "$label" == $2 ]; then
+                echo Deleting buildconfig $2
+                # Make sure the destination tag can be created as well
+                cleanup_imagestreamtag $2:$tag
+                oc delete buildconfig $2 > /dev/null
+            else
+                echo Buildconfig $2 exists and must be recreated but was not created by this script, please delete it and try again.
+                return 1
+            fi
+        else
+            newbuild=false
+        fi
     fi
     if [ "$newbuild" == "true" ]; then
-	echo Creating buildconfig $2	
-	if [ "$VERBOSE" == "true" ]; then
-	    oc new-build -l radanalytics.io/completion=$2 --name $2 --docker-image=$1 --binary --to=$2:$tag
-	else
+        echo Creating buildconfig $2
+        if [ "$VERBOSE" == "true" ]; then
+            oc new-build -l radanalytics.io/completion=$2 --name $2 --docker-image=$1 --binary --to=$2:$tag
+        else
             oc new-build -l radanalytics.io/completion=$2 --name $2 --docker-image=$1 --binary --to=$2:$tag > /dev/null
-	fi
+        fi
     fi    
 }
 
@@ -146,31 +175,31 @@ function complete() {
 
     make_imagestream $2
     if [ "$?" -ne 0 ]; then
-	return 1
+        return 1
     fi
 
     make_buildconfig $1 $2 $3
     if [ "$?" -ne 0 ]; then
-	return 1
+        return 1
     fi    
 
     local status=$(check_build $2)
     if [ "$status" == "Running" -o "$status" == "Pending" ]; then
-	echo "Build for $2 is already $status, skipping"
-	return 1
+        echo "Build for $2 is already $status, skipping"
+        return 1
     else
-	# There could be an error in start-build itself, but if the
-	# build number changes then we know we have a pod log to look at.
-	# If verbose is set or we have an error in the pod, show the log.
+        # There could be an error in start-build itself, but if the
+        # build number changes then we know we have a pod log to look at.
+        # If verbose is set or we have an error in the pod, show the log.
         echo Starting build for $2
-	first=$(get_build_num $2)
+        first=$(get_build_num $2)
         oc start-build $2 --from-file=$BUILD_INPUT --wait
-	res=$?
-	second=$(get_build_num $2)
-	if [ "$first" -ne "$second" ] && [ "$VERBOSE" == "true" -o "$res" -ne 0 ]; then
+        res=$?
+        second=$(get_build_num $2)
+        if [ "$first" -ne "$second" ] && [ "$VERBOSE" == "true" -o "$res" -ne 0 ]; then
             oc logs buildconfig/$2
-	fi
-	return $res
+        fi
+        return $res
     fi
 }
 
@@ -180,7 +209,7 @@ function complete-s2i() {
     if [ -n "$3" ]; then
         tag="$3"
     else
-	tag="latest"
+        tag="latest"
     fi    
     
     echo s2i build $BUILD_INPUT $1 $2:$tag
@@ -192,41 +221,41 @@ function clean_up() {
     if [ "$VERBOSE" == true ]; then
         oc delete all -l radanalytics.io/completion=$1
     else
-	oc delete all -l radanalytics.io/completion=$1 > /dev/null
+        oc delete all -l radanalytics.io/completion=$1 > /dev/null
     fi
 }
 
 function get_image() {
     case $1 in
-	radanalytics-pyspark)
-	    echo radanalyticsio/radanalytics-pyspark-inc:stable
-	    ;;
-	radanalytics-pyspark-py36)
-	    echo radanalyticsio/radanalytics-pyspark-py36-inc:stable
-	    ;;
-	radanalytics-java-spark)
-	    echo radanalyticsio/radanalytics-java-spark-inc:stable
-	    ;;
-	radanalytics-scala-spark)
-	    echo radanalyticsio/radanalytics-scala-spark-inc:stable
-	    ;;
-	openshift-spark)
-	    echo radanalyticsio/openshift-spark-inc:stable
-	    ;;
-	openshift-spark-py36)
-	    echo radanalyticsio/openshift-spark-inc-py36:stable
-	    ;;
-	*)
-	    return 1
-	    ;;
+        radanalytics-pyspark)
+            echo radanalyticsio/radanalytics-pyspark-inc:stable
+            ;;
+        radanalytics-pyspark-py36)
+            echo radanalyticsio/radanalytics-pyspark-py36-inc:stable
+            ;;
+        radanalytics-java-spark)
+            echo radanalyticsio/radanalytics-java-spark-inc:stable
+            ;;
+        radanalytics-scala-spark)
+            echo radanalyticsio/radanalytics-scala-spark-inc:stable
+            ;;
+        openshift-spark)
+            echo radanalyticsio/openshift-spark-inc:stable
+            ;;
+        openshift-spark-py36)
+            echo radanalyticsio/openshift-spark-inc-py36:stable
+            ;;
+        *)
+            return 1
+            ;;
     esac
 }
 
 function check_oc_login() {
     oc whoami &> /dev/null
     if [ "$?" -ne 0 ]; then
-	echo No current OpenShift login
-	return 1
+        echo No current OpenShift login
+        return 1
     fi
 }
 
@@ -341,15 +370,15 @@ function build() {
             l)
                 localbuild=true
                 ;;
-	    t)
-		tag=$OPTARG
-		;;
-	    h)
-		build-help
-		exit 0
-		;;
-	    *)
-	        ;;
+            t)
+                tag=$OPTARG
+                ;;
+            h)
+                build-help
+                exit 0
+                ;;
+            *)
+                ;;
         esac
     done
     shift $((OPTIND-1))
@@ -358,37 +387,37 @@ function build() {
     shift
 
     if [ "$localbuild" == "false" ]; then
-	check_oc_login
-	if [ "$?" -ne 0 ]; then
-	    return 1
-	fi
+        check_oc_login
+        if [ "$?" -ne 0 ]; then
+            return 1
+        fi
     fi
     
     # if there are no arguments left, just build everything
     if [ "$#" -eq 0 ]; then
-	targets=$IMAGESTREAMS
+        targets=$IMAGESTREAMS
     else
-	targets="$@"
+        targets="$@"
     fi
     
     for target in $targets; do
-	image=$(get_image $target)
-	if [ "$?" -eq 0 ]; then
-	    if [ "$localbuild" == "true" ]; then
-		complete-s2i $image $target $tag
-	    else
-	        complete $image $target $tag
-	    fi
-	    if [ "$?" -eq 0 ]; then
-		success+=($target)
-	    else
-		failure+=($target)
-	    fi
-	else
-	    echo Unrecognized target $target
-	    ignore+=($target)
-	fi
-	echo
+        image=$(get_image $target)
+        if [ "$?" -eq 0 ]; then
+            if [ "$localbuild" == "true" ]; then
+                complete-s2i $image $target $tag
+            else
+                complete $image $target $tag
+            fi
+            if [ "$?" -eq 0 ]; then
+                success+=($target)
+            else
+                failure+=($target)
+            fi
+        else
+            echo Unrecognized target $target
+            ignore+=($target)
+        fi
+        echo
     done
     results "Succeeded" ${success[@]}
     results "Failed"    ${failure[@]}
@@ -407,12 +436,12 @@ function clean() {
             v)
                 VERBOSE=true
                 ;;
-	    h)
-		clean-help
-		exit 0
-		;;
-	    *)
-	        ;;
+            h)
+                clean-help
+                exit 0
+                ;;
+            *)
+                ;;
         esac
     done
     shift $((OPTIND-1))
@@ -424,23 +453,23 @@ function clean() {
 
     # if there are no arguments left, just clean everything
     if [ "$#" -eq 0 ]; then
-	targets=$IMAGESTREAMS
+        targets=$IMAGESTREAMS
     else
-	targets="$@"
+        targets="$@"
     fi
     for target in $targets; do
-	image=$(get_image $target)
-	if [ "$?" -eq 0 ]; then
-	    clean_up $target
-	    if [ "$?" -eq 0 ]; then
-		success+=($target)
-	    else
-		failure+=($target)
-	    fi
-	else
-	    echo Unrecognized target $target
-	    ignore+=($target)
-	fi
+        image=$(get_image $target)
+        if [ "$?" -eq 0 ]; then
+            clean_up $target
+            if [ "$?" -eq 0 ]; then
+                success+=($target)
+            else
+                failure+=($target)
+            fi
+        else
+            echo Unrecognized target $target
+            ignore+=($target)
+        fi
     done
     results "Succeeded" ${success[@]}
     results "Failed"    ${failure[@]}
@@ -451,12 +480,12 @@ function list() {
 
     while getopts h option; do
         case $option in
-	    h)
-		list-help
-		exit 0
-		;;
-	    *)
-	        ;;
+            h)
+                list-help
+                exit 0
+                ;;
+            *)
+                ;;
         esac
     done
     shift $((OPTIND-1))
@@ -472,7 +501,7 @@ function list() {
 function template {
 
     if [ "$#" -ne 1 ]; then
-	template-help
+        template-help
     fi
 
     local tag=$1
@@ -491,18 +520,18 @@ function template {
 
 case "$CMD" in
     build)
-	build $@
-	;;
+        build $@
+        ;;
     clean)
-	clean $@
-	;;
+        clean $@
+        ;;
     list)
-	list $@
-	;;
+        list $@
+        ;;
     template)
-	template $@
-	;;
+        template $@
+        ;;
     *)
-	echo Unrecognized command \'"$CMD"\'
-	;;
+        echo Unrecognized command \'"$CMD"\'
+        ;;
 esac
