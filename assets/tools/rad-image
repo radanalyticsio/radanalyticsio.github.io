@@ -2,6 +2,18 @@
 
 set +e
 
+# These are the imagestreams we know how to build
+IMAGESTREAMS="radanalytics-pyspark radanalytics-pyspark-py36 radanalytics-java-spark radanalytics-scala-spark openshift-spark openshift-spark-py36"
+
+function include_optional() {
+    if [ "$#" -eq 1 ]; then
+        spc=$1
+    fi
+    if [[ "$IMAGESTREAMS" = *"radanalytics-r-spark"* ]]; then
+        echo "$spc""radanalytics-r-spark"
+    fi
+}
+
 function usage() {
     echo "usage: rad-image [-h] COMMAND [options] [args]"
     echo
@@ -23,6 +35,7 @@ function usage() {
     echo "  radanalytics-java-spark"
     echo "  openshift-spark"
     echo "  openshift-spark-py36"
+    include_optional "  "
     echo
     echo "For help on a particular command run 'rad-image COMMAND -h'"
 }
@@ -31,9 +44,6 @@ if [ "$#" -lt 1 ]; then
     usage
     exit 0
 fi
-
-# These are the imagestreams we know how to build
-IMAGESTREAMS="radanalytics-pyspark radanalytics-pyspark-py36 radanalytics-java-spark radanalytics-scala-spark openshift-spark openshift-spark-py36"
 
 while getopts h option; do
     case $option in
@@ -226,6 +236,13 @@ function clean_up() {
 }
 
 function get_image() {
+
+    # Pre-screen the argument against IMAGESTREAMS so we can easily
+    # control support for an image
+    if ! [[ "$IMAGESTREAMS" = *"$1"* ]]; then
+        return 1
+    fi
+
     case $1 in
         radanalytics-pyspark)
             echo radanalyticsio/radanalytics-pyspark-inc:stable
@@ -245,6 +262,9 @@ function get_image() {
         openshift-spark-py36)
             echo radanalyticsio/openshift-spark-inc-py36:stable
             ;;
+	radanalytics-r-spark)
+	    echo radanalyticsio/radanalytics-r-spark-inc:latest
+	    ;;
         *)
             return 1
             ;;
@@ -308,6 +328,7 @@ function build-help() {
     echo "           radanalytics-java-spark"
     echo "           openshift-spark"
     echo "           openshift-spark-py36"
+    include_optional "           "
 }
 
 function clean-help() {
@@ -331,6 +352,7 @@ function clean-help() {
     echo "           radanalytics-java-spark"
     echo "           openshift-spark"
     echo "           openshift-spark-py36"
+    include_optional "           "
 }
 
 function list-help() {
