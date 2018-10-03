@@ -2,7 +2,7 @@
 :page-project-name: Equoid
 :page-link: equoid
 :page-liquid:
-:page-weight: 0 
+:page-weight: 100 
 :page-labels: [Scala, S2I, Infinispan, Spark, Artemis]
 :page-layout: application
 :page-menu_template: menu_tutorial_application.html
@@ -92,36 +92,36 @@ oc create -f https://raw.githubusercontent.com/radanalyticsio/equoid-openshift/m
 
 . Launch Infinispan Cache
 +
-We'll want our caching layer in place before we begin streaming and ingesting. The following will get an Infinispan pod running. `APPLICATION_USER`, `APPLICATION_PASSWORD`, `MANAGEMENT_USER` and `MANAGEMENT_PASSWORD` should be changed to your desired values. 
+We'll want our caching layer in place before we begin streaming and ingesting. The following will get an Infinispan pod running. `APPLICATION_USER`, `APPLICATION_PASSWORD`, `MANAGEMENT_USER` and `MANAGEMENT_PASSWORD` should be changed to your desired values. For purposes of this example we'll use `radlee` for all our credentials. 
 +
 ....
 oc new-app --template=infinispan-ephemeral \
     -l app=datagrid \
     -p APPLICATION_NAME=datagrid \
     -p NAMESPACE=`oc project -q` \
-    -p APPLICATION_USER=<YOUR_APP_USERNAME> \
-    -p APPLICATION_PASSWORD=<YOUR_APP_PASSWORD> \
-    -p MANAGEMENT_USER=<YOUR_MGMT_USERNAME> \
-    -p MANAGEMENT_PASSWORD=<YOUR_MGMT_PASSWORD>
+    -p APPLICATION_USER=radlee \
+    -p APPLICATION_PASSWORD=radlee \
+    -p MANAGEMENT_USER=radlee \
+    -p MANAGEMENT_PASSWORD=radlee
 ....
 +
 
 . Launch Data Publisher
 +
-We can next begin publishing our streaming data by starting an instance of the data publisher. `OP_MODE` described later should be set to the mode you wish. Also, `DATA_URL_PRIMARY` should be set to the location of your data set or data potential values file. 
+We can next begin publishing our streaming data by starting an instance of the data publisher. `OP_MODE` described later should be set to the mode you wish. Also, `DATA_URL_PRIMARY` should be set to the location of your data set or data potential values file. For purposes of this example we'll use linear processing of a full dataset contained in the `equoid-data-publisher` github repo.  
 +
 ....
 oc new-app \
     -l app=publisher \
-    -e OP_MODE={single|dual|linear} \
-    -e DATA_URL_PRIMARY=<YOUR_DATASET_URL> \
+    -e OP_MODE=linear \
+    -e DATA_URL_PRIMARY=https://raw.githubusercontent.com/radanalyticsio/equoid-data-publisher/master/data/StockCodesLinear.txt  \
     --image-stream=`oc project -q`/fuse-java \
     https://github.com/radanalyticsio/equoid-data-publisher
 ....
 
 . Launch Data Handler
 +
-We are now ready to start our data handler. Note that `INFINISPAN_HOST` and `INFINISPAN_PORT` need to be set to appropriate values, in the case of the template provided, these are `datagrid-hotrod` and `11222` respectively. In addition, `WINDOW_SECONDS` is the number of second for which you wish to track the top-k items, `SLIDE_SECONDS` represents the number of seconds to slide your data window each iteration, and `BATCH_SECONDS` is the size of samples you wish to acquire from the message stream at a time. Finally, `OP_MODE` needs to be set to the same value as set for the data publisher.
+We are now ready to start our data handler. Note that `INFINISPAN_HOST` and `INFINISPAN_PORT` need to be set to appropriate values, in the case of the template provided, these are `datagrid-hotrod` and `11222` respectively. In addition, `WINDOW_SECONDS` is the number of second for which you wish to track the top-k items, `SLIDE_SECONDS` represents the number of seconds to slide your data window each iteration, and `BATCH_SECONDS` is the size of samples you wish to acquire from the message stream at a time. Finally, `OP_MODE` needs to be set to the same value as set for the data publisher. In our example we will use linear corresponding with our previous setting for the data publisher, and 20 seconds for the window, slide, and batch sized. 
 +
 ....
 oc new-app --template=oshinko-scala-spark-build-dc \
@@ -130,14 +130,18 @@ oc new-app --template=oshinko-scala-spark-build-dc \
     -p APPLICATION_NAME=equoid-data-handler \
     -p GIT_URI=https://github.com/radanalyticsio/equoid-data-handler \
     -p APP_MAIN_CLASS=io.radanalytics.equoid.DataHandler \
-    -e INFINISPAN_HOST=<YOUR_HOSTNAME> \
-    -e INFINISPAN_PORT=<YOUR_PORT> \
-    -e WINDOW_SECONDS=<YOUR_WINDOW_SIZE> \
-    -e SLIDE_SECONDS=<YOUR_SLIDING_SIZE> \
-    -e BATCH_SECONDS=<YOUR_BATCH_SIZE> \
-    -e OP_MODE={single|dual|linear} \
+    -e INFINISPAN_HOST=datagrid-hotrod \
+    -e INFINISPAN_PORT=11222 \
+    -e WINDOW_SECONDS=20 \
+    -e SLIDE_SECONDS=20 \
+    -e BATCH_SECONDS=20 \
+    -e OP_MODE=linear \
     -p SPARK_OPTIONS='--driver-java-options=-Dvertx.cacheDirBase=/tmp'
 ....
+
+****
+The data publisher and data handler can take several minutes to build from source. If in doubt of the build progress, from the command line you can run `oc logs -f bc/equoid-data-publisher` and `oc logs -f bc/equoid-data-handler` or look in the two components respective sections of the OpenShift UI (e.g. browse to project overview, click equoid-data-publisher or handler application arrow to expand and display build status) 
+****
 
 . Launch Web UI and Set Up Keycloak
 +
