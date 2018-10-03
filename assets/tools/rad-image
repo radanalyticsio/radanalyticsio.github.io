@@ -522,10 +522,22 @@ function list() {
 
 function template {
 
+    while getopts h option; do
+        case $option in
+            h)
+                template-help
+                exit 0
+                ;;
+            *)
+                ;;
+        esac
+    done
+    shift $((OPTIND-1))
+
     if [ "$#" -ne 1 ]; then
         template-help
+	exit 0
     fi
-
     local tag=$1
 
     # Make sure there is a resources-is.yaml here
@@ -534,7 +546,10 @@ function template {
         echo "No resources-is.yaml in the local directory"
     fi
     echo Creating resources-is-$tag.yaml
-    cp resources-is.yaml resources-is-$tag.yaml
+    wget https://radanalytics.io/resources-is.yaml -O resources-is-$tag.yaml
+
+    # for testing while this is still a PR ...
+    # wget https://raw.githubusercontent.com/radanalyticsio/radanalyticsio.github.io/846eb5e32bcf15973089bab7e245ddd11d9199d0/resources-is.yaml -O resources-is-$tag.yaml
     
     sed -i -r "s/sparkimage: (openshift-spark.*):latest/sparkimage: \1:$tag/g" resources-is-$tag.yaml
     sed -i -r "s/name: (radanalytics-.*):latest/name: \1:$tag/g" resources-is-$tag.yaml
