@@ -44,7 +44,7 @@ When you follow the instructions under link:/howdoi/install-radanalyticsio[How d
 
 .Using Image tags
 
-By default, the images are built with the `latest` tag. To use a tag other than latest
+By default, the images are built with the `complete` tag. To use a different tag:
 
 .. Specify the `-t TAG` option on the build command
 
