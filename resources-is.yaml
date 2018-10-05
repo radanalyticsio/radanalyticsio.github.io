@@ -26,14 +26,14 @@ items:
     metadata:
       name: oshinko-py36-conf
     data:
-      sparkimage: openshift-spark-py36:latest
+      sparkimage: openshift-spark-py36:complete
 
   - apiVersion: v1
     kind: ConfigMap
     metadata:
       name: default-oshinko-cluster-config
     data:
-      sparkimage: openshift-spark:latest
+      sparkimage: openshift-spark:complete
 
   - apiVersion: v1
     kind: Template
@@ -81,7 +81,7 @@ items:
             forcePull: true
             from:
               kind: ImageStreamTag
-              name: radanalytics-pyspark:latest
+              name: radanalytics-pyspark:complete
           type: Source
         triggers:
         - imageChange: {}
@@ -273,7 +273,7 @@ items:
             forcePull: true
             from:
               kind: ImageStreamTag
-              name: radanalytics-pyspark-py36:latest
+              name: radanalytics-pyspark-py36:complete
           type: Source
         triggers:
         - imageChange: {}
@@ -466,7 +466,7 @@ items:
             forcePull: true
             from:
               kind: ImageStreamTag
-              name: radanalytics-java-spark:latest
+              name: radanalytics-java-spark:complete
           type: Source
         triggers:
         - imageChange: {}
@@ -665,7 +665,7 @@ items:
             forcePull: true
             from:
               kind: ImageStreamTag
-              name: radanalytics-scala-spark:latest
+              name: radanalytics-scala-spark:complete
           type: Source
         triggers:
         - imageChange: {}
