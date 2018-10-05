@@ -26,7 +26,7 @@ function usage() {
     echo "  build    Build specified images with an Apache Spark distribution"
     echo "  clean    Delete all OpenShift objects associated with building specified images"
     echo "  list     List image streams created by this tool"
-    echo "  template Generate a template that references a specific tag (the default template references 'latest'"
+    echo "  template Generate a template that references a specific tag (the default template references 'complete'"
     echo
     echo "Supported images:"
     echo "  radanalytics-pyspark"
@@ -129,7 +129,7 @@ function make_buildconfig() {
     if [ -n "$3" ]; then
         tag="$3"
     else
-        tag="latest"
+        tag="complete"
     fi
 
     # the new-build command will download the docker-image but will reference it from a newly created imagestream
@@ -219,7 +219,7 @@ function complete-s2i() {
     if [ -n "$3" ]; then
         tag="$3"
     else
-        tag="latest"
+        tag="complete"
     fi    
     
     echo s2i build $BUILD_INPUT $1 $2:$tag
@@ -260,7 +260,7 @@ function get_image() {
             echo radanalyticsio/openshift-spark-inc:stable
             ;;
         openshift-spark-py36)
-            echo radanalyticsio/openshift-spark-inc-py36:stable
+            echo radanalyticsio/openshift-spark-py36-inc:stable
             ;;
 	radanalytics-r-spark)
 	    echo radanalyticsio/radanalytics-r-spark-inc:latest
@@ -299,7 +299,7 @@ function build-help() {
     echo
     echo "Options:"
     echo "  -h       Print this help message"
-    echo "  -t TAG   Optional tag to use for images. Default is 'latest'"
+    echo "  -t TAG   Optional tag to use for images. Default is 'complete'"
     echo "  -l       Use the s2i tool to create images on the local host. By default the 'oc'"
     echo "           command is used to create image streams in the current OpenShift project"
     echo "  -v       Verbose output"
@@ -369,7 +369,7 @@ function template-help() {
     echo "usage: rad-image template TAG"
     echo
     echo "Create a local resources-is-TAG.yaml that references images with the specified TAG"
-    echo "The standard resources-is.yaml will reference images with the 'latest' tag"
+    echo "The standard resources-is.yaml will reference images with the 'complete' tag"
     echo
     echo "Required:"
     echo "  TAG      The value of TAG should match the value given to 'build' with the '-t' option"
@@ -551,8 +551,8 @@ function template {
     # for testing while this is still a PR ...
     # wget https://raw.githubusercontent.com/radanalyticsio/radanalyticsio.github.io/846eb5e32bcf15973089bab7e245ddd11d9199d0/resources-is.yaml -O resources-is-$tag.yaml
     
-    sed -i -r "s/sparkimage: (openshift-spark.*):latest/sparkimage: \1:$tag/g" resources-is-$tag.yaml
-    sed -i -r "s/name: (radanalytics-.*):latest/name: \1:$tag/g" resources-is-$tag.yaml
+    sed -i -r "s/sparkimage: (openshift-spark.*):complete/sparkimage: \1:$tag/g" resources-is-$tag.yaml
+    sed -i -r "s/name: (radanalytics-.*):complete/name: \1:$tag/g" resources-is-$tag.yaml
 }
 
 case "$CMD" in
