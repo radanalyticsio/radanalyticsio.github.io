@@ -121,7 +121,7 @@ oc new-app \
 
 . Launch Data Handler
 +
-We are now ready to start our data handler. Note that `INFINISPAN_HOST` and `INFINISPAN_PORT` need to be set to appropriate values, in the case of the template provided, these are `datagrid-hotrod` and `11222` respectively. In addition, `WINDOW_SECONDS` is the number of second for which you wish to track the top-k items, `SLIDE_SECONDS` represents the number of seconds to slide your data window each iteration, and `BATCH_SECONDS` is the size of samples you wish to acquire from the message stream at a time. Finally, `OP_MODE` needs to be set to the same value as set for the data publisher. In our example we will use linear corresponding with our previous setting for the data publisher, and 20 seconds for the window, slide, and batch sized. 
+We are now ready to start our data handler. Note that `INFINISPAN_HOST` and `INFINISPAN_PORT` need to be set to appropriate values, in the case of the template provided, these are `datagrid-hotrod` and `11222` respectively. In addition, `WINDOW_SECONDS` is the number of seconds for which you wish to track the top-k items, `SLIDE_SECONDS` represents the number of seconds to slide your data window each iteration, and `BATCH_SECONDS` is the size of samples you wish to acquire from the message stream at a time. Finally, `OP_MODE` needs to be set to the same value as set for the data publisher. In our example we will use "linear: corresponding with our previous setting for the data publisher, and 20 seconds for the window, slide, and batch sizes. 
 +
 ....
 oc new-app --template=oshinko-scala-spark-build-dc \
@@ -138,14 +138,12 @@ oc new-app --template=oshinko-scala-spark-build-dc \
     -e OP_MODE=linear \
     -p SPARK_OPTIONS='--driver-java-options=-Dvertx.cacheDirBase=/tmp'
 ....
-
-****
-The data publisher and data handler can take several minutes to build from source. If in doubt of the build progress, from the command line you can run `oc logs -f bc/equoid-data-publisher` and `oc logs -f bc/equoid-data-handler` or look in the two components respective sections of the OpenShift UI (e.g. browse to project overview, click equoid-data-publisher or handler application arrow to expand and display build status) 
-****
++
+Note: the data publisher and data handler can take several minutes to build from source. If in doubt of the build progress, from the command line you can run `oc logs -f bc/equoid-data-publisher` and `oc logs -f bc/equoid-data-handler` or look in the two components respective sections of the OpenShift UI (e.g. browse to project overview, click equoid-data-publisher or handler application arrow to expand and display build status) 
 
 . Launch Web UI and Set Up Keycloak
 +
-Equoid's web UI is launched using a script developed by one of Equoid's contributors, Jiri Kremser. The following calls will utilize that script to set up the UI as well as a Keycloak instance for users and login. Finally, an edit role is given to the project's service account so additional data handler instances can be created/modified. 
+Equoid's web UI is launched using a script developed by one of Equoid's contributors, Jiri Kremser. The following calls will utilize that script to set up the UI as well as a Keycloak instance for users to login. Finally, an edit role is given to the project's service account so additional data handler instances can be created/modified. 
 +
 ....
 BASE_URL="https://raw.githubusercontent.com/radanalyticsio/equoid-ui/master/ocp/"
@@ -202,11 +200,11 @@ With all the microservices running, you can now view a visualization of the data
 
 pass:[<img src="/assets/equoid/Splash-Screen.png" alt="Alt text" class="img-responsive arch" width="800px">]
 
-By clicking on "sign in" you will be taken to the login screen. You can log in using either of the default credential sets listed on the login page, then click on the graph tab. You should see a visualization of your stream's data which updates periodically. Similar to the following, which shows an example of Equoid determining the top-3 items for 20 second windows. By hovering over areas of the graph, a breakdown of the items within received within the time window are displayed, as shown in the figure.  
+By clicking on "sign in" you will be taken to the login screen. You can log in using either of the default credential sets listed on the login page, then click on the graph tab. You should see a visualization of your stream's data which updates periodically. Similar to the following figure, which shows an example of Equoid determining the top-3 items for 20 second windows. By hovering over areas of the graph, a breakdown of the items within received within the time window are displayed, as shown in the figure.  
 
 pass:[<img src="/assets/equoid/Graph-Screen.png" alt="Alt text" class="img-responsive arch" width="800px">]
 
-In addition, you can add a new frequent item by entering an item ID in the textbox on the left of the page and then clicking on the add button. Finally, you can add another data handler via the command line, a script is included in equoid-openshift to facilitate additional data handler instances. Once these are up and running, the web UI will automatically add their data in a separate graph tab. 
+In addition, you can add a new frequent item by entering an item ID in the textbox on the left of the page and then clicking on the add button. Finally, you can add another data handler via the `oc` command, and a bash script is included in the equoid-openshift Github repo to facilitate additional data handler instances. Once these are up and running, the web UI will automatically add their data in a separate graph tab. 
 
 [[expansion]]
 == Expansion
