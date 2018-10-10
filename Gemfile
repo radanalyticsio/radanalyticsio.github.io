@@ -10,7 +10,7 @@ ruby RUBY_VERSION
 # This will help ensure the proper Jekyll version is running.
 # Happy Jekylling!
 #
-gem "jekyll", "3.5.1"
+gem "jekyll", "~> 3.6.3"
 gem "coderay", "~> 1.1.2"
 
 # If you want to use GitHub Pages, remove the "gem "jekyll"" above and
