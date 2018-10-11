@@ -9,6 +9,20 @@ with several customizations to create the look and feel. Please reference
 their documentation for questions about the usage of jekyll features in your
 documents.
 
+## Review standards
+
+For most changes that are proposed to this repository you will simply need to
+get approval by another community member. This includes all changes that cover
+things like grammar/spelling updates, bug fixes, and smaller articles.
+
+When proposing larger changes (eg modifications to major style components,
+adding large tutorials, reorganizing content) you will need to get approval
+from 3 community members before a merge will occur. For convenience you
+may mention the `@radanalyticsio/radanalytics-io` team to get the attention
+of a larger group of reviewers. We recommend adding a reply comment to your
+review with text similar to `@radanalyticsio/radanalytics-io ptal` (ptal means
+"please take a look").
+
 ## Testing out your changes locally
 
 To test this site locally, you will need to have Ruby installed as well as the
