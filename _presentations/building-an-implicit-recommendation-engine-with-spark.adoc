@@ -5,7 +5,7 @@
 :page-venue: Spark + AI Summit Europe
 :page-city: London, England
 
-Many of today’s most engaging—and commercially important—applications provide personalised experiences to users. Collaborative filtering algorithms capture the commonality between users and enable applications to make personalised recommendations quickly and efficiently.
+Many of today’s most engaging — and commercially important — applications provide personalised experiences to users. Collaborative filtering algorithms capture the commonality between users and enable applications to make personalised recommendations quickly and efficiently.
 
 The Alternating Least Squares (ALS) algorithm is still deemed the industry standard in collaborative filtering. In this talk Sophie will show you how to implement ALS using Apache Spark to build your own recommendation engine. Sophie will show that, by splitting the recommendation engine into multiple cooperating services, it is possible to reduce the system’s complexity and produce a robust collaborative filtering platform with support for continuous model training.
 
