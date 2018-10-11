@@ -1,0 +1,12 @@
+= Building an Implicit Recommendation Engine with Spark
+:page-presentor: Sophie Watson
+:page-date: 2018-10-4
+:page-media-url: https://youtu.be/58OjaDH2FI0
+:page-venue: Spark + AI Summit Europe
+:page-city: London, England
+
+Many of today’s most engaging—and commercially important—applications provide personalised experiences to users. Collaborative filtering algorithms capture the commonality between users and enable applications to make personalised recommendations quickly and efficiently.
+
+The Alternating Least Squares (ALS) algorithm is still deemed the industry standard in collaborative filtering. In this talk Sophie will show you how to implement ALS using Apache Spark to build your own recommendation engine. Sophie will show that, by splitting the recommendation engine into multiple cooperating services, it is possible to reduce the system’s complexity and produce a robust collaborative filtering platform with support for continuous model training.
+
+In this presentation you will learn how to build a recommendation system for the case where recorded data is explicitly given as a rating, as well as for the case where the data is less succinct. You will walk away from this talk with the knowledge and tools needed to implement your own recommendation system using collaborative filtering and microservices.
