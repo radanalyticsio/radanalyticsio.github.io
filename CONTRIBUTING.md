@@ -156,25 +156,3 @@ front matter variables. Although these attribute entries and front matter can
 co-exist within the current deployment framework, the preference should be to
 always use AsciiDoc attribute entries when possible.
 
-### A note on adding code block with a copy button
-
-If you want to add a code snippet that has the copy to clipboard button, you may
-want to use the liquid template called `copy_button.html`.
-
-To do that do following:
-* from AsciiDoc:
-  1. add `:page-liquid:` header
-  2.
-```bash
-+++{% include copy_button.html lang='bash' text='
-<code goes here>
-'%}+++
-```
-* from Markdown:
-```bash
-{% include copy_button.html lang='bash' text='
-<code goes here>
-'%}
-```
-
-If argument `lang` is not specified, it defaults to 'bash' syntax.
