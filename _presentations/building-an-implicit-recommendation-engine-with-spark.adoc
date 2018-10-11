@@ -1,6 +1,6 @@
 = Building an Implicit Recommendation Engine with Spark
 :page-presentor: Sophie Watson
-:page-date: 2018-10-4
+:page-date: 2018-10-04
 :page-media-url: https://youtu.be/58OjaDH2FI0
 :page-venue: Spark + AI Summit Europe
 :page-city: London, England
