@@ -23,12 +23,6 @@ Looking for the shortest path to begin working with
 radanalytics.io? Please see the
 link:/howdoi/install-radanalyticsio[How do I install radanalytics.io?]
 article.
-
-For very quick start you may want to use this command:
-....
-oc create -f https://radanalytics.io/resources.yaml
-....
-
 ****
 
 == Which projects should you start with?
