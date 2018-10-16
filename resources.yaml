@@ -26,7 +26,128 @@ items:
     metadata:
       name: oshinko-py36-conf
     data:
-      sparkimage: radanalyticsio/openshift-spark-py36:2.3-latest
+      sparkimage: openshift-spark-py36:2.3-latest
+
+  - apiVersion: v1
+    kind: ConfigMap
+    metadata:
+      name: default-oshinko-cluster-config
+    data:
+      sparkimage: openshift-spark:2.3-latest
+
+  - apiVersion: v1
+    kind: ImageStream
+    metadata:
+      name: radanalytics-pyspark
+      labels:
+        radanalytics.io/imagestream: radanalytics-pyspark
+    spec:
+      lookupPolicy:
+        local: true
+      tags:
+      - annotations: null
+        from:
+          kind: DockerImage
+          name: radanalyticsio/radanalytics-pyspark:stable
+        importPolicy: {}
+        name: stable
+        referencePolicy:
+          type: Source
+
+  - apiVersion: v1
+    kind: ImageStream
+    metadata:
+      name: radanalytics-pyspark-py36
+      labels:
+        radanalytics.io/imagestream: radanalytics-pyspark-py36
+    spec:
+      lookupPolicy:
+        local: true
+      tags:
+      - annotations: null
+        from:
+          kind: DockerImage
+          name: radanalyticsio/radanalytics-pyspark-py36:stable
+        importPolicy: {}
+        name: stable
+        referencePolicy:
+          type: Source
+
+  - apiVersion: v1
+    kind: ImageStream
+    metadata:
+      name: radanalytics-java-spark
+      labels:
+        radanalytics.io/imagestream: radanalytics-java-spark
+    spec:
+      lookupPolicy:
+        local: true
+      tags:
+      - annotations: null
+        from:
+          kind: DockerImage
+          name: radanalyticsio/radanalytics-java-spark:stable
+        importPolicy: {}
+        name: stable
+        referencePolicy:
+          type: Source
+
+  - apiVersion: v1
+    kind: ImageStream
+    metadata:
+      name: radanalytics-scala-spark
+      labels:
+        radanalytics.io/imagestream: radanalytics-scala-spark
+    spec:
+      lookupPolicy:
+        local: true
+      tags:
+      - annotations: null
+        from:
+          kind: DockerImage
+          name: radanalyticsio/radanalytics-scala-spark:stable
+        importPolicy: {}
+        name: stable
+        referencePolicy:
+          type: Source
+
+  - apiVersion: v1
+    kind: ImageStream
+    metadata:
+      name: openshift-spark
+      labels:
+        radanalytics.io/imagestream: openshift-spark
+    spec:
+      lookupPolicy:
+        local: true
+      tags:
+      - annotations: null
+        from:
+          kind: DockerImage
+          name: radanalyticsio/openshift-spark:2.3-latest
+        importPolicy: {}
+        name: 2.3-latest
+        referencePolicy:
+          type: Source
+
+  - apiVersion: v1
+    kind: ImageStream
+    metadata:
+      name: openshift-spark-py36
+      labels:
+        radanalytics.io/imagestream: openshift-spark-py36
+    spec:
+      lookupPolicy:
+        local: true
+      tags:
+      - annotations: null
+        from:
+          kind: DockerImage
+          name: radanalyticsio/openshift-spark-py36:2.3-latest
+        importPolicy: {}
+        name: 2.3-latest
+        referencePolicy:
+          type: Source
 
   - apiVersion: v1
     kind: Template
@@ -71,10 +192,9 @@ items:
             env:
             - name: APP_FILE
               value: ${APP_FILE}
-            forcePull: true
             from:
-              kind: DockerImage
-              name: radanalyticsio/radanalytics-pyspark:stable
+              kind: ImageStreamTag
+              name: radanalytics-pyspark:stable
           type: Source
         triggers:
         - imageChange: {}
@@ -263,10 +383,9 @@ items:
             env:
             - name: APP_FILE
               value: ${APP_FILE}
-            forcePull: true
             from:
-              kind: DockerImage
-              name: radanalyticsio/radanalytics-pyspark-py36:stable
+              kind: ImageStreamTag
+              name: radanalytics-pyspark-py36:stable
           type: Source
         triggers:
         - imageChange: {}
@@ -456,10 +575,9 @@ items:
             env:
             - name: APP_FILE
               value: ${APP_FILE}
-            forcePull: true
             from:
-              kind: DockerImage
-              name: radanalyticsio/radanalytics-java-spark:stable
+              kind: ImageStreamTag
+              name: radanalytics-java-spark:stable
           type: Source
         triggers:
         - imageChange: {}
@@ -655,10 +773,9 @@ items:
               value: ${SBT_ARGS}
             - name: SBT_ARGS_APPEND
               value: ${SBT_ARGS_APPEND}
-            forcePull: true
             from:
-              kind: DockerImage
-              name: radanalyticsio/radanalytics-scala-spark:stable
+              kind: ImageStreamTag
+              name: radanalytics-scala-spark:stable
           type: Source
         triggers:
         - imageChange: {}
