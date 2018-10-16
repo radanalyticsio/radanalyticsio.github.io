@@ -1,21 +1,21 @@
-= How do I install radanalytics.io and choose my own Apache Spark distribution?
+= How do I choose my own Apache Spark distribution?
 :page-layout: howdoi
 :page-menu_entry: How do I?
 
-When you follow the instructions under link:/howdoi/install-radanalyticsio[How do I install radanalytics.io?], your project is set up to use a pre-determined distribution of Apache Spark. You can also choose your own Apache Spark distribution with the instructions below.
+When you install radanalytics.io, your project is set up to use a pre-determined distribution of Apache Spark. You can choose your own Apache Spark distribution with a few additional steps:
 
 .Prerequisites
 
-. A terminal shell and OpenShift `oc` tool available with an active login to OpenShift.
+. Follow the instructions under link:/howdoi/install-radanalyticsio[How do I install radanalytics.io?]
 
-. An Apache Spark distribution tarball. The tarball may be a local file or a url and should have the same basic structure as an Apache Spark tarball
+. Choose an Apache Spark binary tarball. The tarball may be a local file or a url. Any binary distribution should work as long as the tarball has this basic structure:
 
 * a top-level directory we'll call TOP
 * binaries under TOP/bin
 * jar files under TOP/jars
 * configuration files under TOP/conf
 
-. Optionally, an md5 file for the tarball (if an md5 file is used, both the tarball and the md5 file *must be* downloaded to a subdirectory and that subdirectory specified as the argument to the `build` command below).
+. Optionally download an md5 file for the tarball. If an md5 file is used, both the tarball and the md5 file *must be* put in a subdirectory and that subdirectory specified as the argument to the `build` command below. Additionally, the md5 file should be the name of the tarball with `.md5` appended.
 
 .Procedure
 
@@ -33,31 +33,23 @@ When you follow the instructions under link:/howdoi/install-radanalyticsio[How d
 
     ./rad-image -h
 
-. Build the radanalytics.io images with the Spark distribution you've selected. This will create image streams in your current OpenShift project to hold the completed images. Note that the value for the Spark distribution may be a file, url or subdirectory. Here's an example using a url
-
+. Build images using the Spark distribution you've selected. This will create new `complete` tags on the radanaltyics.io image streams in your current OpenShift project. Note that the value for the Spark distribution may be a file, url or subdirectory. Here's an example using a url
 
     ./rad-image build https://archive.apache.org/dist/spark/spark-2.3.0/spark-2.3.0-bin-hadoop2.7.tgz
 
-. Install the radanalytics.io components that will work with the image streams
+.Using Custom Image tags
 
-    oc create -f https://radanalytics.io/resources-is.yaml
-
-.Using Image tags
-
-By default, the images are built with the `complete` tag. To use a different tag:
-
-.. Specify the `-t TAG` option on the build command
+To build images with a tag other than `complete`, specify the `-t TAG` option on the build command
 
     ./rad-image build -t 2.3.0 spark-2.3.0-bin-hadoop2.7.tgz
 
-.. Generate a template file that uses your tag
+You can switch radanalytics.io components to use the new tag like this
 
-    ./rad-image template 2.3.0
-    Creating resources-is-2.3.0.yaml
+    ./rad-image use 2.3.0
 
-.. Install components from the newly generated template file
+and you can switch back to using the default tag like this
 
-    oc create -f resources-is-2.3.0.yaml
+    ./rad-image use -d
 
 .Additional resources
 
