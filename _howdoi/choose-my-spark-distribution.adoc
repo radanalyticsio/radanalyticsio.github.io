@@ -19,37 +19,28 @@ When you install radanalytics.io, your project is set up to use a pre-determined
 
 .Procedure
 
-. Get the `rad-image` script
-
-.. The script is available from link:/assets/tools/rad-image[this link], or download it in your shell using curl:
+. Get the `rad-image` script from link:/assets/tools/rad-image[this link], or download it in your shell using curl:
 
     curl -o rad-image https://radanalytics.io/assets/tools/rad-image
-
-.. Make sure that it's executable:
-
     chmod +x rad-image
-
-.. By the way, you can access help for `rad-image` like this:
-
     ./rad-image -h
 
-. Build images using the Spark distribution you've selected. This will create new `complete` tags on the radanaltyics.io image streams in your current OpenShift project. Note that the value for the Spark distribution may be a file, url or subdirectory. Here's an example using a url
+. Build images using the Spark distribution you've selected. This will create new `complete` tags on the radanaltyics.io image streams. The value for the Spark distribution may be a file, url or subdirectory.
 
     ./rad-image build https://archive.apache.org/dist/spark/spark-2.3.0/spark-2.3.0-bin-hadoop2.7.tgz
 
-.Using Custom Image tags
+. Make radanalytics.io templates and configmaps use the `complete` tag
 
-To build images with a tag other than `complete`, specify the `-t TAG` option on the build command
+    ./rad-image use complete
 
-    ./rad-image build -t 2.3.0 spark-2.3.0-bin-hadoop2.7.tgz
-
-You can switch radanalytics.io components to use the new tag like this
-
-    ./rad-image use 2.3.0
-
-and you can switch back to using the default tag like this
+. To switch back to using the default tags, do this
 
     ./rad-image use -d
+
+. To build images with a tag other than `complete`, specify the `-t TAG` option on the build command
+
+    ./rad-image build -t 2.3.0 spark-2.3.0-bin-hadoop2.7.tgz
+    ./rad-image use 2.3.0
 
 .Additional resources
 
