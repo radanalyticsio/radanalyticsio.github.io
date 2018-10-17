@@ -1,0 +1,11 @@
+= Extending Structured Streaming Made Easy with Algebra
+:page-presentor: Erik Erlandson
+:page-date: 2018-10-03
+:page-media-url: https://youtu.be/HL0G2F69P-E
+:page-slides-url: https://www.slideshare.net/databricks/extending-structured-streaming-made-easy-with-algebra-with-erik-erlandson
+:page-venue: Spark+AI Summit EU
+:page-city: London, England
+
+Apache Spark’s Structured Streaming library provides a powerful set of primitives for building streaming pipelines for data processing. However, it is not always obvious how to take full advantage of this power in a way that works naturally with your application’s unique business logic. If you associate algebra with solving equations while wishing you were doing something else, think again: we’ll see how we can apply the properties of operations we all understand — like addition, multiplication, and set union — to reason about our data engineering pipelines.
+
+Attendees will learn easy techniques for exploiting algebraic patterns in their data processing logic that work seamlessly with Spark’s Structured Streaming constructs, effectively extending Spark’s native primitives with your customized data processing operations. These simple yet powerful ideas will be illustrated with real world examples.
