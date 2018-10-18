@@ -381,14 +381,14 @@ function build-help() {
     echo "           command is used to create image streams in the current OpenShift project"
     echo "  -v       Verbose output"
     echo 
-    echo "SPARK      An Apache Spark distribution. This may be a url, file, or directory"
-    echo "           A file or url must be an Apache Spark tarball, for example:"
+    echo "SPARK      A file or url containing an Apache Spark binary distribution tarball"
     echo
     echo "               rad-image build https://archive.apache.org/dist/spark/spark-2.3.0/spark-2.3.0-bin-hadoop2.7.tgz"
     echo "               rad-image build spark-2.3.1-bin-hadoop2.7.tgz"
     echo
-    echo "           A directory may be used to include an md5 sum. Place the tarball and the matching md5 file"
-    echo "           in the directory and use the directory name as the argument, for example:"
+    echo "           Alternatively, a directory may be used to include an md5 sum for the tarball."
+    echo "           The name of the md5 file must be the name of the tarball with '.md5' appended."
+    echo "           Place both files in the directory and pass the directory as the argument:"
     echo
     echo "               build_inputs/"
     echo "                  spark-2.3.1-bin-hadoop2.7.tgz"
