@@ -8,14 +8,12 @@ When you install radanalytics.io, your project is set up to use a pre-determined
 
 . Follow the instructions under link:/howdoi/install-radanalyticsio[How do I install radanalytics.io?]
 
-. Choose an Apache Spark binary tarball. The tarball may be a local file or a url. Any binary distribution should work as long as the tarball has this basic structure:
+. Choose an Apache Spark binary tarball like link:https://archive.apache.org/dist/spark/spark-2.3.0/spark-2.3.0-bin-hadoop2.7.tgz[this one]. You can download it or just use the url. Any binary distribution should work as long as it has this basic structure:
 
 * a top-level directory we'll call TOP
 * binaries under TOP/bin
 * jar files under TOP/jars
 * configuration files under TOP/conf
-
-. Optionally download an md5 file for the tarball. If an md5 file is used, both the tarball and the md5 file *must be* put in a subdirectory and that subdirectory specified as the argument to the `build` command below. Additionally, the md5 file should be the name of the tarball with `.md5` appended.
 
 .Procedure
 
@@ -25,21 +23,21 @@ When you install radanalytics.io, your project is set up to use a pre-determined
     chmod +x rad-image
     ./rad-image -h
 
-. Build images using the Spark distribution you've selected. This will create new `complete` tags on the radanaltyics.io image streams. The value for the Spark distribution may be a file, url or subdirectory.
+. Build images using the Spark distribution you've selected. This will create new `complete` tags on the radanaltyics.io image streams (it may take a while since it will build multiple images). Run `rad-image build -h` for additional information on the build command.
 
     ./rad-image build https://archive.apache.org/dist/spark/spark-2.3.0/spark-2.3.0-bin-hadoop2.7.tgz
 
-. Make radanalytics.io templates and configmaps use the `complete` tag
+. Make the radanalytics.io templates and configmaps use the `complete` tag
 
     ./rad-image use complete
 
-. To switch back to using the default tags, do this
+. To use the default tags again, do this
 
     ./rad-image use -d
 
 . To build images with a tag other than `complete`, specify the `-t TAG` option on the build command
 
-    ./rad-image build -t 2.3.0 spark-2.3.0-bin-hadoop2.7.tgz
+    ./rad-image build -t 2.3.0 https://archive.apache.org/dist/spark/spark-2.3.0/spark-2.3.0-bin-hadoop2.7.tgz
     ./rad-image use 2.3.0
 
 .Additional resources
