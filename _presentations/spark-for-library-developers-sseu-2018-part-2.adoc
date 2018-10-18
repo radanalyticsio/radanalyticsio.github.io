@@ -1,10 +1,16 @@
-= Apache Spark for Library Developers
+= Apache Spark for Library Developers (Deep Dive Part 2)
 :page-presentor: Erik Erlandson & Will Benton
 :page-date: 2018-10-03
-:page-media-url: [ "https://youtu.be/Bh0LlrWs6Fk", "https://youtu.be/PO4Voe9u_Fo" ]
+:page-media-url: https://youtu.be/PO4Voe9u_Fo
 :page-slides-url: https://www.slideshare.net/databricks/apache-spark-for-library-developers-with-erik-erlandson-and-william-benton
 :page-venue: Spark+AI Summit EU
 :page-city: London, England
+
+This is part 2 of a 2-session deep dive, which covers:
+
+* Extending data frames with custom aggregates
+* Exposing JVM libraries for Python
+* Publishing Spark libraries
 
 As a developer, data engineer, or data scientist, you’ve seen how Apache Spark is expressive enough to let you solve problems elegantly and efficient enough to let you scale out to handle more data. However, if you’re solving the same problems again and again, you probably want to capture and distribute your solutions so that you can focus on new problems and so other people can reuse and remix them: you want to develop a library that extends Spark.
 
