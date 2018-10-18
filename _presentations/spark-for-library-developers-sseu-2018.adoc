@@ -1,0 +1,14 @@
+= Apache Spark for Library Developers
+:page-presentor: Erik Erlandson & Will Benton
+:page-date: 2018-10-03
+:page-media-url: https://youtu.be/Bh0LlrWs6Fk
+:page-media-url: https://youtu.be/PO4Voe9u_Fo
+:page-slides-url: https://www.slideshare.net/databricks/apache-spark-for-library-developers-with-erik-erlandson-and-william-benton
+:page-venue: Spark+AI Summit EU
+:page-city: London, England
+
+As a developer, data engineer, or data scientist, you’ve seen how Apache Spark is expressive enough to let you solve problems elegantly and efficient enough to let you scale out to handle more data. However, if you’re solving the same problems again and again, you probably want to capture and distribute your solutions so that you can focus on new problems and so other people can reuse and remix them: you want to develop a library that extends Spark.
+
+You faced a learning curve when you first started using Spark, and you’ll face a different learning curve as you start to develop reusable abstractions atop Spark. In this talk, two experienced Spark library developers will give you the background and context you’ll need to turn your code into a library that you can share with the world. We’ll cover: Issues to consider when developing parallel algorithms with Spark, Designing generic, robust functions that operate on data frames and datasets, Extending data frames with user-defined functions (UDFs) and user-defined aggregates (UDAFs), Best practices around caching and broadcasting, and why these are especially important for library developers, Integrating with ML pipelines, Exposing key functionality in both Python and Scala, and How to test, build, and publish your library for the community.
+
+We’ll back up our advice with concrete examples from real packages built atop Spark. You’ll leave this talk informed and inspired to take your Spark proficiency to the next level and develop and publish an awesome library of your own.
