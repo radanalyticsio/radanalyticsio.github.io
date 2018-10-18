@@ -1,8 +1,7 @@
 = Apache Spark for Library Developers
 :page-presentor: Erik Erlandson & Will Benton
 :page-date: 2018-10-03
-:page-media-url: https://youtu.be/Bh0LlrWs6Fk
-:page-media-url: https://youtu.be/PO4Voe9u_Fo
+:page-media-url: [ "https://youtu.be/Bh0LlrWs6Fk", "https://youtu.be/PO4Voe9u_Fo" ]
 :page-slides-url: https://www.slideshare.net/databricks/apache-spark-for-library-developers-with-erik-erlandson-and-william-benton
 :page-venue: Spark+AI Summit EU
 :page-city: London, England
