@@ -28,7 +28,7 @@ solutions for your own data driven applications.
       <p>
 The following presentations are about the technologies involved in and
 related to the radanalytics.io projects. We love our community and the
-passion they have for these technologies. If you know of a presentation 
+passion they have for these technologies. If you know of a presentation
 that would fit in here, please open a
 <a href="https://github.com/radanalyticsio/radanalyticsio.github.io/pulls">pull request</a>
 and add it to the list!
@@ -72,25 +72,26 @@ and add it to the list!
         <div class="list-group-item-container container-fluid hidden">
           <div>
             <p><em>{% if pres.venue %}{{ pres.venue }} • {% endif %}{% if pres.city %}{{pres.city}} • {% endif %}{{ pres.date | date: '%B %Y' }}</em></p>
-            
-            {{ pres.content }}
 
-            <a href="{{ pres.media-url }}">
+            {{ pres.content }}
+            {% for murl in pres.media-url %}
+            <a href="{{ murl }}">
               <i class="fa fa-video-camera" aria-hidden="true"></i>
-              &nbsp; Presentation media</a>
+              &nbsp; Presentation media</a>&nbsp;
+            {% endfor %}
 
             {% if pres.slides-url %}
             <a href="{{ pres.slides-url }}">
               <i class="fa fa-picture-o" aria-hidden="true"></i>
-              &nbsp; Slide deck</a>
+              &nbsp; Slide deck</a>&nbsp;
             {% endif %}
-            
+
             {% if pres.handout-url %}
             <a href="{{ pres.handout-url }}">
               <i class="fa fa-map" aria-hidden="true"></i>
               &nbsp; Handout</a>
             {% endif %}
-              
+
           </div>
         </div>
       </div>
