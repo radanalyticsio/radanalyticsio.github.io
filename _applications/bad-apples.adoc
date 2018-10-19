@@ -31,7 +31,7 @@ with your data.
 The techniques and algorithms demonstrated in this tutorial are **not**
 recommended for production work where real financial records are involved. They
 are exposed here to illustrate how the underlying infrastructure and
-frameworks can be used to build these type of systems.
+frameworks can be used to build these types of systems.
 
 [[architecture]]
 == Architecture
@@ -68,37 +68,14 @@ credit card transaction data.
 ....
 CREATE TABLE transactions
 (
-Time VARCHAR,
-V1 VARCHAR,
-V2 VARCHAR,
-V3 VARCHAR,
-V4 VARCHAR,
-V5 VARCHAR,
-V6 VARCHAR,
-V7 VARCHAR,
-V8 VARCHAR,
-V9 VARCHAR,
-V10 VARCHAR,
-V11 VARCHAR,
-V12 VARCHAR,
-V13 VARCHAR,
-V14 VARCHAR,
-V15 VARCHAR,
-V16 VARCHAR,
-V17 VARCHAR,
-V18 VARCHAR,
-V19 VARCHAR,
-V20 VARCHAR,
-V21 VARCHAR,
-V22 VARCHAR,
-V23 VARCHAR,
-V24 VARCHAR,
-V25 VARCHAR,
-V26 VARCHAR,
-V27 VARCHAR,
-V28 VARCHAR,
-Amount VARCHAR,
-Class VARCHAR
+Time VARCHAR,   V1 VARCHAR,     V2 VARCHAR,     V3 VARCHAR,
+V4 VARCHAR,     V5 VARCHAR,     V6 VARCHAR,     V7 VARCHAR,
+V8 VARCHAR,     V9 VARCHAR,     V10 VARCHAR,    V11 VARCHAR,
+V12 VARCHAR,    V13 VARCHAR,    V14 VARCHAR,    V15 VARCHAR,
+V16 VARCHAR,    V17 VARCHAR,    V18 VARCHAR,    V19 VARCHAR,
+V20 VARCHAR,    V21 VARCHAR,    V22 VARCHAR,    V23 VARCHAR,
+V24 VARCHAR,    V25 VARCHAR,    V26 VARCHAR,    V27 VARCHAR,
+V28 VARCHAR,    Amount VARCHAR, Class VARCHAR
 );
 ....
 
@@ -109,9 +86,11 @@ V1 through V28. Due to confidentiality constraints, none of the original
 background information is available about those fields. The fields which have
 not been transformed with
 https://en.wikipedia.org/wiki/Principal_component_analysis[PCA] are `Time` and
-`Amount`. `Time` is the amount of time in seconds that has elapsed between
-each transaction and the first transaction in the set. `Amount` is the amount
-of the transaction. `Class` is a variable that has been added by the data
+`Amount`. `Time` is the number of seconds that have elapsed between the current
+transaction and the first transaction in the set. `Amount` is the value of each
+transaction in a single currency, please note that the currency for this
+column is not listed by the authors but it is taken to be a single currency
+(most likely Euros). `Class` is a variable that has been added by the data
 maintainers to reflect fraud in the transaction. This set was originally
 conceived to aid in creating machine learning models and as we are using it
 with a different purpose we will be ignoring the `Class` column and also using
@@ -133,8 +112,8 @@ to the processing cluster, the rules will be applied by Drools. For this
 tutorial the rule we are using simply looks at the principal component `V1`
 and marks a transaction as fraudulent if the value is below a predefined
 threshold. This selection is an oversimplification of what a real fraud
-detection might perform, but is sufficient to demonstrate where to apply your
-rules.
+detection application might perform, but is sufficient to demonstrate where to
+apply your rules.
 
 With the records selected, a separate database table is updated to reflect how
 many fraudulent transactions have been detected.
