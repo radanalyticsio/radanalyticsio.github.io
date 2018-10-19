@@ -149,7 +149,7 @@ function make_buildconfig() {
     if [ "$newbuild" == "true" ]; then
         echo Creating buildconfig $2
         if [ "$VERBOSE" == "true" ]; then
-	    echo oc new-build -l radanalytics.io/imagestream=$2 --name $2 --docker-image=$1 --binary --to=$2:$tag
+            echo oc new-build -l radanalytics.io/imagestream=$2 --name $2 --docker-image=$1 --binary --to=$2:$tag
             oc new-build -l radanalytics.io/imagestream=$2 --name $2 --docker-image=$1 --binary --to=$2:$tag
         else
             oc new-build -l radanalytics.io/imagestream=$2 --name $2 --docker-image=$1 --binary --to=$2:$tag > /dev/null  && [ ${PIPESTATUS[0]} -eq 0 ] || return 1
@@ -174,9 +174,9 @@ function complete() {
         # If verbose is set or we have an error in the pod, show the log.
         echo Starting build for $2
         first=$(get_build_num $2)
-	if [ "$VERBOSE" == "true" ]; then
-	    echo oc start-build $2 --from-file=$BUILD_INPUT --wait
-	fi
+        if [ "$VERBOSE" == "true" ]; then
+            echo oc start-build $2 --from-file=$BUILD_INPUT --wait
+        fi
         oc start-build $2 --from-file=$BUILD_INPUT --wait
         res=$?
         second=$(get_build_num $2)
@@ -212,7 +212,7 @@ function clean_up() {
 
 function reset_is() {
                # $2 is the imagestream to reset
-	       # $1 is the default image to point to
+               # $1 is the default image to point to
     local tag
     local res=0
     if [[ "$2" == *openshift-spark* ]]; then
@@ -229,7 +229,7 @@ function reset_is() {
 
         echo oc set image-lookup $2
         oc set image-lookup $2 || res=1
-	return $res
+        return $res
     else
         oc tag --source=docker $1 $2:$tag > /dev/null && [ ${PIPESTATUS[0]} -eq 0 ] || return 1
         oc label imagestream $2 radanalytics.io/imagestream=$2 > /dev/null && [ ${PIPESTATUS[0]} -eq 0 ] || return 1
@@ -265,9 +265,9 @@ function get_image() {
         openshift-spark-py36)
             echo radanalyticsio/openshift-spark-py36-inc:2.3-latest
             ;;
-	radanalytics-r-spark)
-	    echo radanalyticsio/radanalytics-r-spark-inc:latest
-	    ;;
+        radanalytics-r-spark)
+            echo radanalyticsio/radanalytics-r-spark-inc:latest
+            ;;
         *)
             return 1
             ;;
@@ -302,9 +302,9 @@ function get_complete_image() {
         openshift-spark-py36)
             echo radanalyticsio/openshift-spark-py36:2.3-latest
             ;;
-	radanalytics-r-spark)
-	    echo radanalyticsio/radanalytics-r-spark:latest
-	    ;;
+        radanalytics-r-spark)
+            echo radanalyticsio/radanalytics-r-spark:latest
+            ;;
         *)
             return 1
             ;;
@@ -339,9 +339,9 @@ function get_object() {
         openshift-spark-py36)
             echo oshinko-py36-conf
             ;;
-	radanalytics-r-spark)
-	    echo oshinko-r-spark-build-dc
-	    ;;
+        radanalytics-r-spark)
+            echo oshinko-r-spark-build-dc
+            ;;
         *)
             return 1
             ;;
@@ -507,8 +507,8 @@ function build() {
     # We've got to have a build value
     if [ "$#" -eq 0 ]; then
         echo error: build input required
-	build-help
-	exit 1
+        build-help
+        exit 1
     fi
     BUILD_INPUT=$1
     shift
@@ -582,19 +582,19 @@ function clean() {
     # We've got to have a command value
     if [ "$#" -eq 0 ]; then
         echo error: command required
-	clean-help
-	exit 1
+        clean-help
+        exit 1
     fi
     CMD=$1
     shift
     case $CMD in
         all | build | imagestream)
-	    ;;
-	*)
-	    echo error: unrecognized command \'"$CMD"\'
-	    clean-help
-	    exit 1
-	    ;;
+            ;;
+        *)
+            echo error: unrecognized command \'"$CMD"\'
+            clean-help
+            exit 1
+            ;;
     esac
 
     # if there are no arguments left, just clean all targets
@@ -618,22 +618,22 @@ function clean() {
         fi
         if [ "$CMD" == "build" -o "$CMD" == "all" ]; then
             clean_up $target buildconfig
-	    res=$?
+            res=$?
         fi
-	if [ "$CMD" == "imagestream" -o "$CMD" == "all" ]; then
+        if [ "$CMD" == "imagestream" -o "$CMD" == "all" ]; then
             clean_up $target imagestream
             res=$?
-	    if [ "$res" -eq 0 ]; then
+            if [ "$res" -eq 0 ]; then
                 # remake the imagestream here with default tags and images
-		reset_is $image $target
+                reset_is $image $target
                 res=$?
             fi
         fi
-	if [ "$res" -eq 0 ]; then
+        if [ "$res" -eq 0 ]; then
             success+=($target)
-	else
+        else
             failure+=($target)
-	fi
+        fi
     done
     results "Succeeded" ${success[@]}
     results "Failed"    ${failure[@]}
@@ -672,12 +672,13 @@ function use {
     local failure=()
     local ignore=()
     local temp
+    local image_val
 
     while getopts hvd option; do
         case $option in
-	    d)
-	        defaults=true
-		;;
+            d)
+                defaults=true
+                ;;
             v)
                 VERBOSE=true
                 ;;
@@ -695,15 +696,15 @@ function use {
     if [ "$defaults" != "true" ]; then
         if [ "$#" -eq 0 ]; then
             echo error: tag value required
-	    use-help
-	    exit 1
+            use-help
+            exit 1
         fi
-	tag=$1
-	otag=$1
+        tag=$1
+        otag=$1
         shift
     else
         tag=stable
-	otag=2.3-latest
+        otag=2.3-latest
     fi
 
     # if there are no arguments left process all targets
@@ -720,55 +721,63 @@ function use {
 
     for target in $targets; do
         # get the name of the template or configmap we're referencing based on the imagestream in question
-	object=$(get_object $target)
-	if [ "$?" -eq 0 ]; then
-	    case "$target" in
-	        # for these we fix up configmaps, for everything else we fix up templates
-	        openshift-spark | openshift-spark-py36)
-		    temp=$(oc get configmap $object -o yaml | sed -e 's@sparkimage: '$target':.*$@sparkimage: '$target':'$otag'@g')
-		    if [ "$?" -ne 0 ]; then
-		        failure+=($target)
-			continue
-		    fi
-		    if [ "$VERBOSE" == "true" ]; then
-		        echo oc patch configmap $object --type=merge --patch="$temp"
-		        oc patch configmap $object --type=merge --patch="$temp"
-			res=$?
+        object=$(get_object $target)
+        if [ "$?" -eq 0 ]; then
+            case "$target" in
+                # for these we fix up configmaps, for everything else we fix up templates
+                openshift-spark | openshift-spark-py36)
+                    # If we're using a non-default value, then include the full pullspec from the imagestream
+                    # to get around local lookup bugs in oc cluster up cases (>3.7). Oshinko generates specs
+                    # that use DockerImage and not ImageStreamTag, so if lookup is not working ...
+                    if [ "$defaults" == true ]; then
+                        image_val=$target:$otag
                     else
-		        res=0
-		        oc patch configmap $object --type=merge --patch="$temp" > /dev/null && [ ${PIPESTATUS[0]} -eq 0 ] || res=1
+                        image_val=$(oc get is $target --template='{{.status.dockerImageRepository}}':$otag)
                     fi
-		    if [ "$res" -ne 0 ]; then
-		        failure+=($target)
-			continue
-		    fi
-		    success+=($target)
-		    ;;
+                    temp=$(oc get configmap $object -o yaml | sed -e 's@sparkimage: .*$@sparkimage: '$image_val'@g')
+                    if [ "$?" -ne 0 ]; then
+                        failure+=($target)
+                        continue
+                    fi
+                    if [ "$VERBOSE" == "true" ]; then
+                        echo oc patch configmap $object --type=merge --patch="$temp"
+                        oc patch configmap $object --type=merge --patch="$temp"
+                        res=$?
+                    else
+                        res=0
+                        oc patch configmap $object --type=merge --patch="$temp" > /dev/null && [ ${PIPESTATUS[0]} -eq 0 ] || res=1
+                    fi
+                    if [ "$res" -ne 0 ]; then
+                        failure+=($target)
+                        continue
+                    fi
+                    success+=($target)
+                    ;;
                 *)
-		    temp=$(oc get template $object -o yaml | sed -e 's@name: '$target':.*$@name: '$target':'$tag'@g')
-		    if [ "$?" -ne 0 ]; then
-		        failure+=($target)
-			continue
-		    fi
-		    if [ "$VERBOSE" == "true" ]; then
-		        echo oc patch template $object --type=merge --patch="$temp"
-			oc patch template $object --type=merge --patch="$temp"
-			res=$?
-		    else
-		        res=0
-		        oc patch template $object --type=merge --patch="$temp" > /dev/null && [ ${PIPESTATUS[0]} -eq 0 ] || res=1
+                    temp=$(oc get template $object -o yaml | sed -e 's@name: '$target':.*$@name: '$target':'$tag'@g')
+                    if [ "$?" -ne 0 ]; then
+                        failure+=($target)
+                        continue
                     fi
-		    if [ "$res" -ne 0 ]; then
-		        failure+=($target)
-			continue
-		    fi
-		    success+=($target)
-		    ;;
-	    esac
-	else
+                    if [ "$VERBOSE" == "true" ]; then
+                        echo oc patch template $object --type=merge --patch="$temp"
+                        oc patch template $object --type=merge --patch="$temp"
+                        res=$?
+                    else
+                        res=0
+                        oc patch template $object --type=merge --patch="$temp" > /dev/null && [ ${PIPESTATUS[0]} -eq 0 ] || res=1
+                    fi
+                    if [ "$res" -ne 0 ]; then
+                        failure+=($target)
+                        continue
+                    fi
+                    success+=($target)
+                    ;;
+            esac
+        else
             echo Unrecognized target $target
             ignore+=($target)
-	fi
+        fi
     done
     results "Succeeded" ${success[@]}
     results "Failed"    ${failure[@]}
@@ -787,7 +796,7 @@ case "$CMD" in
         ;;
     use)
         use $@
-	;;
+        ;;
     *)
         echo Unrecognized command \'"$CMD"\'
         ;;
