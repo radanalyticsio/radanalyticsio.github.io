@@ -2,7 +2,7 @@
 :page-layout: howdoi
 :page-menu_entry: How do I?
 
-When you install radanalytics.io, your project is set up to use a pre-determined distribution of Apache Spark. You can choose your own Apache Spark distribution with a few additional steps:
+When you install radanalytics.io, your project is set up to use a pre-determined distribution of Apache Spark. You can choose your own Apache Spark distribution with a few additional steps.
 
 .Prerequisites
 
@@ -19,7 +19,7 @@ When you install radanalytics.io, your project is set up to use a pre-determined
 
 .Procedure
 
-. Get the `rad-image` script from link:/assets/tools/rad-image[this link], or download it in your shell using curl:
+. Get the `rad-image` script from link:/assets/tools/rad-image[this link], or download it in your shell using curl.
 
     curl -o rad-image https://radanalytics.io/assets/tools/rad-image
     chmod +x rad-image
@@ -36,18 +36,18 @@ Use the `-h` option for details on commands and options (hint: not everything is
 ./rad-image build https://archive.apache.org/dist/spark/spark-2.3.0/spark-2.3.0-bin-hadoop2.7.tgz
 ....
 +
-To build images with a tag other than `complete`, specify the `-t TAG` option on the build command
+To build images with a tag other than `complete`, specify the `-t TAG` option on the build command.
 +
 ....
 ./rad-image build -t 2.3.0 https://archive.apache.org/dist/spark/spark-2.3.0/spark-2.3.0-bin-hadoop2.7.tgz
 ....
-. Make the radanalytics.io templates and configmaps use the new tag (if you used the `-t` option, specify that tag instead of `complete`)
+. Make the radanalytics.io templates and configmaps use the new tag (if you used the `-t` option, specify that tag instead of `complete`).
 +
 ....
 ./rad-image use complete
 ....
 +
-To use the default tags again, do this
+To use the default tags again, specify the `-d` option.
 +
 ....
 ./rad-image use -d
