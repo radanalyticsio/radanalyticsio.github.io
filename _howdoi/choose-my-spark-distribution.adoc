@@ -21,24 +21,39 @@ When you install radanalytics.io, your project is set up to use a pre-determined
 
     curl -o rad-image https://radanalytics.io/assets/tools/rad-image
     chmod +x rad-image
-    ./rad-image -h
++
+Use the `-h` option for details on commands and options (hint: not everything is covered here!)
++
+....
+./rad-image -h
+....
 
-. Build images using the Spark distribution you've selected. This will create new `complete` tags on the radanaltyics.io image streams (it may take a while since it will build multiple images). Run `rad-image build -h` for additional information on the build command.
-
-    ./rad-image build https://archive.apache.org/dist/spark/spark-2.3.0/spark-2.3.0-bin-hadoop2.7.tgz
-
-. Make the radanalytics.io templates and configmaps use the `complete` tag
-
-    ./rad-image use complete
-
-. To use the default tags again, do this
-
-    ./rad-image use -d
-
-. To build images with a tag other than `complete`, specify the `-t TAG` option on the build command
-
-    ./rad-image build -t 2.3.0 https://archive.apache.org/dist/spark/spark-2.3.0/spark-2.3.0-bin-hadoop2.7.tgz
-    ./rad-image use 2.3.0
+. Build images using the Spark distribution you've selected. This will create new `complete` tags on the radanaltyics.io image streams (it may take a while since it will build multiple images).
++
+....
+./rad-image build https://archive.apache.org/dist/spark/spark-2.3.0/spark-2.3.0-bin-hadoop2.7.tgz
+....
++
+To build images with a tag other than `complete`, specify the `-t TAG` option on the build command
++
+....
+./rad-image build -t 2.3.0 https://archive.apache.org/dist/spark/spark-2.3.0/spark-2.3.0-bin-hadoop2.7.tgz
+....
+. Make the radanalytics.io templates and configmaps use the new tag (if you used the `-t` option, specify that tag instead of `complete`)
++
+....
+./rad-image use complete
+....
++
+To use the default tags again, do this
++
+....
+./rad-image use -d
+....
++
+If you create clusters from the Oshinko WebUI, you can use the link:/howdoi/access-advanced-config-oshinko-webui[avanced configuration] tab
+to specify a custom Spark image that you built with `rad-image`. Just use the pull spec for your image as the value for the _Apache Spark image_
+input box.
 
 .Additional resources
 
@@ -47,5 +62,7 @@ When you install radanalytics.io, your project is set up to use a pre-determined
 * link:/howdoi/validate-radanalytics-install[How do I validate my radanalytics.io installation?]
 
 * link:/howdoi/launch-oshinko-webui-cli[How do I launch the Oshinko web interface from the command line?]
+
+* link:/howdoi/access-advanced-config-oshinko-webui[How do I access advanced cluster configurations in the Oshinko WebUI?]
 
 * link:/howdoi/install-oshinko-cli[How do I install the Oshinko command line interface tool?]
