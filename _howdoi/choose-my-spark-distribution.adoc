@@ -6,9 +6,11 @@ When you install radanalytics.io, your project is set up to use a pre-determined
 
 .Prerequisites
 
-. Follow the instructions under link:/howdoi/install-radanalyticsio[How do I install radanalytics.io?]
+. A terminal shell and OpenShift `oc` tool available with an active login to OpenShift.
 
-. Choose an Apache Spark binary tarball like link:https://archive.apache.org/dist/spark/spark-2.3.0/spark-2.3.0-bin-hadoop2.7.tgz[this one]. You can download it or just use the url. Any binary distribution should work as long as it has this basic structure:
+. An OpenShift project with the radanalytics.io manifest installed, see the link:/get-started[Get Started] instructions for more help.
+
+. An Apache Spark tarball for the release you would like to deploy, like link:https://archive.apache.org/dist/spark/spark-2.3.0/spark-2.3.0-bin-hadoop2.7.tgz[this one]. You can download it or use the url. The tarball should have this basic structure:
 
 * a top-level directory we'll call TOP
 * binaries under TOP/bin
