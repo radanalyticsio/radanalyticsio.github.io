@@ -28,6 +28,7 @@ install:
 - git clone https://github.com/radanalyticsio/oshinko-s2i
 - sudo chmod -R a+rwX $TEST_DIR/oshinko-s2i
 - cp resources.yaml $TEST_DIR/oshinko-s2i/test/e2e/resources
+- cp assets/tools/rad-image $TEST_DIR/oshinko-s2i/test/e2e/resources
 
 before_script:
 script:
