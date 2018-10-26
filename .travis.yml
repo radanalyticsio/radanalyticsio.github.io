@@ -25,7 +25,7 @@ before_install:
       rad_diff="$?"
 
       if [ "$res_diff" -eq 0 -a "$rad_diff" -eq 0 ]; then
-          echo "No change in resources.yaml or radimage, exiting ..."
+          echo "No change in resources.yaml or rad-image, exiting ..."
           exit 0
       fi
       ./travis-helpers/prepare.sh
