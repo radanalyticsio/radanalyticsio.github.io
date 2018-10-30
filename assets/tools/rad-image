@@ -579,9 +579,9 @@ function clean() {
     done
     shift $((OPTIND-1))
 
-    # We've got to have a command value
+    # We've got to have a TARGET value
     if [ "$#" -eq 0 ]; then
-        echo error: command required
+        echo error: TARGET required
         clean-help
         exit 1
     fi
