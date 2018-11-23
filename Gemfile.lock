@@ -3,7 +3,7 @@ GEM
   specs:
     addressable (2.5.2)
       public_suffix (>= 2.0.2, < 4.0)
-    asciidoctor (1.5.7.1)
+    asciidoctor (1.5.8)
     coderay (1.1.2)
     colorator (1.1.0)
     ffi (1.9.25)
@@ -19,7 +19,7 @@ GEM
       pathutil (~> 0.9)
       rouge (>= 1.7, < 3)
       safe_yaml (~> 1.0)
-    jekyll-asciidoc (2.1.0)
+    jekyll-asciidoc (2.1.1)
       asciidoctor (>= 1.5.0)
       jekyll (>= 2.3.0)
     jekyll-sass-converter (1.5.2)
@@ -34,7 +34,7 @@ GEM
       rb-inotify (~> 0.9, >= 0.9.7)
       ruby_dep (~> 1.2)
     mercenary (0.3.6)
-    pathutil (0.16.1)
+    pathutil (0.16.2)
       forwardable-extended (~> 2.6)
     public_suffix (3.0.3)
     rb-fsevent (0.10.3)
@@ -43,7 +43,7 @@ GEM
     rouge (2.2.1)
     ruby_dep (1.5.0)
     safe_yaml (1.0.4)
-    sass (3.6.0)
+    sass (3.7.2)
       sass-listen (~> 4.0.0)
     sass-listen (4.0.0)
       rb-fsevent (~> 0.9, >= 0.9.4)
@@ -55,11 +55,11 @@ PLATFORMS
 DEPENDENCIES
   coderay (~> 1.1.2)
   jekyll (~> 3.6.3)
-  jekyll-asciidoc
+  jekyll-asciidoc (>= 2.1.0)
   json
 
 RUBY VERSION
-   ruby 2.5.1p57
+   ruby 2.5.3p105
 
 BUNDLED WITH
-   1.16.1
+   1.17.1
