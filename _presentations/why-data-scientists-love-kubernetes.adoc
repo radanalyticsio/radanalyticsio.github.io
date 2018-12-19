@@ -1,0 +1,13 @@
+= Title of the presentation goes here
+:page-presentor: Sophie Watson & Will Benton
+:page-date: 2018-12-11
+:page-media-url: https://www.youtube.com/watch?v=frQeK8xo9Ls
+:page-slides-url: https://schd.ws/hosted_files/kccna18/dd/kubecon-2018-pdf.pdf
+:page-venue: KubeCon & CloudNativeCon North America
+:page-city: Seattle, WA
+
+This talk will introduce the workflows and concerns of data scientists and machine learning engineers and demonstrate how to make Kubernetes a powerhouse for intelligent applications.
+
+We’ll show how community projects like Kubeflow and radanalytics.io support the entire intelligent application development lifecycle. We’ll cover several key benefits of Kubernetes for a data scientist’s workflow, from experiment design to publishing results. You’ll see how well scale-out data processing frameworks like Apache Spark work in Kubernetes.
+
+System operators will learn how Kubernetes can support data science and machine learning workflows. Application developers will learn how Kubernetes can enable intelligent applications and cross-functional collaboration. Data scientists will leave with concrete suggestions for how to use Kubernetes and open-source tools to make their work more productive.
