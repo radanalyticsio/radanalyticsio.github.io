@@ -36,13 +36,17 @@ Also note that the `Advanced` tab for cluster creation on the oshinko web UI all
 the names of configmaps to be entered for worker, master, or cluster configuration.
 
 To use a cluster configuration on a Spark cluster created from an S2I workflow, specify
-the configmap using the `OSHINKO_NAMED_CONFIG` parameter when creating the app:
+the configmap using the `OSHINKO_NAMED_CONFIG` parameter when creating the app. _Note:
+this configuration will affect all pods associated with the deployment (driver,
+master, and worker)._
 
 [source,bash]
 oc new-app --template=oshinko-python-spark-build-dc -p OSHINKO_NAMED_CONFIG=clusterconfig ...
 
 To use a Spark configuration on the driver pod created by an S2I workflow, specify
-a configmap using the `OSHINKO_SPARK_DRIVER_CONFIG` parameter when creating the app:
+a configmap using the `OSHINKO_SPARK_DRIVER_CONFIG` parameter when creating the app.
+_Note: this configuration will only affect the driver pod and not the master or
+worker pods._
 
 [source,bash]
 oc new-app --template=oshinko-python-spark-build-dc -p OSHINKO_SPARK_DRIVER_CONFIG=mysparkconfig ...
