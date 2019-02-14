@@ -1,5 +1,5 @@
 = Apache Spark for Library Developers (Deep Dive Part 2)
-:page-presentor: Erik Erlandson & Will Benton
+:page-presentor: Erik Erlandson & William Benton
 :page-date: 2018-10-03
 :page-media-url: https://youtu.be/PO4Voe9u_Fo
 :page-slides-url: /assets/spark-for-library-developers/spark-for-library-developers.pdf 

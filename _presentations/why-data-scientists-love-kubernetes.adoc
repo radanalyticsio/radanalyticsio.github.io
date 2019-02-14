@@ -1,5 +1,5 @@
 = Why Data Scientists Love Kubernetes
-:page-presentor: Sophie Watson & Will Benton
+:page-presentor: Sophie Watson & William Benton
 :page-date: 2018-12-11
 :page-media-url: https://www.youtube.com/watch?v=frQeK8xo9Ls
 :page-slides-url: https://schd.ws/hosted_files/kccna18/dd/kubecon-2018-pdf.pdf
