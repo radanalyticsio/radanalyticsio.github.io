@@ -26,14 +26,14 @@ items:
     metadata:
       name: oshinko-py36-conf
     data:
-      sparkimage: openshift-spark-py36:2.4-latest
+      sparkimage: openshift-spark-py36:2.3-latest
 
   - apiVersion: v1
     kind: ConfigMap
     metadata:
       name: default-oshinko-cluster-config
     data:
-      sparkimage: openshift-spark:2.4-latest
+      sparkimage: openshift-spark:2.3-latest
 
   - apiVersion: v1
     kind: ImageStream
@@ -48,9 +48,9 @@ items:
       - annotations: null
         from:
           kind: DockerImage
-          name: radanalyticsio/radanalytics-pyspark:stable
+          name: radanalyticsio/radanalytics-pyspark:v0.5.6
         importPolicy: {}
-        name: stable
+        name: v0.5.6
         referencePolicy:
           type: Source
 
@@ -67,9 +67,9 @@ items:
       - annotations: null
         from:
           kind: DockerImage
-          name: radanalyticsio/radanalytics-pyspark-py36:stable
+          name: radanalyticsio/radanalytics-pyspark-py36:v0.5.6
         importPolicy: {}
-        name: stable
+        name: v0.5.6
         referencePolicy:
           type: Source
 
@@ -86,9 +86,9 @@ items:
       - annotations: null
         from:
           kind: DockerImage
-          name: radanalyticsio/radanalytics-java-spark:stable
+          name: radanalyticsio/radanalytics-java-spark:v0.5.6
         importPolicy: {}
-        name: stable
+        name: v0.5.6
         referencePolicy:
           type: Source
 
@@ -105,9 +105,9 @@ items:
       - annotations: null
         from:
           kind: DockerImage
-          name: radanalyticsio/radanalytics-scala-spark:stable
+          name: radanalyticsio/radanalytics-scala-spark:v0.5.6
         importPolicy: {}
-        name: stable
+        name: v0.5.6
         referencePolicy:
           type: Source
 
@@ -124,9 +124,9 @@ items:
       - annotations: null
         from:
           kind: DockerImage
-          name: radanalyticsio/openshift-spark:2.4-latest
+          name: radanalyticsio/openshift-spark:2.3-latest
         importPolicy: {}
-        name: 2.4-latest
+        name: 2.3-latest
         referencePolicy:
           type: Source
 
@@ -143,9 +143,9 @@ items:
       - annotations: null
         from:
           kind: DockerImage
-          name: radanalyticsio/openshift-spark-py36:2.4-latest
+          name: radanalyticsio/openshift-spark-py36:2.3-latest
         importPolicy: {}
-        name: 2.4-latest
+        name: 2.3-latest
         referencePolicy:
           type: Source
 
@@ -194,7 +194,7 @@ items:
               value: ${APP_FILE}
             from:
               kind: ImageStreamTag
-              name: radanalytics-pyspark:stable
+              name: radanalytics-pyspark:v0.5.6
           type: Source
         triggers:
         - imageChange: {}
@@ -385,7 +385,7 @@ items:
               value: ${APP_FILE}
             from:
               kind: ImageStreamTag
-              name: radanalytics-pyspark-py36:stable
+              name: radanalytics-pyspark-py36:v0.5.6
           type: Source
         triggers:
         - imageChange: {}
@@ -577,7 +577,7 @@ items:
               value: ${APP_FILE}
             from:
               kind: ImageStreamTag
-              name: radanalytics-java-spark:stable
+              name: radanalytics-java-spark:v0.5.6
           type: Source
         triggers:
         - imageChange: {}
@@ -775,7 +775,7 @@ items:
               value: ${SBT_ARGS_APPEND}
             from:
               kind: ImageStreamTag
-              name: radanalytics-scala-spark:stable
+              name: radanalytics-scala-spark:v0.5.6
           type: Source
         triggers:
         - imageChange: {}
@@ -1116,7 +1116,7 @@ items:
       - name: OSHINKO_WEB_IMAGE
         description: Full name of the oshinko web image
         required: true
-        value: radanalyticsio/oshinko-webui:stable
+        value: radanalyticsio/oshinko-webui:v0.5.6
       - name: OSHINKO_WEB_ROUTE_HOSTNAME
         description: The hostname used to create the external route for the webui
       - name: OSHINKO_REFRESH_INTERVAL
@@ -1258,7 +1258,7 @@ items:
       - name: OSHINKO_WEB_IMAGE
         description: Full name of the oshinko web image
         required: true
-        value: radanalyticsio/oshinko-webui:stable
+        value: radanalyticsio/oshinko-webui:v0.5.6
       - name: OSHINKO_WEB_ROUTE_HOSTNAME
         description: The hostname used to create the external route for the webui
       - name: OSHINKO_REFRESH_INTERVAL

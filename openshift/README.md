@@ -27,11 +27,15 @@ NEW_TAG=v9.9.9
 wget $RESOURCES_URL -qO - \
 | sed -r -e "s@(radanalyticsio/.*:)($DEFAULT_TAG)@\1$NEW_TAG@" | oc create -f -
 ```
-
 https://radanalytics.io/resources.yaml  
 This is the latest resources file from [radanalytics.io](https://radanalytics.io)  
 DEFAULT_TAG=stable  
-NEW_TAG may be any version newer than v0.5.3
+NEW_TAG may be any version v0.6.1 or newer
+
+https://radanalytics.io/openshift/resources-v0.5.6.yaml
+This file supports versions v0.5.4 and v0.5.6 of Oshinko
+DEFAULT_TAG=v0.5.6
+NEW_TAG may be v0.5.4 or v0.5.6
 
 https://radanalytics.io/openshift/resources-v0.5.3.yaml  
 This file supports versions v0.4.x and v0.5.x of Oshinko  
