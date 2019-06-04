@@ -8,6 +8,7 @@
 :page-menu_items: lightning
 :page-description: jGraf Zahl is a Java implementation of the Graf Zahl application. It is a demonstration of using Spark's Structured Streaming feature to read data from an Apache Kafka topic. It presents a web UI to view the top-k words found on the topic.
 :page-project_links: ["https://github.com/radanalyticsio/jgrafzahl", "https://github.com/mattf/word-fountain", "https://github.com/mattf/openshift-kafka"]
+:page-liquid:
 
 [[introduction]]
 == Introduction
@@ -98,7 +99,7 @@ oc new-app --template=oshinko-java-spark-build-dc \
            -p GIT_URI=https://github.com/radanalyticsio/jgrafzahl \
            -p APP_MAIN_CLASS=io.radanalytics.jgrafzahl.App \
            -p APP_ARGS='kafka:9092 word-fountain' \
-           -p SPARK_OPTIONS='--packages org.apache.spark:spark-sql-kafka-0-10_2.11:2.3.0,com.sparkjava:spark-core:2.7.2,org.glassfish:javax.json:1.0.4  --conf spark.jars.ivy=/tmp/.ivy2'
+           -p SPARK_OPTIONS='--packages org.apache.spark:spark-sql-kafka-0-10_2.11:{{ site.data.spark.version }},com.sparkjava:spark-core:2.7.2,org.glassfish:javax.json:1.0.4  --conf spark.jars.ivy=/tmp/.ivy2'
 ....
 
 Finally, expose jGraf Zahl's web UI so you can connect to it with a

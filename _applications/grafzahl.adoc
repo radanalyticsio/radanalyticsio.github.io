@@ -8,6 +8,7 @@
 :page-menu_items: lightning
 :page-description: Graf Zahl is a demonstration application using Spark's Structured Streaming feature to read data from an Apache Kafka topic. It presents a web UI to view the top-k words found on the topic.
 :page-project_links: ["https://github.com/radanalyticsio/grafzahl", "https://github.com/radanalyticsio/word-fountain", "https://github.com/mattf/openshift-kafka"]
+:page-liquid:
 
 [[introduction]]
 == Introduction
@@ -95,7 +96,7 @@ oc new-app --template=oshinko-python-spark-build-dc \
            -p APPLICATION_NAME=grafzahl \
            -p GIT_URI=https://github.com/radanalyticsio/grafzahl \
            -p APP_ARGS=--servers=kafka:9092 \
-           -p SPARK_OPTIONS='--packages org.apache.spark:spark-sql-kafka-0-10_2.11:2.3.0'
+           -p SPARK_OPTIONS='--packages org.apache.spark:spark-sql-kafka-0-10_2.11:{{ site.data.spark.version }}'
 ....
 
 Finally, expose Graf Zahl's web UI so you can connect to it with a
