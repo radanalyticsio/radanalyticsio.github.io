@@ -1,7 +1,7 @@
 /*
-  Content-Security-Policy: default-src 'none';
-                           img-src 'self';
-                           script-src 'self';
-                           style-src 'self';
-                           frame-ancestors 'none'
+  Content-Security-Policy: default-src 'none'
+  Content-Security-Policy: img-src 'self'
+  Content-Security-Policy: script-src 'self'
+  Content-Security-Policy: style-src 'self'
+  Content-Security-Policy: frame-ancestors 'none'
   X-Frame-Options: DENY
