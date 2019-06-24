@@ -41,6 +41,9 @@ exclude:
   - bower_components/eonasdan-bootstrap-datetimepicker
   - openshift/README.md
 
+include:
+  - _headers
+
 collections:
   faqs:
     output: true # this is to workaround issue #161 in jekyll-asciidoc
