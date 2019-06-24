@@ -3,5 +3,5 @@
   Content-Security-Policy: img-src 'self'
   Content-Security-Policy: script-src 'self'
   Content-Security-Policy: style-src 'self'
-  Content-Security-Policy: frame-ancestors 'none'
-  X-Frame-Options: DENY
+  Content-Security-Policy: frame-ancestors 'self'
+  X-Frame-Options: SAMEORIGIN
