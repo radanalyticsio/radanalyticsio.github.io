@@ -4,3 +4,4 @@
   Content-Security-Policy: frame-ancestors 'none'
   X-Frame-Options: DENY
   X-Content-Options: nosniff
+  X-XSS-Protection: 1; mode=block
