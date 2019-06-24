@@ -1,3 +1,7 @@
 /*
-  Content-Security-Policy: default-src 'none'; img-src 'self'; script-src 'self'; style-src 'self'
+  Content-Security-Policy: default-src 'none';
+                           img-src 'self';
+                           script-src 'self';
+                           style-src 'self';
+                           frame-ancestors 'none'
   X-Frame-Options: DENY
