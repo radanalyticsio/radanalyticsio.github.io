@@ -1,7 +1,6 @@
 /*
   Content-Security-Policy: default-src 'self'
-  Content-Security-Policy: style-src 'self' 'unsafe-inline'
-  Content-Security-Policy: script-src 'self' 'unsafe-inline'
+  Content-Security-Policy: script-src 'self' https://www.google-analytics.com
   Content-Security-Policy: object-src 'none'
   Content-Security-Policy: frame-ancestors 'none'
   X-Frame-Options: DENY
