@@ -1,5 +1,5 @@
 /*
-  Content-Security-Policy: default-src 'self'; script-src 'self' https://www.google-analytics.com; object-src 'none'; frame-ancestors 'none'; style-src 'self' 'unsafe-inline'; frame-src 'self' https://player.vimeo.com; img-src 'self' https://www.google-analytics.com https://asciinema.org
+  Content-Security-Policy: default-src 'self'; script-src 'self' https://www.google-analytics.com; object-src 'none'; frame-ancestors 'none'; style-src 'self' 'unsafe-inline'; frame-src 'self' https://player.vimeo.com https://www.youtube.com; img-src 'self' https://www.google-analytics.com https://asciinema.org
   X-Frame-Options: DENY
   X-Content-Type-Options: nosniff
   X-XSS-Protection: 1; mode=block
