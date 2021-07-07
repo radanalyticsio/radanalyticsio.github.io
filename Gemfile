@@ -22,6 +22,6 @@ gem "coderay", "~> 1.1.2"
 #   gem "jekyll-github-metadata", "~> 1.0"
 # end
 group :jekyll_plugins do
-    gem "jekyll-asciidoc", ">= 2.1.0"
+    gem "jekyll-asciidoc", ">= 3.0.0"
 end
 gem "json", ">= 2.3.0"
